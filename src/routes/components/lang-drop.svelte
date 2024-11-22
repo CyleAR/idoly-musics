@@ -1,7 +1,7 @@
 <script>
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline, SunOutline, MoonOutline } from 'flowbite-svelte-icons';
-	import { currentLanguage, languages } from '$lib/store';
+	import { currentLanguage, languages } from '$lib/stores';
 	const languageLabels = {
 		ko: '🇰🇷 한국어',
 		en: '🇺🇸 English',
@@ -21,17 +21,17 @@
 		{languageLabels[$currentLanguage]}
 		<ChevronDownOutline class="ms-2 h-6 w-6" />
 	</summary>
-	<ul class="menu dropdown-content bg-base-100 rounded-box z-[1] w-32 p-2 shadow">
+	<ul class="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
 		{#each Object.entries(languageLabels) as [lang, label]}
 			<li>
-				<a
+				<button
 					on:click={() => {
 						handleLanguageChange(lang);
 						isOpen = false;
 					}}
 				>
 					{label}
-				</a>
+				</button>
 			</li>
 		{/each}
 	</ul>
