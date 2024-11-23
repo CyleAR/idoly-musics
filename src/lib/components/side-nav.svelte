@@ -1,6 +1,3 @@
-<script>
-</script>
-
 <div
 	id="container"
 	class="flex h-[40vh] w-[10vh] flex-col justify-between rounded-lg bg-base-100 px-2 py-4"

@@ -1,6 +1,6 @@
 <script>
-	import SideNavigation from './components/side-nav.svelte';
-	import Content from './components/content.svelte';
+	import SideNavigation from '$lib/components/side-nav.svelte';
+	import Content from '$lib/components/content.svelte';
 </script>
 
 <div class="flex flex-row px-36 py-12">

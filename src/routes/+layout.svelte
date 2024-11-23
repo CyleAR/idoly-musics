@@ -1,6 +1,6 @@
 <script lang="ts">
 	import { enhance, type SubmitFunction } from '$app/forms';
-	import LangDrop from './components/lang-drop.svelte';
+	import LangDrop from '$lib/components/lang-drop.svelte';
 	import { page } from '$app/stores';
 	import { global_theme } from '$lib/stores';
 	import '../app.css';
