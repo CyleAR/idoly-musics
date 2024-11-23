@@ -5,10 +5,12 @@
 
 <script lang="ts">
 	export let title: string;
-	export let artist: string;
-	export let groupName: string = '솔로';
-	export let colorTag: string = '#000000';
+	export let artists: string;
+	export let groupName: string;
+	export let colorTag: string;
 	export let thumbnail: string;
+	export let included_albums: string[];
+	export let announce_date: string;
 </script>
 
 <!-- TODO: 위아래 길이 기준은 '아티스트' 태그 기준으로 아티스트 많아지면 위아래로 길쭉해지게 -->
@@ -20,14 +22,14 @@
 			<!-- TODO: 받은 이미지로 대체. 사이즈는 100x100으로 보이게 -->
 			<img src="/note.png" class="h-24 w-24 object-contain" alt="thumbnail" />
 		</div>
-		<div id="title"></div>
-		<div class="ml-[8%] h-28 self-center border-r-4 border-white/10"></div>
-		<div id="group-name"></div>
-		<div class="ml-[10%] h-28 self-center border-r-4 border-white/10"></div>
-		<div id="artist"></div>
-		<div class="ml-[34.5%] h-28 self-center border-r-4 border-white/10"></div>
-		<div id="included-album"></div>
-		<div class="ml-[20.5%] h-28 self-center border-r-4 border-white/10"></div>
-		<div id="release-date"></div>
+		<div id="title">{title},</div>
+		<!-- <div class="ml-[8%] h-28 self-center border-r-4 border-white/10"></div> -->
+		<div id="group-name">{groupName},</div>
+		<!-- <div class="ml-[10%] h-28 self-center border-r-4 border-white/10"></div> -->
+		<div id="artist">{artists},</div>
+		<!-- <div class="ml-[34.5%] h-28 self-center border-r-4 border-white/10"></div> -->
+		<div id="included-album">{included_albums},</div>
+		<!-- <div class="ml-[20.5%] h-28 self-center border-r-4 border-white/10"></div> -->
+		<div id="release-date">{announce_date}</div>
 	</div>
 </div>

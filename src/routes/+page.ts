@@ -2,8 +2,8 @@ import type { PageLoad } from './$types';
 
 export const load: PageLoad = async ({ fetch }) => {
 	try {
-		const start = 3; // 시작 ID
-		const end = 3; // 끝 ID
+		const start = 72; // 시작 ID
+		const end = 72; // 끝 ID
 		// TODO; 아무래도 로그인 기능 없이 운영하는 웹페이지라
 		// 불필요한 트래픽을 최소한으로 해야함.
 		// 1. rate limit : 분 당 호출할 수 있는 최대 api 갯수

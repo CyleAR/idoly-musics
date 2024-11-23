@@ -1,10 +1,13 @@
 <script lang="ts">
 	import { global_theme } from '$lib/stores';
-
 	import Block from './block.svelte';
+	import type { PageData } from './$types';
+
+	export let data: PageData;
 
 	// [{}] 형태이기 때문에 일단 이렇게 명시해둠.
-	let blocks_info: [object] = [1, 2];
+	let blocks_info: [object] = data.musics;
+	console.log(blocks_info[0].announce_date);
 </script>
 
 <div id="content-main" class="h-[80vh] w-[70vw] rounded-lg bg-base-100">
@@ -32,7 +35,15 @@
 	<div id="blocks" class="flex h-full w-full flex-col gap-2">
 		{#each blocks_info as block}
 			<div class="w-full p-5">
-				<Block {...block} />
+				<Block
+					title={block.music_name}
+					artists={block.artists.map((a) => a.name).join(', ')}
+					groupName={block.group?.name || '솔로'}
+					colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
+					thumbnail={block.jacket_directory}
+					included_albums={block.albums[0].name}
+					announce_date={block.announce_date}
+				/>
 			</div>
 		{/each}
 	</div>
