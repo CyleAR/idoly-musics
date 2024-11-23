@@ -35,6 +35,7 @@
 	<div id="blocks" class="flex h-full w-full flex-col gap-2">
 		{#each blocks_info as block}
 			<div class="w-full p-5">
+				<!-- TODO; 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
 				<Block
 					title={block.music_name}
 					artists={block.artists.map((a) => a.name).join(', ')}
