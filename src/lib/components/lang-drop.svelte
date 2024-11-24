@@ -4,6 +4,7 @@
 	import { currentLanguage, languages } from '$lib/stores';
 	const languageLabels = {
 		ko: '🇰🇷 한국어',
+        ja: '🇯🇵 日本語',
 		en: '🇺🇸 English',
 		zh: '🇨🇳 中文'
 	};

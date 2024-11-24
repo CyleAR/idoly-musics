@@ -7,7 +7,7 @@
 
 	// [{}] 형태이기 때문에 일단 이렇게 명시해둠.
 	let blocks_info: [object] = data.musics;
-	console.log(blocks_info[0].announce_date);
+	//console.log(blocks_info[0].announce_date);
 </script>
 
 <div id="content-main" class="h-[80vh] w-[70vw] rounded-lg bg-base-100">
@@ -32,9 +32,9 @@
 		<div class="common-card">공개일</div>
 	</div>
 	<!-- 정렬 기능을 사용할 수 있게. 정보를 block 단위로 추상화 -->
-	<div id="blocks" class="flex h-full w-full flex-col gap-2">
+	<div id="blocks" class="flex h-full w-full flex-col gap">
 		{#each blocks_info as block}
-			<div class="w-full p-5">
+			<div class="w-full p-2">
 				<!-- TODO; 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
 				<Block
 					title={block.music_name}
@@ -42,8 +42,8 @@
 					groupName={block.group?.name || '솔로'}
 					colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
 					thumbnail={block.jacket_directory}
-					included_albums={block.albums[0].name}
-					announce_date={block.announce_date}
+					included_albums={block.albums[0]?.name || '#'}
+					announce_date={block.announce_date || '#'}
 				/>
 			</div>
 		{/each}

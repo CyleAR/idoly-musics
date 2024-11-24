@@ -5,8 +5,8 @@
 	import { global_theme } from '$lib/stores';
 	import '../app.css';
 
-	let currentTheme = 'dark';
-	$global_theme = 'dark';
+	let currentTheme = 'light';
+	$global_theme = 'light';
 
 	const submitUpdateTheme: SubmitFunction = ({ action }) => {
 		console.log('entry');

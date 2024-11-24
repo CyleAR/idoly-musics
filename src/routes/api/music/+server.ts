@@ -65,16 +65,17 @@ export async function GET({ url }: RequestEvent) {
 		// 언어 컬럼 설정
 		const nameColumn =
 			{
-				ko: 'name_kr',
+				ko: 'name_ko',
+                ja: 'name_ja',
 				en: 'name_en',
 				zh: 'name_zh'
-			}[lang] || 'name_kr';
+			}[lang] || 'name_ko';
 
 		// 기본 음악 정보 쿼리
 		const musicQuery = db.prepare(`
 		SELECT
 			jacket_directory as jacket_directory,
-			COALESCE(${nameColumn}, name_jp) as music_name,
+			COALESCE(${nameColumn}, name_ja) as music_name,
 			announce_date
 		FROM musics
 		WHERE id = ?
@@ -83,7 +84,7 @@ export async function GET({ url }: RequestEvent) {
 		// 아티스트 정보 쿼리
 		const artistQuery = db.prepare(`
 		SELECT 
-			COALESCE(a.${nameColumn}, a.name_jp) as name,
+			COALESCE(a.${nameColumn}, a.name_ja) as name,
 			a.color,
 			a.icon_directory
 		FROM music_artists ma
@@ -94,7 +95,7 @@ export async function GET({ url }: RequestEvent) {
 		// 그룹 정보 쿼리
 		const groupQuery = db.prepare(`
 		SELECT 
-			COALESCE(g.${nameColumn}, g.name_jp) as name,
+			COALESCE(g.${nameColumn}, g.name_ja) as name,
 			g.color,
 			g.icon_directory
 		FROM music_groups mg
@@ -105,7 +106,7 @@ export async function GET({ url }: RequestEvent) {
 		// 앨범 정보 쿼리
 		const albumQuery = db.prepare(`
 		SELECT 
-			COALESCE(al.${nameColumn}, al.name_jp) as name,
+			COALESCE(al.${nameColumn}, al.name_ja) as name,
 			al.color,
 			al.jacket_directory,
 			al.release_date

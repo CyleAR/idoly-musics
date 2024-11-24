@@ -26,6 +26,6 @@ export const languages = {
 };
 
 // 현재 선택된 언어 저장
-export const currentLanguage = writable('en');
+export const currentLanguage = writable('ko');
 
 export const global_theme = writable('light');
