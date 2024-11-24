@@ -6,7 +6,7 @@
 <script lang="ts">
 	export let title: string;
 	export let artists: string;
-	export let groupName: string;
+	export let groups: string;
 	export let colorTag: string;
 	export let thumbnail: string;
 	export let included_albums: string[];
@@ -22,13 +22,13 @@
 			<!-- TODO: 받은 이미지로 대체. 사이즈는 100x100으로 보이게 -->
 			<img src="/note.png" class="h-24 w-24 object-contain" alt="thumbnail" />
 		</div>
-		<div id="title">{title},</div>
+		<div id="title">{title} 🟦 </div>
 		<!-- <div class="ml-[8%] h-28 self-center border-r-4 border-white/10"></div> -->
-		<div id="group-name">{groupName},</div>
+		<div id="groups">{groups} 🟦 </div>
 		<!-- <div class="ml-[10%] h-28 self-center border-r-4 border-white/10"></div> -->
-		<div id="artist">{artists},</div>
+		<div id="artists">{artists} 🟦 </div>
 		<!-- <div class="ml-[34.5%] h-28 self-center border-r-4 border-white/10"></div> -->
-		<div id="included-album">{included_albums},</div>
+		<div id="included-album">{included_albums} 🟦 </div>
 		<!-- <div class="ml-[20.5%] h-28 self-center border-r-4 border-white/10"></div> -->
 		<div id="release-date">{announce_date}</div>
 	</div>

@@ -26,7 +26,7 @@
 				<span>곡명</span>
 			</div>
 		</div>
-		<div class="common-card w-[10%]">그룹명</div>
+		<div class="common-card w-[10%]">그룹</div>
 		<div class="common-card w-[33%]">아티스트</div>
 		<div class="common-card w-[20%]">수록 앨범</div>
 		<div class="common-card">공개일</div>
@@ -39,11 +39,11 @@
 				<Block
 					title={block.music_name}
 					artists={block.artists.map((a) => a.name).join(', ')}
-					groupName={block.group?.name || '솔로'}
+					groups={block.groups.map((a) => a.name).join(', ') || '#'}
 					colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
 					thumbnail={block.jacket_directory}
-					included_albums={block.albums[0]?.name || '#'}
-					announce_date={block.announce_date || '#'}
+					included_albums={block.albums.map((a) => a.name).join(', ') || '#'}
+					announce_date={block.announce_date || ', '}
 				/>
 			</div>
 		{/each}

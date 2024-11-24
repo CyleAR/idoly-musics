@@ -16,11 +16,11 @@ interface MusicRow {
 interface MusicData {
 	jacket_directory: string;
 	music_name: string;
-	group: {
+	groups: {
 		name: string;
 		color: string;
 		icon_directory: string;
-	} | null;
+	}[] | null;
 	artists: {
 		name: string;
 		color: string;
@@ -125,14 +125,12 @@ export async function GET({ url }: RequestEvent) {
 					icon_directory: artist.icon_directory || ''
 				}));
 
-				const groupResult = groupQuery.get(id) as GroupRow;
-				const group = groupResult
-					? {
-							name: groupResult.name,
-							color: groupResult.color || '#000000',
-							icon_directory: groupResult.icon_directory || ''
-						}
-					: null;
+				const groups = (groupQuery.all(id) as GroupRow[]).map((group) => ({
+                    name: group.name,
+                    color: group.color || '#000000',
+                    icon_directory: group.icon_directory || ''
+                }));
+				
 
 				const albums = (albumQuery.all(id) as AlbumRow[]).map((album) => ({
 					name: album.name,
@@ -144,7 +142,7 @@ export async function GET({ url }: RequestEvent) {
 				results.push({
 					jacket_directory: musicData.jacket_directory || '',
 					music_name: musicData.music_name || '',
-					group,
+					groups,
 					artists,
 					albums,
 					announce_date: musicData.announce_date || ''
