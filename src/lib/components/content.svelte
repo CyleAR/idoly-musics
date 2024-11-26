@@ -1,13 +1,15 @@
 <script lang="ts">
-	import { global_theme } from '$lib/stores';
-	import Block from './block.svelte';
+	import { global_theme, currentLanguage } from '$lib/stores';
+	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
+	import Block from './block.svelte';
 
 	export let data: PageData;
 
 	// [{}] 형태이기 때문에 일단 이렇게 명시해둠.
 	let blocks_info: [object] = data.musics;
-	//console.log(blocks_info[0].announce_date);
+
+	$: content_lang = language_table[$currentLanguage]['content'];
 </script>
 
 <div id="content-main" class="h-[80vh] w-[70vw] rounded-lg bg-base-100">
@@ -23,16 +25,16 @@
 						class:icon-black={$global_theme === 'light'}
 					/>
 				</div>
-				<span>곡명</span>
+				<span>{content_lang['songName']}</span>
 			</div>
 		</div>
-		<div class="common-card w-[10%]">그룹</div>
-		<div class="common-card w-[33%]">아티스트</div>
-		<div class="common-card w-[20%]">수록 앨범</div>
-		<div class="common-card">공개일</div>
+		<div class="common-card w-[10%]">{content_lang['group']}</div>
+		<div class="common-card w-[33%]">{content_lang['artist']}</div>
+		<div class="common-card w-[20%]">{content_lang['album']}</div>
+		<div class="common-card">{content_lang['releaseDate']}</div>
 	</div>
 	<!-- 정렬 기능을 사용할 수 있게. 정보를 block 단위로 추상화 -->
-	<div id="blocks" class="flex h-full w-full flex-col gap">
+	<div id="blocks" class="gap flex h-full w-full flex-col">
 		{#each blocks_info as block}
 			<div class="w-full p-2">
 				<!-- TODO; 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
