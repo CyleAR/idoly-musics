@@ -14,7 +14,7 @@
 
 <div id="content-main" class="h-[80vh] w-[70vw] rounded-lg bg-base-100">
 	<div class="flex w-full flex-col lg:flex-row">
-		<div class="common-card w-[20%]">
+		<div class="common-card w-[21%]">
 			<div class="flex items-center gap-1 pl-6">
 				<div class="h-4 w-4">
 					<img
@@ -29,7 +29,7 @@
 			</div>
 		</div>
 		<div class="common-card w-[10%]">{content_lang['group']}</div>
-		<div class="common-card w-[33%]">{content_lang['artist']}</div>
+		<div class="common-card w-[32%]">{content_lang['artist']}</div>
 		<div class="common-card w-[20%]">{content_lang['album']}</div>
 		<div class="common-card">{content_lang['releaseDate']}</div>
 	</div>

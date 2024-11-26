@@ -15,21 +15,61 @@
 
 <!-- TODO: 위아래 길이 기준은 '아티스트' 태그 기준으로 아티스트 많아지면 위아래로 길쭉해지게 -->
 <div id="block-main" class="flex h-32 w-full flex-row rounded-xl bg-base-300">
-	<!-- TODO: 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
-	<div id="color-tag" class="h-full w-2 rounded-l-xl bg-blue-600"></div>
-	<div class="flex flex-1">
-		<div id="thumbnail" class="flex h-32 w-32 items-center justify-center p-2">
-			<!-- TODO: 받은 이미지로 대체. 사이즈는 100x100으로 보이게 -->
-			<img src="/note.png" class="h-24 w-24 object-contain" alt="thumbnail" />
+	<!-- 컬러 태그 -->
+	<div id="color-tag" class="h-full w-2 rounded-l-xl" style="background-color: {colorTag};"></div>
+
+	<!-- 메인 콘텐츠 -->
+	<div class="flex flex-1 items-center">
+		<!-- 콘텐츠 그리드 -->
+		<div class="flex flex-1 items-center">
+			<!-- 썸네일 -->
+			<div class="h-[5%] w-[5%] flex-shrink-0 p-2">
+				<img src={thumbnail || '/note.png'} class="h-24 w-24 object-contain" alt="thumbnail" />
+			</div>
+			<div class="w-[15%] flex-shrink-0 px-4">
+				{title}
+			</div>
+
+			<div class="seperator" />
+
+			<div class="w-[10%] flex-shrink-0 px-4">
+				{groups}
+			</div>
+
+			<div class="seperator" />
+
+			<div class="w-[33%] flex-shrink-0 px-4">
+				{artists}
+			</div>
+
+			<div class="seperator" />
+
+			<div class="w-[20%] flex-shrink-0 px-4">
+				{included_albums}
+			</div>
+
+			<div class="seperator" />
+
+			<div class="w-[17%] flex-shrink-0 px-4">
+				{announce_date}
+			</div>
 		</div>
-		<div id="title">{title} 🟦</div>
-		<!-- <div class="ml-[8%] h-28 self-center border-r-4 border-white/10"></div> -->
-		<div id="groups">{groups} 🟦</div>
-		<!-- <div class="ml-[10%] h-28 self-center border-r-4 border-white/10"></div> -->
-		<div id="artists">{artists} 🟦</div>
-		<!-- <div class="ml-[34.5%] h-28 self-center border-r-4 border-white/10"></div> -->
-		<div id="included-album">{included_albums} 🟦</div>
-		<!-- <div class="ml-[20.5%] h-28 self-center border-r-4 border-white/10"></div> -->
-		<div id="release-date">{announce_date}</div>
 	</div>
 </div>
+
+<style>
+	.seperator {
+		@apply h-28 border-r border-white/10;
+	}
+
+	/* 모든 텍스트에 대한 기본 스타일 */
+	#block-main {
+		font-size: 16px;
+		line-height: 1.5;
+	}
+
+	#block-main {
+		font-size: 16px;
+		line-height: 1.5;
+	}
+</style>
