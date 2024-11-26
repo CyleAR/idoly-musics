@@ -46,14 +46,20 @@
 				{title}
 			</div>
 
-			<div class="seperator {heightClass}" />
-
+			<div
+				class="seperator {$global_theme == 'dark'
+					? 'border-base-100'
+					: 'border-base-300'} {heightClass}"
+			/>
 			<div class="w-[10%] flex-shrink-0 px-4">
 				{groups}
 			</div>
 
-			<div class="seperator {heightClass}" />
-
+			<div
+				class="seperator {$global_theme == 'dark'
+					? 'border-base-100'
+					: 'border-base-300'} {heightClass}"
+			/>
 			<!-- 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
 			<div class="w-[33%] flex-shrink-0 px-4">
 				{#if groups === '솔로'}
@@ -63,13 +69,21 @@
 				{/if}
 			</div>
 
-			<div class="seperator {heightClass}" />
+			<div
+				class="seperator {$global_theme == 'dark'
+					? 'border-base-100'
+					: 'border-base-300'} {heightClass}"
+			/>
 
 			<div class="w-[20%] flex-shrink-0 px-4">
 				{included_albums}
 			</div>
 
-			<div class="seperator {heightClass}" />
+			<div
+				class="seperator {$global_theme == 'dark'
+					? 'border-base-100'
+					: 'border-base-300'} {heightClass}"
+			/>
 
 			<div class="w-[17%] flex-shrink-0 px-4">
 				{announce_date}
@@ -83,13 +97,6 @@
 		@apply border-r-4;
 	}
 
-	:global([data-theme='dark']) .seperator {
-		@apply border-base-100;
-	}
-
-	:global([data-theme='light']) .seperator {
-		@apply border-base-300;
-	}
 	#block-main {
 		font-size: 16px;
 		line-height: 1.5;
