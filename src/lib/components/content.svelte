@@ -21,17 +21,13 @@
 		currentPage = page;
 	}
 
+	// TODO; 하드코딩이라서 유연하지 않음
+	// 적당한 방법으로 변경해야함..
 	$: contentHeight = data.musics.reduce((height, block) => {
 		const artistCount = block.artists.length;
-		// 블록 높이 값 축소
-		const blockHeight =
-			artistCount >= 9
-				? 27 // h-24 (원래 144)
-				: artistCount === 5
-					? 9 // h-20 (원래 96)
-					: 3; // h-16 (원래 80)
-		return height + blockHeight + 16; // padding 축소 (32 -> 16)
-	}, 100); // 기본 높이 축소 (200 -> 100)
+		const blockHeight = artistCount >= 9 ? 27 : artistCount === 5 ? 9 : 3;
+		return height + blockHeight + 16;
+	}, 100);
 </script>
 
 <div id="content-main" style="height: {contentHeight}px" class="w-[70vw] rounded-lg bg-base-100">

@@ -5,18 +5,13 @@
 
 	export let data: PageData;
 
-	// 높이 계산 수정
+	// TODO; 하드코딩이라서 유연하지 않음
+	// 적당한 방법으로 변경해야함..
 	$: totalHeight = data.musics.reduce((height, block) => {
 		const artistCount = block.artists.length;
-		// 블록 높이 값 축소
-		const blockHeight =
-			artistCount >= 9
-				? 20 // h-24 (원래 144)
-				: artistCount === 5
-					? 12 // h-20 (원래 96)
-					: 6; // h-16 (원래 80)
-		return height + blockHeight + 16; // padding 축소 (32 -> 16)
-	}, 100); // 기본 높이 축소 (200 -> 100)
+		const blockHeight = artistCount >= 9 ? 20 : artistCount === 5 ? 12 : 6;
+		return height + blockHeight + 16;
+	}, 100);
 </script>
 
 <div class="flex flex-row px-36 py-12" style="height: {totalHeight}px">
