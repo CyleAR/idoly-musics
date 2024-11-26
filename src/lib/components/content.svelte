@@ -5,14 +5,36 @@
 	import Block from './block.svelte';
 
 	export let data: PageData;
+	export let itemsPerPage = 16; // 페이지당 표시할 항목 수
 
-	// [{}] 형태이기 때문에 일단 이렇게 명시해둠.
 	let blocks_info: [object] = data.musics;
+	let currentPage = 1;
 
 	$: content_lang = language_table[$currentLanguage]['content'];
+	$: totalPages = Math.ceil(blocks_info.length / itemsPerPage);
+	$: paginatedBlocks = blocks_info.slice(
+		(currentPage - 1) * itemsPerPage,
+		currentPage * itemsPerPage
+	);
+
+	function goToPage(page: number) {
+		currentPage = page;
+	}
+
+	$: contentHeight = data.musics.reduce((height, block) => {
+		const artistCount = block.artists.length;
+		// 블록 높이 값 축소
+		const blockHeight =
+			artistCount >= 9
+				? 27 // h-24 (원래 144)
+				: artistCount === 5
+					? 9 // h-20 (원래 96)
+					: 3; // h-16 (원래 80)
+		return height + blockHeight + 16; // padding 축소 (32 -> 16)
+	}, 100); // 기본 높이 축소 (200 -> 100)
 </script>
 
-<div id="content-main" class="h-[80vh] w-[70vw] rounded-lg bg-base-100">
+<div id="content-main" style="height: {contentHeight}px" class="w-[70vw] rounded-lg bg-base-100">
 	<div class="flex w-full flex-col lg:flex-row">
 		<div class="common-card w-[21%]">
 			<div class="flex items-center gap-1 pl-6">
@@ -35,20 +57,39 @@
 	</div>
 	<!-- 정렬 기능을 사용할 수 있게. 정보를 block 단위로 추상화 -->
 	<div id="blocks" class="gap flex h-full w-full flex-col">
-		{#each blocks_info as block}
-			<div class="w-full p-2">
+		{#each paginatedBlocks as block}
+			<div class="w-[100%] p-4">
 				<!-- TODO; 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
 				<Block
 					title={block.music_name}
-					artists={block.artists.map((a) => a.name).join(', ')}
+					artists={block.artists}
 					groups={block.groups.map((a) => a.name).join(', ') || '#'}
 					colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
 					thumbnail={block.jacket_directory}
 					included_albums={block.albums.map((a) => a.name).join(', ') || '#'}
-					announce_date={block.announce_date || ', '}
+					announce_date={block.announce_date || '#'}
 				/>
 			</div>
 		{/each}
+	</div>
+
+	<div class="flex justify-center gap-2 p-4">
+		{#if currentPage > 1}
+			<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage - 1)}> « </button>
+		{/if}
+
+		{#each Array(totalPages) as _, i}
+			<button
+				class="btn btn-circle btn-sm {currentPage === i + 1 ? 'btn-primary' : ''}"
+				on:click={() => goToPage(i + 1)}
+			>
+				{i + 1}
+			</button>
+		{/each}
+
+		{#if currentPage < totalPages}
+			<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage + 1)}> » </button>
+		{/if}
 	</div>
 </div>
 

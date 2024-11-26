@@ -16,11 +16,13 @@ interface MusicRow {
 interface MusicData {
 	jacket_directory: string;
 	music_name: string;
-	groups: {
-		name: string;
-		color: string;
-		icon_directory: string;
-	}[] | null;
+	groups:
+		| {
+				name: string;
+				color: string;
+				icon_directory: string;
+		  }[]
+		| null;
 	artists: {
 		name: string;
 		color: string;
@@ -66,7 +68,7 @@ export async function GET({ url }: RequestEvent) {
 		const nameColumn =
 			{
 				ko: 'name_ko',
-                ja: 'name_ja',
+				ja: 'name_ja',
 				en: 'name_en',
 				zh: 'name_zh'
 			}[lang] || 'name_ko';
@@ -126,11 +128,10 @@ export async function GET({ url }: RequestEvent) {
 				}));
 
 				const groups = (groupQuery.all(id) as GroupRow[]).map((group) => ({
-                    name: group.name,
-                    color: group.color || '#000000',
-                    icon_directory: group.icon_directory || ''
-                }));
-				
+					name: group.name,
+					color: group.color || '#000000',
+					icon_directory: group.icon_directory || ''
+				}));
 
 				const albums = (albumQuery.all(id) as AlbumRow[]).map((album) => ({
 					name: album.name,

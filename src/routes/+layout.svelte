@@ -5,16 +5,13 @@
 	import { global_theme } from '$lib/stores';
 	import '../app.css';
 
-	let currentTheme = 'light';
-	$global_theme = 'light';
+	$global_theme = 'dark';
 
 	const submitUpdateTheme: SubmitFunction = ({ action }) => {
-		console.log('entry');
 		const theme = action.searchParams.get('theme');
 
 		if (theme) {
 			document.documentElement.setAttribute('data-theme', theme);
-			currentTheme = theme;
 			$global_theme = theme;
 		}
 	};
@@ -30,15 +27,12 @@
 			<ul class="menu menu-horizontal z-50 px-1">
 				<form method="POST" use:enhance={submitUpdateTheme}>
 					<button
-						on:click={() => {
-							test();
-						}}
-						formaction="/?/setTheme&theme={currentTheme === 'light'
+						formaction="/?/setTheme&theme={$global_theme === 'light'
 							? 'dark'
 							: 'light'}&redirectTo={$page.url.pathname}"
 						class="btn"
 					>
-						{#if currentTheme === 'light'}
+						{#if $global_theme === 'light'}
 							<span class="text-lg">☀️</span>
 							<span class="font-medium">Light Mode</span>
 						{:else}
@@ -50,7 +44,7 @@
 			</ul>
 		</div>
 	</div>
-	<div id="body-bg" class="min-h-[calc(92vh)]">
+	<div id="body-bg">
 		<slot />
 	</div>
 </div>

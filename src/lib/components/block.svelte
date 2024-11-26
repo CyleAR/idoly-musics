@@ -4,6 +4,9 @@
 그리고 태그에 배경색은 db에 다 아티스트 개인별, 그룹별, 앨범별 테이블에 color 지정되어있으니 id별로 연동된 색을 바탕색으로 쓸 수 있게 하면될듯 -->
 
 <script lang="ts">
+	import { global_theme } from '$lib/stores';
+	import ArtistBlock from './artist-block.svelte';
+
 	export let title: string;
 	export let artists: string;
 	export let groups: string;
@@ -11,10 +14,23 @@
 	export let thumbnail: string;
 	export let included_albums: string[];
 	export let announce_date: string;
+
+	console.log(title, artists);
+
+	$: heightClass = artists.length >= 9 ? 'h-36' : artists.length === 5 ? 'h-24' : 'h-20';
 </script>
 
 <!-- TODO: 위아래 길이 기준은 '아티스트' 태그 기준으로 아티스트 많아지면 위아래로 길쭉해지게 -->
-<div id="block-main" class="flex h-32 w-full flex-row rounded-xl bg-base-300">
+<div
+	id="block-main"
+	class="flex w-full flex-row rounded-xl {$global_theme === 'dark'
+		? 'bg-base-300'
+		: 'bg-base-100 shadow-[0_0_15px_rgba(0,0,0,0.3)]'}"
+	class:h-40={artists.length === 10}
+	class:h-38={artists.length === 9}
+	class:h-28={artists.length === 5}
+	class:h-24={artists.length <= 4}
+>
 	<!-- 컬러 태그 -->
 	<div id="color-tag" class="h-full w-2 rounded-l-xl" style="background-color: {colorTag};"></div>
 
@@ -23,32 +39,37 @@
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
 			<!-- 썸네일 -->
-			<div class="h-[5%] w-[5%] flex-shrink-0 p-2">
-				<img src={thumbnail || '/note.png'} class="h-24 w-24 object-contain" alt="thumbnail" />
+			<div class="h-[7%] w-[7%] flex-shrink-0 p-2">
+				<img src={'/note.png'} class="h-24 w-24 object-contain" alt="thumbnail" />
 			</div>
-			<div class="w-[15%] flex-shrink-0 px-4">
+			<div class="w-[12%] flex-shrink-0 px-4">
 				{title}
 			</div>
 
-			<div class="seperator" />
+			<div class="seperator {heightClass}" />
 
 			<div class="w-[10%] flex-shrink-0 px-4">
 				{groups}
 			</div>
 
-			<div class="seperator" />
+			<div class="seperator {heightClass}" />
 
+			<!-- 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
 			<div class="w-[33%] flex-shrink-0 px-4">
-				{artists}
+				{#if groups === '솔로'}
+					<ArtistBlock {artists} color={groups.color} class="h-full w-full" />
+				{:else}
+					<ArtistBlock {artists} class="h-full w-full" />
+				{/if}
 			</div>
 
-			<div class="seperator" />
+			<div class="seperator {heightClass}" />
 
 			<div class="w-[20%] flex-shrink-0 px-4">
 				{included_albums}
 			</div>
 
-			<div class="seperator" />
+			<div class="seperator {heightClass}" />
 
 			<div class="w-[17%] flex-shrink-0 px-4">
 				{announce_date}
@@ -59,15 +80,16 @@
 
 <style>
 	.seperator {
-		@apply h-28 border-r border-white/10;
+		@apply border-r-4;
 	}
 
-	/* 모든 텍스트에 대한 기본 스타일 */
-	#block-main {
-		font-size: 16px;
-		line-height: 1.5;
+	:global([data-theme='dark']) .seperator {
+		@apply border-base-100;
 	}
 
+	:global([data-theme='light']) .seperator {
+		@apply border-base-300;
+	}
 	#block-main {
 		font-size: 16px;
 		line-height: 1.5;
