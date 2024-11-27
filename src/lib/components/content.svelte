@@ -1,29 +1,84 @@
 <script lang="ts">
-	import { global_theme, currentLanguage } from '$lib/stores';
+	import { global_theme, currentLanguage, character_filter } from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
+	import { onMount } from 'svelte';
 	import Block from './block.svelte';
 
 	export let data: PageData;
 	export let itemsPerPage = 16; // 페이지당 표시할 항목 수
 
-	$: blocks_info = data.musics;
+	$: blocks_info = data;
 	let currentPage = 1;
-
 	$: content_lang = language_table[$currentLanguage]['content'];
-	$: totalPages = Math.ceil(blocks_info.length / itemsPerPage);
-	$: paginatedBlocks = blocks_info.slice(
+
+	// 필터링된 블록을 계산하는 반응형 선언 추가
+	$: filteredBlocks = blocks_info.filter((block) => {
+		// character_filter가 비어있으면 모든 블록 표시
+		if ($character_filter.length === 0) return true;
+
+		// block의 artists 중에서 character_filter에 포함된 artist가 있는지 확인
+		return block.artists.some((artist) => $character_filter.includes(artist.name));
+	});
+
+	$: totalPages = Math.ceil(filteredBlocks.length / itemsPerPage);
+
+	$: paginatedBlocks = filteredBlocks.slice(
 		(currentPage - 1) * itemsPerPage,
 		currentPage * itemsPerPage
 	);
 
+	$: contentHeight = paginatedBlocks.reduce((height, block) => {
+		const blockHeight = calculateBlockHeight(block);
+		return height + blockHeight + 4; // padding 4rem 추가
+	}, 12); // 기본 높이 12rem (헤더와 페이지네이션 영역 포함)
+
+	$: contentHeightPx = contentHeight * itemsPerPage;
+
+	onMount(() => {
+		// 초기 페이지 상태를 history에 추가
+		const initialState = { page: currentPage };
+		history.replaceState(initialState, '', window.location.href);
+
+		// popstate 이벤트 리스너 추가
+		window.addEventListener('popstate', handlePopState);
+
+		return () => {
+			window.removeEventListener('popstate', handlePopState);
+		};
+	});
+
+	function handlePopState(event: PopStateEvent) {
+		if (event.state?.page) {
+			currentPage = event.state.page;
+			// 스크롤 위치 조정
+			document.getElementById('content-main')?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start'
+			});
+		}
+	}
+
 	function goToPage(page: number) {
-		currentPage = page;
+		if (page !== currentPage) {
+			currentPage = page;
+			// 새로운 페이지 상태를 history에 추가
+			const newState = { page: page };
+			const newUrl = new URL(window.location.href);
+			newUrl.searchParams.set('page', page.toString());
+			history.pushState(newState, '', newUrl);
+
+			// 스크롤 위치 조정
+			document.getElementById('content-main')?.scrollIntoView({
+				behavior: 'smooth',
+				block: 'start'
+			});
+		}
 	}
 
 	// TODO; 하드코딩이라서 유연하지 않음
 	// 적당한 방법으로 변경해야함..
-	// 적당한 방법으로 변경해야함..
+	// 근데 적당한 방법이 안떠오름...
 	function calculateBlockHeight(block: any) {
 		const artistCount = block.artists.length;
 		const groupCount = block.groups.length;
@@ -34,12 +89,6 @@
 		}
 		return 3.4; // 중간 높이
 	}
-
-	$: contentHeight = paginatedBlocks.reduce((height, block) => {
-		const blockHeight = calculateBlockHeight(block);
-		return height + blockHeight + 4; // padding 4rem 추가
-	}, 12); // 기본 높이 12rem (헤더와 페이지네이션 영역 포함)
-	$: contentHeightPx = contentHeight * itemsPerPage;
 </script>
 
 <div id="content-main" style="height: {contentHeightPx}px" class="w-[70vw] rounded-lg bg-base-100">

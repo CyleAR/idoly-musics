@@ -2,14 +2,14 @@
 	import { enhance, type SubmitFunction } from '$app/forms';
 	import LangDrop from '$lib/components/lang-drop.svelte';
 	import { page } from '$app/stores';
-	import { global_theme } from '$lib/stores';
+	import { global_theme, character_filter } from '$lib/stores';
 	import '../app.css';
 
 	$global_theme = 'dark';
 
 	const submitUpdateTheme: SubmitFunction = ({ action }) => {
 		const theme = action.searchParams.get('theme');
-
+		character_filter.set([]);
 		if (theme) {
 			document.documentElement.setAttribute('data-theme', theme);
 			$global_theme = theme;

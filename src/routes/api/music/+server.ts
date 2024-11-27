@@ -4,60 +4,23 @@ import Database from 'better-sqlite3';
 import { get } from 'svelte/store';
 import { currentLanguage } from '$lib/stores';
 import { dev } from '$app/environment';
+import * as type from '$lib/types';
 
 const dbPath = dev ? './static/music.db' : './music.db';
 
-interface MusicRow {
-	jacket_directory: string;
-	music_name: string;
-	announce_date: string;
-}
-
-interface MusicData {
-	jacket_directory: string;
-	music_name: string;
-	groups:
-		| {
-				name: string;
-				color: string;
-				icon_directory: string;
-		  }[]
-		| null;
-	artists: {
-		name: string;
-		color: string;
-		icon_directory: string;
-	}[];
-	albums: {
-		name: string;
-		color: string;
-		jacket_directory: string;
-		release_date: string;
-	}[];
-	announce_date: string;
-}
-
-interface ArtistRow {
-	name: string;
-	color: string | null;
-	icon_directory: string | null;
-}
-
-interface GroupRow {
-	name: string;
-	color: string | null;
-	icon_directory: string | null;
-}
-
-interface AlbumRow {
-	name: string;
-	color: string | null;
-	jacket_directory: string | null;
-	release_date: string | null;
-}
+type ArtistCache = {
+	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
+};
 // 캐시 타입 정의
 type CacheType = {
-	[key in 'en' | 'ja' | 'ko' | 'zh']: MusicData[];
+	[key in 'en' | 'ja' | 'ko' | 'zh']: type.MusicData[];
+};
+
+const artistCache: ArtistCache = {
+	en: [],
+	ja: [],
+	ko: [],
+	zh: []
 };
 
 // 전역 캐시 객체
@@ -68,8 +31,8 @@ const cache: CacheType = {
 	zh: []
 };
 
-// 데이터베이스에서 특정 언어의 데이터를 로드하는 함수
-function loadLanguageData(db: any, lang: keyof CacheType): MusicData[] {
+// 쿼리 수정
+function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const nameColumn = {
 		ko: 'name_ko',
 		ja: 'name_ja',
@@ -80,7 +43,6 @@ function loadLanguageData(db: any, lang: keyof CacheType): MusicData[] {
 	const musicQuery = db.prepare(`
         SELECT
             id,
-            jacket_directory,
             COALESCE(${nameColumn}, name_ja) as music_name,
             announce_date
         FROM musics
@@ -91,8 +53,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): MusicData[] {
         SELECT 
             ma.music_id,
             COALESCE(a.${nameColumn}, a.name_ja) as name,
-            a.color,
-            a.icon_directory
+            a.color
         FROM music_artists ma
         JOIN artists a ON ma.artist_id = a.id
     `);
@@ -101,8 +62,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): MusicData[] {
         SELECT 
             mg.music_id,
             COALESCE(g.${nameColumn}, g.name_ja) as name,
-            g.color,
-            g.icon_directory
+            g.color
         FROM music_groups mg
         JOIN groups g ON mg.group_id = g.id
     `);
@@ -112,40 +72,35 @@ function loadLanguageData(db: any, lang: keyof CacheType): MusicData[] {
             ma.music_id,
             COALESCE(al.${nameColumn}, al.name_ja) as name,
             al.color,
-            al.jacket_directory,
             al.release_date
         FROM music_albums ma
         JOIN albums al ON ma.album_id = al.id
     `);
 
-	const musics = musicQuery.all() as (MusicRow & { id: number })[];
-	const artists = artistQuery.all() as (ArtistRow & { music_id: number })[];
-	const groups = groupQuery.all() as (GroupRow & { music_id: number })[];
-	const albums = albumQuery.all() as (AlbumRow & { music_id: number })[];
+	const musics = musicQuery.all() as (type.MusicRow & { id: number })[];
+	const artists = artistQuery.all() as (type.ArtistRow & { music_id: number })[];
+	const groups = groupQuery.all() as (type.GroupRow & { music_id: number })[];
+	const albums = albumQuery.all() as (type.AlbumRow & { music_id: number })[];
 
 	return musics.map((music) => ({
-		jacket_directory: music.jacket_directory || '',
 		music_name: music.music_name || '',
 		groups: groups
 			.filter((g) => g.music_id === music.id)
 			.map((group) => ({
 				name: group.name,
-				color: group.color || '#000000',
-				icon_directory: group.icon_directory || ''
+				color: group.color || '#000000'
 			})),
 		artists: artists
 			.filter((a) => a.music_id === music.id)
 			.map((artist) => ({
 				name: artist.name,
-				color: artist.color || '#000000',
-				icon_directory: artist.icon_directory || ''
+				color: artist.color || '#000000'
 			})),
 		albums: albums
 			.filter((a) => a.music_id === music.id)
 			.map((album) => ({
 				name: album.name,
 				color: album.color || '#000000',
-				jacket_directory: album.jacket_directory || '',
 				release_date: album.release_date || ''
 			})),
 		announce_date: music.announce_date || ''
@@ -155,6 +110,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): MusicData[] {
 // 서버 시작 시 모든 언어의 데이터를 캐시에 로드
 function initializeCache() {
 	const db = new Database(dbPath);
+	loadArtistCache(db);
 	try {
 		['en', 'ja', 'ko', 'zh'].forEach((lang) => {
 			cache[lang as keyof CacheType] = loadLanguageData(db, lang as keyof CacheType);
@@ -167,8 +123,27 @@ function initializeCache() {
 	}
 }
 
+function loadArtistCache(db: any) {
+	const query = db.prepare(`
+		SELECT id, name_ko, name_ja, name_en, name_zh FROM artists
+	`);
+
+	const artists = query.all();
+
+	artists.forEach((artist: type.ArtistData) => {
+		artistCache.ko.push({ id: artist.id, name: artist.name_ko });
+		artistCache.ja.push({ id: artist.id, name: artist.name_ja });
+		artistCache.en.push({ id: artist.id, name: artist.name_en });
+		artistCache.zh.push({ id: artist.id, name: artist.name_zh });
+	});
+
+	console.log(artists);
+}
+
 // 서버 시작 시 캐시 초기화
 initializeCache();
+
+// 데이터베이스 연결 후 캐시 초기화
 
 export async function GET({ url }: RequestEvent) {
 	const lang = String(url.searchParams.get('lang')) as keyof CacheType;
@@ -177,5 +152,8 @@ export async function GET({ url }: RequestEvent) {
 
 	// 캐시된 데이터에서 요청된 범위의 데이터만 반환
 	const results = cache[lang].slice(start - 1, end);
-	return json(results);
+	return json({
+		results,
+		artistCache: artistCache[lang]
+	});
 }

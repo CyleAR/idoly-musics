@@ -14,7 +14,7 @@
 </script>
 
 <div class="flex h-[2600px] flex-row px-36 py-12">
-	<SideNavigation />
+	<SideNavigation {data} />
 	<div id="seperator" class="p-3" />
-	<Content {data} />
+	<Content data={data.musics.results} />
 </div>
