@@ -1,9 +1,16 @@
 <script lang="ts">
+	import type { PageData } from '../../routes/$types';
+	import { currentLanguage } from '$lib/stores';
 	import SideNavigation from '$lib/components/side-nav.svelte';
 	import Content from '$lib/components/content.svelte';
-	import type { PageData } from './$types';
+	import { browser } from '$app/environment';
+	import { invalidateAll } from '$app/navigation';
 
 	export let data: PageData;
+
+	$: if ($currentLanguage && browser) {
+		invalidateAll();
+	}
 
 	// TODO; 하드코딩이라서 유연하지 않음
 	// 적당한 방법으로 변경해야함..

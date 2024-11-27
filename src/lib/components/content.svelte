@@ -7,7 +7,7 @@
 	export let data: PageData;
 	export let itemsPerPage = 16; // 페이지당 표시할 항목 수
 
-	let blocks_info: [object] = data.musics;
+	$: blocks_info = data.musics;
 	let currentPage = 1;
 
 	$: content_lang = language_table[$currentLanguage]['content'];
