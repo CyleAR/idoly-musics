@@ -59,10 +59,10 @@
 				<Block
 					title={block.music_name}
 					artists={block.artists}
-					groups={block.groups.map((a) => a.name).join(', ') || '#'}
+					groups={block.groups}
 					colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
 					thumbnail={block.jacket_directory}
-					included_albums={block.albums.map((a) => a.name).join(', ') || '#'}
+					included_albums={block.albums}
 					announce_date={block.announce_date || '#'}
 				/>
 			</div>

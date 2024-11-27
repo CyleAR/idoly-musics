@@ -1,11 +1,12 @@
 <script lang="ts">
 	import { global_theme } from '$lib/stores';
 
-	export let artists: string[];
+	export let texts: string[];
 	export let color: string = null;
+	export let sort_as_col: bool = false;
 
+	// opacity 값 조절 가능
 	function hexToRgba(hex: string, opacity: number = 0.8) {
-		// opacity 값 조절 가능
 		if (!hex) return '';
 		const r = parseInt(hex.slice(1, 3), 16);
 		const g = parseInt(hex.slice(3, 5), 16);
@@ -14,11 +15,11 @@
 	}
 </script>
 
-<div class="grid grid-cols-3 gap-1">
-	{#each artists as item}
+<div class="grid {sort_as_col ? 'grid-cols-1' : 'grid-cols-3'} gap-1">
+	{#each texts as item}
 		<span
 			style="background-color: {hexToRgba(color || item.color)}"
-			class="m-1 truncate rounded-lg text-center text-black"
+			class="m-1 rounded-lg text-center text-black"
 		>
 			{item.name}
 		</span>
