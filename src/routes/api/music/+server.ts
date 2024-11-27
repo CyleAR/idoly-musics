@@ -175,8 +175,6 @@ export async function GET({ url }: RequestEvent) {
 	const start = Number(url.searchParams.get('start')) || 1;
 	const end = Number(url.searchParams.get('end')) || 16;
 
-	console.log(lang);
-
 	// 캐시된 데이터에서 요청된 범위의 데이터만 반환
 	const results = cache[lang].slice(start - 1, end);
 	return json(results);

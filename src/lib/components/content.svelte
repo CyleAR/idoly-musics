@@ -23,14 +23,26 @@
 
 	// TODO; 하드코딩이라서 유연하지 않음
 	// 적당한 방법으로 변경해야함..
-	$: contentHeight = data.musics.reduce((height, block) => {
+	// 적당한 방법으로 변경해야함..
+	function calculateBlockHeight(block: any) {
 		const artistCount = block.artists.length;
-		const blockHeight = artistCount >= 9 ? 27 : artistCount === 5 ? 9 : 3;
-		return height + blockHeight + 16;
-	}, 100);
+		const groupCount = block.groups.length;
+
+		// artist가 9개 이상이거나 group이 5개 이상인 경우
+		if (artistCount >= 9) {
+			return 9; // 큰 높이
+		}
+		return 3.4; // 중간 높이
+	}
+
+	$: contentHeight = paginatedBlocks.reduce((height, block) => {
+		const blockHeight = calculateBlockHeight(block);
+		return height + blockHeight + 4; // padding 4rem 추가
+	}, 12); // 기본 높이 12rem (헤더와 페이지네이션 영역 포함)
+	$: contentHeightPx = contentHeight * itemsPerPage;
 </script>
 
-<div id="content-main" style="height: {contentHeight}px" class="w-[70vw] rounded-lg bg-base-100">
+<div id="content-main" style="height: {contentHeightPx}px" class="w-[70vw] rounded-lg bg-base-100">
 	<div class="flex w-full flex-col lg:flex-row">
 		<div class="common-card w-[21%]">
 			<div class="flex items-center gap-1 pl-6">
