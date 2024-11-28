@@ -41,11 +41,13 @@
 	</button>
 </div>
 
-<dialog id="viewByGroup" class="modal">
-	<div class="modal-box max-w-5xl">
+<dialog
+	id="viewByGroup"
+	class="modal"
+	on:click|self={() => document.getElementById('viewByGroup').close()}
+>
+	<div class="modal-box">
 		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByGroupModal'].title}</h3>
-		<!-- 캐릭터 카드 -->
-		<Profile {data} />
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByGroupModal'].close}</button>
@@ -53,24 +55,33 @@
 		</div>
 	</div>
 </dialog>
-<dialog id="viewByAlbums" class="modal">
+<dialog
+	id="viewByAlbums"
+	class="modal"
+	on:click|self={() => document.getElementById('viewByAlbums').close()}
+>
 	<div class="modal-box">
-		<h3 class="text-lg font-bold">Hello!</h3>
+		<h3 class="text-lg font-bold">{sideNav_lang['viewByAlbumModal'].title}</h3>
 		<p class="py-4">viewByAlbums</p>
 		<div class="modal-action">
 			<form method="dialog">
-				<button class="btn">Close</button>
+				<button class="btn">{sideNav_lang['viewByAlbumModal'].title}</button>
 			</form>
 		</div>
 	</div>
 </dialog>
-<dialog id="viewByCharacter" class="modal">
-	<div class="modal-box">
-		<h3 class="text-lg font-bold">Hello!</h3>
-		<p class="py-4">viewByCharacter</p>
+<dialog
+	id="viewByCharacter"
+	class="modal"
+	on:click|self={() => document.getElementById('viewByCharacter').close()}
+>
+	<div class="modal-box max-w-5xl">
+		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByCharacterModal'].title}</h3>
+		<!-- 캐릭터 카드 -->
+		<Profile {data} />
 		<div class="modal-action">
 			<form method="dialog">
-				<button class="btn">Close</button>
+				<button class="btn">{sideNav_lang['viewByCharacterModal'].close}</button>
 			</form>
 		</div>
 	</div>

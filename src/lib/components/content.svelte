@@ -8,6 +8,8 @@
 	export let data: PageData;
 	export let itemsPerPage = 16; // 페이지당 표시할 항목 수
 
+	// TODO;  필터링 적용했을 때, 페이지가 1로 다시 안가는 버그도 있음
+
 	$: blocks_info = data;
 	let currentPage = 1;
 	$: content_lang = language_table[$currentLanguage]['content'];
@@ -30,17 +32,15 @@
 
 	$: contentHeight = paginatedBlocks.reduce((height, block) => {
 		const blockHeight = calculateBlockHeight(block);
-		return height + blockHeight + 4; // padding 4rem 추가
-	}, 12); // 기본 높이 12rem (헤더와 페이지네이션 영역 포함)
+		return height + blockHeight + 4;
+	}, 12);
 
 	$: contentHeightPx = contentHeight * itemsPerPage;
 
 	onMount(() => {
-		// 초기 페이지 상태를 history에 추가
 		const initialState = { page: currentPage };
 		history.replaceState(initialState, '', window.location.href);
 
-		// popstate 이벤트 리스너 추가
 		window.addEventListener('popstate', handlePopState);
 
 		return () => {
@@ -51,7 +51,6 @@
 	function handlePopState(event: PopStateEvent) {
 		if (event.state?.page) {
 			currentPage = event.state.page;
-			// 스크롤 위치 조정
 			document.getElementById('content-main')?.scrollIntoView({
 				behavior: 'smooth',
 				block: 'start'
@@ -112,11 +111,9 @@
 		<div class="common-card w-[20%]">{content_lang['album']}</div>
 		<div class="common-card">{content_lang['releaseDate']}</div>
 	</div>
-	<!-- 정렬 기능을 사용할 수 있게. 정보를 block 단위로 추상화 -->
 	<div id="blocks" class="gap flex h-full w-full flex-col">
 		{#each paginatedBlocks as block}
 			<div class="w-[100%] p-4">
-				<!-- TODO; 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
 				<Block
 					title={block.music_name}
 					artists={block.artists}

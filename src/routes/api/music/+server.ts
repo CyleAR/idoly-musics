@@ -11,7 +11,6 @@ const dbPath = dev ? './static/music.db' : './music.db';
 type ArtistCache = {
 	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
 };
-// 캐시 타입 정의
 type CacheType = {
 	[key in 'en' | 'ja' | 'ko' | 'zh']: type.MusicData[];
 };
@@ -23,7 +22,6 @@ const artistCache: ArtistCache = {
 	zh: []
 };
 
-// 전역 캐시 객체
 const cache: CacheType = {
 	en: [],
 	ja: [],
@@ -31,7 +29,6 @@ const cache: CacheType = {
 	zh: []
 };
 
-// 쿼리 수정
 function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const nameColumn = {
 		ko: 'name_ko',
@@ -107,7 +104,6 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	}));
 }
 
-// 서버 시작 시 모든 언어의 데이터를 캐시에 로드
 function initializeCache() {
 	const db = new Database(dbPath);
 	loadArtistCache(db);
@@ -140,17 +136,13 @@ function loadArtistCache(db: any) {
 	console.log(artists);
 }
 
-// 서버 시작 시 캐시 초기화
 initializeCache();
-
-// 데이터베이스 연결 후 캐시 초기화
 
 export async function GET({ url }: RequestEvent) {
 	const lang = String(url.searchParams.get('lang')) as keyof CacheType;
 	const start = Number(url.searchParams.get('start')) || 1;
 	const end = Number(url.searchParams.get('end')) || 16;
 
-	// 캐시된 데이터에서 요청된 범위의 데이터만 반환
 	const results = cache[lang].slice(start - 1, end);
 	return json({
 		results,

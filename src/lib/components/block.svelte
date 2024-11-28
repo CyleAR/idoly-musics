@@ -63,7 +63,6 @@
 					? 'border-base-100'
 					: 'border-base-300'} {seperator_height}"
 			/>
-			<!-- 그룹명이 '솔로' 일 경우에만 artist 테이블에 color 가져오고 그 외의 경우엔 group테이블에서 색 가져오게 코딩해주심 되고 색 두께는 10px정도로 -->
 			<div class="w-[33%] flex-shrink-0 px-4">
 				{#if groups === '솔로'}
 					<ColorTag texts={artists} color={groups.color} />

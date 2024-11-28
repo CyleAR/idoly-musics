@@ -12,6 +12,14 @@ export const language_table = {
 			viewByGroup: '그룹별\n보기',
 			viewByAlbum: '앨범별\n보기',
 			viewByCharacter: '캐릭터별\n보기',
+			viewByCharacterModal: {
+				title: '캐릭터 필터 선택',
+				close: '완료'
+			},
+			viewByAlbumModal: {
+				title: '캐릭터 필터 선택',
+				close: '완료'
+			},
 			viewByGroupModal: {
 				title: '캐릭터 필터 선택',
 				close: '완료'
