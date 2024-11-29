@@ -17,7 +17,6 @@
 
 	async function handleLanguageChange(lang) {
 		currentLanguage.set(lang);
-		character_filter.set([]);
 		dropdownOpen = false;
 	}
 </script>
