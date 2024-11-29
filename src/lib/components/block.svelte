@@ -14,7 +14,6 @@
 	export let artists: string;
 	export let groups: string;
 	export let colorTag: string;
-	export let thumbnail: string;
 	export let included_albums: string;
 	export let announce_date: string;
 
@@ -91,11 +90,7 @@
 					: 'border-base-300'} {seperator_height}"
 			/>
 			<div class="w-[33%] flex-shrink-0 px-4">
-				{#if groups === '솔로'}
-					<ColorTag texts={artists} color={groups.color} />
-				{:else}
 					<ColorTag texts={artists} />
-				{/if}
 			</div>
 
 			<div

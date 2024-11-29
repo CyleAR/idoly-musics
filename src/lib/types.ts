@@ -7,14 +7,17 @@ export interface ArtistData {
 }
 
 export interface MusicRow {
+    music_id: number;
 	music_name: string;
 	announce_date: string;
 }
 
 export interface MusicData {
+    id: number;
 	music_name: string;
 	groups:
 		| {
+                id: number;
 				name: string;
 				color: string;
 		  }[]
@@ -25,6 +28,7 @@ export interface MusicData {
 		color: string;
 	}[];
 	albums: {
+        id: number;
 		name: string;
 		color: string;
 		release_date: string;
@@ -39,11 +43,13 @@ export interface ArtistRow {
 }
 
 export interface GroupRow {
+    group_id: number;
 	name: string;
 	color: string | null;
 }
 
 export interface AlbumRow {
+    album_id: number;
 	name: string;
 	color: string | null;
 	release_date: string | null;

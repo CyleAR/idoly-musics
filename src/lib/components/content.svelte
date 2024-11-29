@@ -99,10 +99,10 @@
 		}
 		return 3.4; // 중간 높이
 	}
-
-	function getActualIndex(pageIndex: number): number {
-		return (current_page - 1) * itemsPerPage + pageIndex;
-	}
+	
+    function getColorTag(block: typeof data) {
+        return block.groups[0].id === 8 ? block.artists[0]?.color : block.groups[0]?.color;
+    }
 </script>
 
 <div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
@@ -117,35 +117,21 @@
 			<Table {data} />
 		{:else}
 			<div class="flex w-full flex-col lg:flex-row">
-				<div class="common-card w-[21%]">
-					<div class="flex items-center gap-1 pl-6">
-						<div class="h-4 w-4">
-							<img
-								src="/note.png"
-								alt="로고"
-								class="h-full w-full object-cover"
-								class:icon-white={$global_theme === 'dark'}
-								class:icon-black={$global_theme === 'light'}
-							/>
-						</div>
-						<span>{content_lang['songName']}</span>
-					</div>
-				</div>
+				<div class="common-card w-[21%]">{content_lang['songName']}</div>
 				<div class="common-card w-[10%]">{content_lang['group']}</div>
 				<div class="common-card w-[32%]">{content_lang['artist']}</div>
 				<div class="common-card w-[20%]">{content_lang['album']}</div>
 				<div class="common-card">{content_lang['releaseDate']}</div>
 			</div>
 			<div id="blocks" class="gap flex h-full w-full flex-col">
-				{#each paginatedBlocks as block, idx}
-					<div class="w-[100%] p-4">
+				{#each paginatedBlocks as block}
+					<div class="flex w-[100%] p-1.5">
 						<Block
-							id={getActualIndex(idx)}
+							id={block.id}
 							title={block.music_name}
 							artists={block.artists}
 							groups={block.groups}
-							colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
-							thumbnail={block.jacket_directory}
+							colorTag={getColorTag(block)}
 							included_albums={block.albums}
 							announce_date={block.announce_date || '#'}
 						/>

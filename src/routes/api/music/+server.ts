@@ -58,6 +58,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 
 	const groupQuery = db.prepare(`
         SELECT 
+            g.id as group_id,
             mg.music_id,
             COALESCE(g.${nameColumn}, g.name_ja) as name,
             g.color
@@ -68,6 +69,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const albumQuery = db.prepare(`
         SELECT 
             ma.music_id,
+            al.id as album_id,
             COALESCE(al.${nameColumn}, al.name_ja) as name,
             al.color,
             al.release_date
@@ -81,10 +83,12 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const albums = albumQuery.all() as (type.AlbumRow & { music_id: number })[];
 
 	return musics.map((music) => ({
+        id: music.id,
 		music_name: music.music_name || '',
 		groups: groups
 			.filter((g) => g.music_id === music.id)
 			.map((group) => ({
+                id: group.group_id,
 				name: group.name,
 				color: group.color || '#000000'
 			})),
@@ -98,6 +102,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 		albums: albums
 			.filter((a) => a.music_id === music.id)
 			.map((album) => ({
+                id: album.album_id,
 				name: album.name,
 				color: album.color || '#000000',
 				release_date: album.release_date || ''
@@ -135,7 +140,7 @@ function loadArtistCache(db: any) {
 		artistCache.zh.push({ id: artist.id, name: artist.name_zh });
 	});
 
-	console.log(artists);
+	//console.log(artists);
 }
 
 initializeCache();
