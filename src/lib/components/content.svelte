@@ -26,8 +26,11 @@
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// character_filter가 비어있으면 모든 블록 표시
 		if ($character_filter.length === 0 || $character_filter == undefined) return true;
-		// block의 artists 중에서 character_filter에 포함된 artist가 있는지 확인
-		return block.artists.some((artist) => $character_filter.includes(artist.id));
+
+		// 모든 선택된 artist가 block의 artists에 포함되어 있는지 확인 (AND 조건)
+		return $character_filter.every((selectedArtistId) =>
+			block.artists.some((artist) => artist.id === selectedArtistId)
+		);
 	});
 
 	$: totalPages = Math.ceil(filteredBlocks.length / itemsPerPage);
