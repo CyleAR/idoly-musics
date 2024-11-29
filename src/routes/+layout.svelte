@@ -26,11 +26,11 @@
 </script>
 
 <div class="min-h-screen bg-base-300">
-	<div class="navbar h-[8vh] bg-base-100 px-6">
+	<div class="navbar h-[6vh] bg-base-100 px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
 			<a href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
 		</div>
-		<div id="change-lang-theme" class="flex-none">
+		<div id="change-lang-theme" class="z-[51] flex-none">
 			<LangDrop />
 			<ul class="menu menu-horizontal z-50 px-1">
 				<form method="POST" use:enhance={submitUpdateTheme}>

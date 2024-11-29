@@ -4,9 +4,12 @@
 그리고 태그에 배경색은 db에 다 아티스트 개인별, 그룹별, 앨범별 테이블에 color 지정되어있으니 id별로 연동된 색을 바탕색으로 쓸 수 있게 하면될듯 -->
 
 <script lang="ts">
-	import { global_theme } from '$lib/stores';
+	import { global_theme, selectedBlock } from '$lib/stores';
 	import ColorTag from './tag.svelte';
+	import { browser } from '$app/environment';
+	import { onMount } from 'svelte';
 
+	export let id: number;
 	export let title: string;
 	export let artists: string;
 	export let groups: string;
@@ -15,24 +18,45 @@
 	export let included_albums: string;
 	export let announce_date: string;
 
-	$: seperator_height = artists.length === 10 ? 'h-36' : 'h-20';
+	let imgSrc = '/images/music/0.webp';
+
+	onMount(() => {
+		if (browser) {
+			imgSrc = `/images/music/${id}.webp`;
+		}
+	});
+
+	function handleImageError() {
+		imgSrc = '/images/music/0.webp';
+	}
+
+	function handleClick() {
+		if ($selectedBlock === id) {
+			$selectedBlock = null;
+		} else {
+			console.log(id);
+			$selectedBlock = id;
+		}
+	}
+
+	$: seperator_height = artists.length === 10 ? 'h-32' : 'h-28';
 
 	$: block_height =
-		artists.length === 10
-			? 'h-40'
-			: artists.length === 9
-				? 'h-38'
-				: artists.length < 9 && groups.length >= 3
-					? 'h-28'
-					: 'h-24';
+		artists.length === 10 ? 'h-[9rem]' : artists.length < 9 && groups.length >= 3 ? 'h-32' : 'h-28';
 </script>
 
-<!-- TODO: 위아래 길이 기준은 '아티스트' 태그 기준으로 아티스트 많아지면 위아래로 길쭉해지게 -->
 <div
 	id="block-main"
-	class="flex w-full {block_height} flex-row rounded-xl {$global_theme === 'dark'
-		? 'bg-base-300'
-		: 'bg-base-100 shadow-[0_0_15px_rgba(0,0,0,0.3)]'}"
+	class="btn flex w-full p-0 {block_height} flex-row rounded-xl {$global_theme === 'dark'
+		? $selectedBlock === id
+			? 'btn-neutral bg-base-300'
+			: 'btn-neutral'
+		: $selectedBlock === id
+			? 'btn-ghost bg-base-200 shadow-md'
+			: 'btn-ghost shadow-md'}"
+	on:click={handleClick}
+	role="button"
+	tabindex="0"
 >
 	<!-- 컬러 태그 -->
 	<div id="color-tag" class="h-full w-2 rounded-l-xl" style="background-color: {colorTag};"></div>
@@ -42,11 +66,16 @@
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
 			<!-- 썸네일 -->
-			<div class="h-[7%] w-[7%] flex-shrink-0 p-2">
-				<img src={'/note.png'} class="h-24 w-24 object-contain" alt="thumbnail" />
+			<div class="h-[7%] w-[7%] flex-shrink-0">
+				<img
+					src={imgSrc}
+					class="h-24 w-24 object-contain"
+					alt="thumbnail"
+					on:error={handleImageError}
+				/>
 			</div>
-			<div class="w-[12%] flex-shrink-0 px-4">
-				{title}
+			<div class="w-[12%] flex-shrink-0 whitespace-pre-line px-4">
+				{title.replace(/[~(]/, '\n$&')}
 			</div>
 
 			<div
@@ -55,7 +84,7 @@
 					: 'border-base-300'} {seperator_height}"
 			/>
 			<div class="w-[10%] flex-shrink-0 px-4">
-				<ColorTag texts={groups} sort_as_col={true} />
+				<ColorTag texts={groups} />
 			</div>
 
 			<div
@@ -78,7 +107,7 @@
 			/>
 
 			<div class="w-[20%] flex-shrink-0 px-4">
-				<ColorTag texts={included_albums} sort_as_col={true} />
+				<ColorTag texts={included_albums} />
 			</div>
 
 			<div

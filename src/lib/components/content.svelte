@@ -1,5 +1,11 @@
 <script lang="ts">
-	import { global_theme, currentLanguage, character_filter, view_mode } from '$lib/stores';
+	import {
+		global_theme,
+		currentLanguage,
+		character_filter,
+		view_mode,
+		selectedBlock
+	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
@@ -14,7 +20,7 @@
 	$: blocks_info = data.musics.results;
 	let currentPage = 1;
 	$: content_lang = language_table[$currentLanguage]['content'];
-
+	$: isDrawerOpen = $selectedBlock !== null;
 	// 필터링된 블록을 계산하는 반응형 선언 추가
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// character_filter가 비어있으면 모든 블록 표시
@@ -91,71 +97,78 @@
 	}
 </script>
 
-<div id="content-main" style="height: {contentHeightPx}px" class="w-[70vw] rounded-lg bg-base-100">
-	{#if $view_mode == 'viewByAlbums'}
-		<Table {data} />
-	{:else if $view_mode == 'viewByGroup'}
-		<Table {data} />
-	{:else}
-		<div class="flex w-full flex-col lg:flex-row">
-			<div class="common-card w-[21%]">
-				<div class="flex items-center gap-1 pl-6">
-					<div class="h-4 w-4">
-						<img
-							src="/note.png"
-							alt="로고"
-							class="h-full w-full object-cover"
-							class:icon-white={$global_theme === 'dark'}
-							class:icon-black={$global_theme === 'light'}
+<div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
+	<div
+		id="content-main"
+		style="height: {contentHeightPx}px"
+		class="w-[70vw] rounded-lg bg-base-100 shadow-lg"
+	>
+		{#if $view_mode == 'viewByAlbums'}
+			<Table {data} />
+		{:else if $view_mode == 'viewByGroup'}
+			<Table {data} />
+		{:else}
+			<div class="flex w-full flex-col lg:flex-row">
+				<div class="common-card w-[21%]">
+					<div class="flex items-center gap-1 pl-6">
+						<div class="h-4 w-4">
+							<img
+								src="/note.png"
+								alt="로고"
+								class="h-full w-full object-cover"
+								class:icon-white={$global_theme === 'dark'}
+								class:icon-black={$global_theme === 'light'}
+							/>
+						</div>
+						<span>{content_lang['songName']}</span>
+					</div>
+				</div>
+				<div class="common-card w-[10%]">{content_lang['group']}</div>
+				<div class="common-card w-[32%]">{content_lang['artist']}</div>
+				<div class="common-card w-[20%]">{content_lang['album']}</div>
+				<div class="common-card">{content_lang['releaseDate']}</div>
+			</div>
+			<div id="blocks" class="gap flex h-full w-full flex-col">
+				{#each paginatedBlocks as block, idx}
+					<div class="w-[100%] p-4">
+						<Block
+							id={idx}
+							title={block.music_name}
+							artists={block.artists}
+							groups={block.groups}
+							colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
+							thumbnail={block.jacket_directory}
+							included_albums={block.albums}
+							announce_date={block.announce_date || '#'}
 						/>
 					</div>
-					<span>{content_lang['songName']}</span>
-				</div>
+				{/each}
 			</div>
-			<div class="common-card w-[10%]">{content_lang['group']}</div>
-			<div class="common-card w-[32%]">{content_lang['artist']}</div>
-			<div class="common-card w-[20%]">{content_lang['album']}</div>
-			<div class="common-card">{content_lang['releaseDate']}</div>
-		</div>
-		<div id="blocks" class="gap flex h-full w-full flex-col">
-			{#each paginatedBlocks as block}
-				<div class="w-[100%] p-4">
-					<Block
-						title={block.music_name}
-						artists={block.artists}
-						groups={block.groups}
-						colorTag={block.group?.color || block.artists[0]?.color || '#000000'}
-						thumbnail={block.jacket_directory}
-						included_albums={block.albums}
-						announce_date={block.announce_date || '#'}
-					/>
-				</div>
-			{/each}
-		</div>
 
-		<div class="flex justify-center gap-2 p-4">
-			{#if currentPage > 1}
-				<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage - 1)}>
-					«
-				</button>
-			{/if}
+			<div class="flex justify-center gap-2 p-4">
+				{#if currentPage > 1}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage - 1)}>
+						«
+					</button>
+				{/if}
 
-			{#each Array(totalPages) as _, i}
-				<button
-					class="btn btn-circle btn-sm {currentPage === i + 1 ? 'btn-primary' : ''}"
-					on:click={() => goToPage(i + 1)}
-				>
-					{i + 1}
-				</button>
-			{/each}
+				{#each Array(totalPages) as _, i}
+					<button
+						class="btn btn-circle btn-sm {currentPage === i + 1 ? 'btn-primary' : ''}"
+						on:click={() => goToPage(i + 1)}
+					>
+						{i + 1}
+					</button>
+				{/each}
 
-			{#if currentPage < totalPages}
-				<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage + 1)}>
-					»
-				</button>
-			{/if}
-		</div>
-	{/if}
+				{#if currentPage < totalPages}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage + 1)}>
+						»
+					</button>
+				{/if}
+			</div>
+		{/if}
+	</div>
 </div>
 
 <style lang="postcss">

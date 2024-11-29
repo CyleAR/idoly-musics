@@ -5,7 +5,9 @@
 	export let color: string = null;
 	export let sort_as_col: bool = false;
 
-	// opacity 값 조절 가능
+	// 텍스트 길이 기준으로 정렬
+	$: sortedTexts = [...texts].sort((a, b) => b.name.length - a.name.length);
+
 	function hexToRgba(hex: string, opacity: number = 0.8) {
 		if (!hex) return '';
 		const r = parseInt(hex.slice(1, 3), 16);
@@ -15,11 +17,11 @@
 	}
 </script>
 
-<div class="grid {sort_as_col ? 'grid-cols-1' : 'grid-cols-3'} gap-1">
-	{#each texts as item}
+<div class="justify-left flex flex-wrap {sort_as_col ? 'flex-col' : ''}">
+	{#each sortedTexts as item}
 		<span
 			style="background-color: {hexToRgba(color || item.color)}"
-			class="m-1 rounded-lg text-center text-black"
+			class="m-1 inline-block truncate whitespace-nowrap rounded-lg px-3 py-1 text-center text-black"
 		>
 			{item.name}
 		</span>

@@ -33,6 +33,30 @@ export default {
 					lime: '#ff0000',
 					satomi: '#0092ce'
 				}
+			},
+			fontFamily: {
+				sans: [
+					'Pretendard JP Variable',
+					'Pretendard JP',
+					'Pretendard',
+					'-apple-system',
+					'BlinkMacSystemFont',
+					'system-ui',
+					'Roboto',
+					'Helvetica Neue',
+					'Segoe UI',
+					'Hiragino Sans',
+					'Apple SD Gothic Neo',
+					'Meiryo',
+					'Noto Sans JP',
+					'Noto Sans KR',
+					'Malgun Gothic',
+					'Osaka',
+					'Apple Color Emoji',
+					'Segoe UI Emoji',
+					'Segoe UI Symbol',
+					'sans-serif'
+				]
 			}
 		}
 	},

@@ -16,7 +16,7 @@
 
 <div
 	id="container"
-	class="flex h-[40vh] w-[10vh] flex-col justify-between rounded-lg bg-base-100 px-2 py-4"
+	class=" flex h-[40vh] w-[10vh] flex-col justify-between rounded-lg bg-base-100 px-2 py-4 shadow-md"
 >
 	<button class="btn btn-ghost h-[7vh] w-full" on:click={() => showModal('viewByList')}
 		>{sideNav_lang['table']}</button
