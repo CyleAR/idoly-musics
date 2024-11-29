@@ -26,7 +26,7 @@
 </script>
 
 <div class="min-h-screen bg-base-300">
-	<div class="navbar h-[6vh] bg-base-100 px-6 shadow-md">
+	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
 			<a href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
 		</div>
@@ -52,7 +52,7 @@
 			</ul>
 		</div>
 	</div>
-	<div id="body-bg">
+	<div id="body-bg" class="pt-[6vh]">
 		<slot />
 	</div>
 </div>

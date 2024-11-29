@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from '../../routes/$types';
-	import { currentLanguage, selectedBlock } from '$lib/stores';
+	import { currentLanguage, selectedBlock, current_page } from '$lib/stores';
 	import SideNavigation from '$lib/components/side-nav.svelte';
 	import Content from '$lib/components/content.svelte';
 	import { browser } from '$app/environment';
@@ -10,17 +10,6 @@
 	import { onMount } from 'svelte';
 
 	export let data: PageData;
-
-	let scrollY: number;
-	let drawerTop = 26;
-
-	$: if (browser) {
-		if (scrollY > 26) {
-			drawerTop = Math.max(0, 26 - scrollY);
-		} else {
-			drawerTop = 110;
-		}
-	}
 
 	let imgSrc = '/images/music/0.webp';
 	let base = '/images/music/0.webp';
@@ -40,19 +29,24 @@
 	}
 </script>
 
-<svelte:window bind:scrollY />
-
 <div class="relative flex h-[2600px] flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12">
 	{#if !isDrawerOpen}
-		<SideNavigation {data} />
+		<div class="fixed top-[110] z-50">
+			<SideNavigation {data} />
+		</div>
 	{/if}
-	<div id="seperator" class="p-3" />
-	<Content {data} />
+	<div
+		class="{isDrawerOpen
+			? 'ml-[1%] mr-[30%] px-4' // drawer 열린 경우
+			: 'ml-[calc(10vh+3rem)]'} flex-1"
+	>
+		<Content {data} />
+	</div>
 
 	{#if isDrawerOpen}
 		<div
-			class="fixed right-0 z-50 flex h-full w-[29%] flex-col overflow-y-auto rounded-xl bg-base-100 p-8 shadow-xl"
-			style="top: {drawerTop}px; transition: top 0.2s ease-out;"
+			class="fixed right-0 z-50 flex h-full w-[30%] flex-col overflow-y-auto rounded-xl bg-base-100 p-8 shadow-xl"
+			style="transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
 		>
 			<!-- 앨범 이미지 섹션 -->

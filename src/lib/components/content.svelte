@@ -4,7 +4,8 @@
 		currentLanguage,
 		character_filter,
 		view_mode,
-		selectedBlock
+		selectedBlock,
+		current_page
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
@@ -17,8 +18,9 @@
 
 	// TODO;  필터링 적용했을 때, 페이지가 1로 다시 안가는 버그도 있음
 
+	$current_page = 1;
+
 	$: blocks_info = data.musics.results;
-	let currentPage = 1;
 	$: content_lang = language_table[$currentLanguage]['content'];
 	$: isDrawerOpen = $selectedBlock !== null;
 	// 필터링된 블록을 계산하는 반응형 선언 추가
@@ -32,8 +34,8 @@
 	$: totalPages = Math.ceil(filteredBlocks.length / itemsPerPage);
 
 	$: paginatedBlocks = filteredBlocks.slice(
-		(currentPage - 1) * itemsPerPage,
-		currentPage * itemsPerPage
+		($current_page - 1) * itemsPerPage,
+		$current_page * itemsPerPage
 	);
 
 	$: contentHeight = paginatedBlocks.reduce((height, block) => {
@@ -44,7 +46,7 @@
 	$: contentHeightPx = contentHeight * itemsPerPage;
 
 	onMount(() => {
-		const initialState = { page: currentPage };
+		const initialState = { page: $current_page };
 		history.replaceState(initialState, '', window.location.href);
 
 		window.addEventListener('popstate', handlePopState);
@@ -56,7 +58,7 @@
 
 	function handlePopState(event: PopStateEvent) {
 		if (event.state?.page) {
-			currentPage = event.state.page;
+			$current_page = event.state.page;
 			document.getElementById('content-main')?.scrollIntoView({
 				behavior: 'smooth',
 				block: 'start'
@@ -66,8 +68,8 @@
 
 	function goToPage(page: number) {
 		console.log(data);
-		if (page !== currentPage) {
-			currentPage = page;
+		if (page !== $current_page) {
+			$current_page = page;
 			// 새로운 페이지 상태를 history에 추가
 			const newState = { page: page };
 			const newUrl = new URL(window.location.href);
@@ -100,8 +102,8 @@
 <div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
 	<div
 		id="content-main"
-		style="height: {contentHeightPx}px"
-		class="w-[70vw] rounded-lg bg-base-100 shadow-lg"
+		style="min-height: {contentHeightPx}px"
+		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
 		{#if $view_mode == 'viewByAlbums'}
 			<Table {data} />
@@ -146,23 +148,23 @@
 			</div>
 
 			<div class="flex justify-center gap-2 p-4">
-				{#if currentPage > 1}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage - 1)}>
+				{#if $current_page > 1}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page - 1)}>
 						«
 					</button>
 				{/if}
 
 				{#each Array(totalPages) as _, i}
 					<button
-						class="btn btn-circle btn-sm {currentPage === i + 1 ? 'btn-primary' : ''}"
+						class="btn btn-circle btn-sm {$current_page === i + 1 ? 'btn-primary' : ''}"
 						on:click={() => goToPage(i + 1)}
 					>
 						{i + 1}
 					</button>
 				{/each}
 
-				{#if currentPage < totalPages}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage(currentPage + 1)}>
+				{#if $current_page < totalPages}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page + 1)}>
 						»
 					</button>
 				{/if}
