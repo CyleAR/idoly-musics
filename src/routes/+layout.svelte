@@ -1,18 +1,26 @@
 <script lang="ts">
 	import { enhance, type SubmitFunction } from '$app/forms';
+	import { onMount } from 'svelte';
 	import LangDrop from '$lib/components/lang-drop.svelte';
 	import { page } from '$app/stores';
 	import { global_theme, character_filter } from '$lib/stores';
 	import '../app.css';
 
-	$global_theme = 'dark';
+	onMount(() => {
+		const savedTheme =
+			localStorage.getItem('theme') ||
+			(window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+		console.log(savedTheme);
+		document.documentElement.setAttribute('data-theme', savedTheme);
+		$global_theme = savedTheme;
+	});
 
 	const submitUpdateTheme: SubmitFunction = ({ action }) => {
 		const theme = action.searchParams.get('theme');
-		character_filter.set([]);
 		if (theme) {
 			document.documentElement.setAttribute('data-theme', theme);
 			$global_theme = theme;
+			localStorage.setItem('theme', theme);
 		}
 	};
 </script>

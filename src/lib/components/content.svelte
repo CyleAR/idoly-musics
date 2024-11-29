@@ -5,7 +5,7 @@
 	import { onMount } from 'svelte';
 	import Table from './table.svelte';
 	import Block from './block.svelte';
-
+	import { invalidateAll } from '$app/navigation';
 	export let data: PageData;
 	export let itemsPerPage = 16; // 페이지당 표시할 항목 수
 
@@ -18,8 +18,7 @@
 	// 필터링된 블록을 계산하는 반응형 선언 추가
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// character_filter가 비어있으면 모든 블록 표시
-		if ($character_filter.length === 0) return true;
-
+		if ($character_filter.length === 0 || $character_filter == undefined) return true;
 		// block의 artists 중에서 character_filter에 포함된 artist가 있는지 확인
 		return block.artists.some((artist) => $character_filter.includes(artist.name));
 	});

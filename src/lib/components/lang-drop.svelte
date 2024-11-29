@@ -1,7 +1,7 @@
 <script>
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline, SunOutline, MoonOutline } from 'flowbite-svelte-icons';
-	import { currentLanguage } from '$lib/stores';
+	import { currentLanguage, character_filter } from '$lib/stores';
 	import { goto } from '$app/navigation';
 	import { page } from '$app/stores';
 
@@ -17,6 +17,7 @@
 
 	async function handleLanguageChange(lang) {
 		currentLanguage.set(lang);
+		character_filter.set([]);
 		dropdownOpen = false;
 	}
 </script>
