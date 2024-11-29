@@ -20,11 +20,9 @@
 
 	let imgSrc = '/images/music/0.webp';
 
-	onMount(() => {
-		if (browser) {
-			imgSrc = `/images/music/${id}.webp`;
-		}
-	});
+	$: if (browser && id !== undefined) {
+		imgSrc = `/images/music/${id}.webp`;
+	}
 
 	function handleImageError() {
 		imgSrc = '/images/music/0.webp';

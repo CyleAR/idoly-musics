@@ -20,6 +20,7 @@ export interface MusicData {
 		  }[]
 		| null;
 	artists: {
+		id: number;
 		name: string;
 		color: string;
 	}[];
@@ -32,6 +33,7 @@ export interface MusicData {
 }
 
 export interface ArtistRow {
+	artist_id: number;
 	name: string;
 	color: string | null;
 }

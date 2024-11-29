@@ -49,6 +49,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const artistQuery = db.prepare(`
         SELECT 
             ma.music_id,
+			a.id as artist_id,
             COALESCE(a.${nameColumn}, a.name_ja) as name,
             a.color
         FROM music_artists ma
@@ -90,6 +91,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 		artists: artists
 			.filter((a) => a.music_id === music.id)
 			.map((artist) => ({
+				id: artist.artist_id,
 				name: artist.name,
 				color: artist.color || '#000000'
 			})),

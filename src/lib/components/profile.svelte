@@ -14,11 +14,9 @@
 		selectedArtists = [...selectedArtists];
 
 		// character_filter store 업데이트
-		const selectedNames = artists_raw
-			.filter((_, i) => selectedArtists[i])
-			.map((artist) => artist.name);
+		const selectedIds = artists_raw.filter((_, i) => selectedArtists[i]).map((artist) => artist.id);
 
-		character_filter.set(selectedNames);
+		character_filter.set(selectedIds);
 	}
 </script>
 

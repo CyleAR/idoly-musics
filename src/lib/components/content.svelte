@@ -4,8 +4,7 @@
 		currentLanguage,
 		character_filter,
 		view_mode,
-		selectedBlock,
-		current_page
+		selectedBlock
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
@@ -18,7 +17,7 @@
 
 	// TODO;  필터링 적용했을 때, 페이지가 1로 다시 안가는 버그도 있음
 
-	$current_page = 1;
+	let current_page = 1;
 
 	$: blocks_info = data.musics.results;
 	$: content_lang = language_table[$currentLanguage]['content'];
@@ -28,14 +27,14 @@
 		// character_filter가 비어있으면 모든 블록 표시
 		if ($character_filter.length === 0 || $character_filter == undefined) return true;
 		// block의 artists 중에서 character_filter에 포함된 artist가 있는지 확인
-		return block.artists.some((artist) => $character_filter.includes(artist.name));
+		return block.artists.some((artist) => $character_filter.includes(artist.id));
 	});
 
 	$: totalPages = Math.ceil(filteredBlocks.length / itemsPerPage);
 
 	$: paginatedBlocks = filteredBlocks.slice(
-		($current_page - 1) * itemsPerPage,
-		$current_page * itemsPerPage
+		(current_page - 1) * itemsPerPage,
+		current_page * itemsPerPage
 	);
 
 	$: contentHeight = paginatedBlocks.reduce((height, block) => {
@@ -46,7 +45,7 @@
 	$: contentHeightPx = contentHeight * itemsPerPage;
 
 	onMount(() => {
-		const initialState = { page: $current_page };
+		const initialState = { page: current_page };
 		history.replaceState(initialState, '', window.location.href);
 
 		window.addEventListener('popstate', handlePopState);
@@ -58,7 +57,7 @@
 
 	function handlePopState(event: PopStateEvent) {
 		if (event.state?.page) {
-			$current_page = event.state.page;
+			current_page = event.state.page;
 			document.getElementById('content-main')?.scrollIntoView({
 				behavior: 'smooth',
 				block: 'start'
@@ -68,8 +67,8 @@
 
 	function goToPage(page: number) {
 		console.log(data);
-		if (page !== $current_page) {
-			$current_page = page;
+		if (page !== current_page) {
+			current_page = page;
 			// 새로운 페이지 상태를 history에 추가
 			const newState = { page: page };
 			const newUrl = new URL(window.location.href);
@@ -96,6 +95,10 @@
 			return 9; // 큰 높이
 		}
 		return 3.4; // 중간 높이
+	}
+
+	function getActualIndex(pageIndex: number): number {
+		return (current_page - 1) * itemsPerPage + pageIndex;
 	}
 </script>
 
@@ -134,7 +137,7 @@
 				{#each paginatedBlocks as block, idx}
 					<div class="w-[100%] p-4">
 						<Block
-							id={idx}
+							id={getActualIndex(idx)}
 							title={block.music_name}
 							artists={block.artists}
 							groups={block.groups}
@@ -148,23 +151,23 @@
 			</div>
 
 			<div class="flex justify-center gap-2 p-4">
-				{#if $current_page > 1}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page - 1)}>
+				{#if current_page > 1}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage(current_page - 1)}>
 						«
 					</button>
 				{/if}
 
 				{#each Array(totalPages) as _, i}
 					<button
-						class="btn btn-circle btn-sm {$current_page === i + 1 ? 'btn-primary' : ''}"
+						class="btn btn-circle btn-sm {current_page === i + 1 ? 'btn-primary' : ''}"
 						on:click={() => goToPage(i + 1)}
 					>
 						{i + 1}
 					</button>
 				{/each}
 
-				{#if $current_page < totalPages}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page + 1)}>
+				{#if current_page < totalPages}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage(current_page + 1)}>
 						»
 					</button>
 				{/if}
