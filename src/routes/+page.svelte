@@ -11,7 +11,16 @@
 
 	export let data: PageData;
 
-	// 이미지 캐싱도 해야하는데 흠
+	let scrollY: number;
+	let drawerTop = 26;
+
+	$: if (browser) {
+		if (scrollY > 26) {
+			drawerTop = Math.max(0, 26 - scrollY);
+		} else {
+			drawerTop = 110;
+		}
+	}
 
 	let imgSrc = '/images/music/0.webp';
 	let base = '/images/music/0.webp';
@@ -31,6 +40,8 @@
 	}
 </script>
 
+<svelte:window bind:scrollY />
+
 <div class="relative flex h-[2600px] flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12">
 	{#if !isDrawerOpen}
 		<SideNavigation {data} />
@@ -40,7 +51,8 @@
 
 	{#if isDrawerOpen}
 		<div
-			class="top-26 fixed right-0 z-50 flex h-full w-[29%] flex-col overflow-y-auto rounded-xl bg-base-100 p-8 shadow-xl"
+			class="fixed right-0 z-50 flex h-full w-[29%] flex-col overflow-y-auto rounded-xl bg-base-100 p-8 shadow-xl"
+			style="top: {drawerTop}px; transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
 		>
 			<!-- 앨범 이미지 섹션 -->
