@@ -76,15 +76,49 @@
 			</div>
 
 			<!-- 태그 섹션 -->
-			<div class="mb-4 flex flex-wrap gap-2">
-				<div class="">{data.musics.results[$selectedBlock - 1].groups[0].name}</div>
-				<div class="btn h-2">자켓</div>
-				<div class="btn h-2">유튜브</div>
-				<div class="btn h-2">MV</div>
+			<div class="mb-4 flex flex-wrap items-center justify-between gap-2 text-lg">
+				<div class="">
+					{data.musics.results[$selectedBlock - 1].groups[0].name}
+				</div>
+				<div>
+					<div
+						class="btn !h-8 !min-h-0 {$currentLanguage == 'dark'
+							? 'bg-blue-700'
+							: 'bg-blue-500'} text-black"
+					>
+						자켓
+					</div>
+					<div class="btn !h-8 !min-h-0">유튜브</div>
+					<div class="btn !h-8 !min-h-0">MV</div>
+				</div>
 			</div>
 
 			<!-- 가사 섹션 -->
-			<div class="h-full w-full whitespace-pre-line rounded-xl bg-base-200 text-base"></div>
+			<div
+				class="scrollbar-hide text-bas4 h-[37%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6"
+			>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+			</div>
 		</div>
 	{/if}
 </div>

@@ -19,6 +19,7 @@
 		const theme = action.searchParams.get('theme');
 		if (theme) {
 			document.documentElement.setAttribute('data-theme', theme);
+			character_filter.set([]);
 			$global_theme = theme;
 			localStorage.setItem('theme', theme);
 		}
