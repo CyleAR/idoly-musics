@@ -13,13 +13,20 @@
 
 	let imgSrc = '/images/music/0.webp';
 	let base = '/images/music/0.webp';
+	let isLoading = true;
 
 	$: if (selectedBlock) {
 		imgSrc = `/images/music/${$selectedBlock}.webp`;
+		isLoading = true;
 	}
 
 	function handleImageError() {
 		imgSrc = base;
+		isLoading = false;
+	}
+
+	function handleImageLoad() {
+		isLoading = false;
 	}
 
 	$: isDrawerOpen = $selectedBlock !== null;
@@ -62,11 +69,19 @@
 		>
 			<!-- 앨범 이미지 섹션 -->
 			<div class="relative mb-4 flex w-full justify-center rounded-xl bg-base-200 p-4">
+				{#if isLoading}
+					<div class="absolute inset-0 flex items-center justify-center">
+						<span class="loading loading-spinner loading-md"></span>
+					</div>
+				{/if}
 				<img
 					src={imgSrc}
-					class="aspect-square w-96 rounded-lg object-cover"
+					class="aspect-square w-96 rounded-lg object-cover {isLoading
+						? 'opacity-0'
+						: 'opacity-100'}"
 					alt="Album cover"
 					on:error={handleImageError}
+					on:load={handleImageLoad}
 				/>
 			</div>
 			<!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->
