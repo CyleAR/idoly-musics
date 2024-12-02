@@ -26,7 +26,7 @@
 	};
 </script>
 
-<div class="min-h-screen bg-base-300">
+<div class="flex min-h-screen flex-col bg-base-300">
 	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
 			<a href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
@@ -53,10 +53,10 @@
 			</ul>
 		</div>
 	</div>
-	<div id="body-bg" class="pt-[6vh]">
+	<div class="flex-1 pt-[6vh]">
 		<slot />
 	</div>
-	<footer class="mt-6 bg-base-100 py-4 text-center shadow-inner">
+	<footer class="mt-auto bg-base-100 py-4 text-center shadow-inner">
 		<p class="text-sm text-gray-600">© 2023 IDOLY MUSICS.</p>
 	</footer>
 </div>

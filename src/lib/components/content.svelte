@@ -9,9 +9,10 @@
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
+	import { invalidateAll } from '$app/navigation';
+
 	import Table from './table.svelte';
 	import Block from './block.svelte';
-	import { invalidateAll } from '$app/navigation';
 
 	export let data: PageData;
 	export let itemsPerPage = 16; // 페이지당 표시할 항목 수
@@ -39,12 +40,12 @@
 		// character_filter가 비어있으면 모든 블록 표시
 		if ($character_filter.length === 0 || $character_filter == undefined) return true;
 
+		current_page = 1;
+
 		// 모든 선택된 artist가 block의 artists에 포함되어 있는지 확인 (AND 조건)
 		return $character_filter.every((selectedArtistId) =>
 			block.artists.some((artist) => artist.id === selectedArtistId)
 		);
-
-		current_page = 1;
 	});
 
 	// 전체 페이지 수 계산
