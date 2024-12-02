@@ -18,21 +18,13 @@
 	export let announce_date: string;
 
 	let imgSrc = '/images/music/0.webp';
-	let isLoading = true; // 로딩 상태 추가
 
-	// id가 변경될 때마다 로딩 상태를 리셋
 	$: if (browser && id !== undefined) {
-		isLoading = true; // 새로운 이미지 로딩 시작
 		imgSrc = `/images/music/${id}.webp`;
 	}
 
 	function handleImageError() {
 		imgSrc = '/images/music/0.webp';
-		isLoading = false;
-	}
-
-	function handleImageLoad() {
-		isLoading = false;
 	}
 
 	function handleClick() {
@@ -71,20 +63,12 @@
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
 			<!-- 썸네일 -->
-			<div class="relative h-[7%] w-[7%] flex-shrink-0">
-				{#if isLoading}
-					<div class="absolute inset-0 flex items-center justify-center">
-						<span class="loading loading-spinner loading-md"></span>
-					</div>
-				{/if}
+			<div class="h-[7%] w-[7%] flex-shrink-0">
 				<img
 					src={imgSrc}
-					class="h-24 w-24 object-contain transition-opacity duration-200 {isLoading
-						? 'opacity-0'
-						: 'opacity-100'}"
+					class="h-24 w-24 object-contain"
 					alt="thumbnail"
 					on:error={handleImageError}
-					on:load={handleImageLoad}
 				/>
 			</div>
 			<div class="w-[12%] flex-shrink-0 whitespace-pre-line px-4">
