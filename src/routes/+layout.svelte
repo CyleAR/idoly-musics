@@ -55,4 +55,7 @@
 	<div id="body-bg" class="pt-[6vh]">
 		<slot />
 	</div>
+	<footer class="mt-6 bg-base-100 py-4 text-center shadow-inner">
+		<p class="text-sm text-gray-600">© 2023 IDOLY MUSICS.</p>
+	</footer>
 </div>
