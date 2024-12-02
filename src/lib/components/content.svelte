@@ -12,40 +12,10 @@
 	import Table from './table.svelte';
 	import Block from './block.svelte';
 	import { invalidateAll } from '$app/navigation';
+
 	export let data: PageData;
 	export let itemsPerPage = 16; // 페이지당 표시할 항목 수
-
-	// TODO;  필터링 적용했을 때, 페이지가 1로 다시 안가는 버그도 있음
-
-	let current_page = 1;
-
-	$: blocks_info = data.musics.results;
-	$: content_lang = language_table[$currentLanguage]['content'];
-	$: isDrawerOpen = $selectedBlock !== null;
-	// 필터링된 블록을 계산하는 반응형 선언 추가
-	$: filteredBlocks = blocks_info.filter((block) => {
-		// character_filter가 비어있으면 모든 블록 표시
-		if ($character_filter.length === 0 || $character_filter == undefined) return true;
-
-		// 모든 선택된 artist가 block의 artists에 포함되어 있는지 확인 (AND 조건)
-		return $character_filter.every((selectedArtistId) =>
-			block.artists.some((artist) => artist.id === selectedArtistId)
-		);
-	});
-
-	$: totalPages = Math.ceil(filteredBlocks.length / itemsPerPage);
-
-	$: paginatedBlocks = filteredBlocks.slice(
-		(current_page - 1) * itemsPerPage,
-		current_page * itemsPerPage
-	);
-
-	$: contentHeight = paginatedBlocks.reduce((height, block) => {
-		const blockHeight = calculateBlockHeight(block);
-		return height + blockHeight + 4;
-	}, 12);
-
-	$: contentHeightPx = contentHeight * itemsPerPage;
+	export let onHeightChange: (height: number) => void;
 
 	onMount(() => {
 		const initialState = { page: current_page };
@@ -57,6 +27,34 @@
 			window.removeEventListener('popstate', handlePopState);
 		};
 	});
+
+	let current_page = 1;
+
+	$: blocks_info = data.musics.results;
+	$: content_lang = language_table[$currentLanguage]['content'];
+	$: isDrawerOpen = $selectedBlock !== null;
+
+	// 필터링된 블록을 계산하는 반응형 선언 추가
+	$: filteredBlocks = blocks_info.filter((block) => {
+		// character_filter가 비어있으면 모든 블록 표시
+		if ($character_filter.length === 0 || $character_filter == undefined) return true;
+
+		// 모든 선택된 artist가 block의 artists에 포함되어 있는지 확인 (AND 조건)
+		return $character_filter.every((selectedArtistId) =>
+			block.artists.some((artist) => artist.id === selectedArtistId)
+		);
+
+		current_page = 1;
+	});
+
+	// 전체 페이지 수 계산
+	$: totalPages = Math.ceil(filteredBlocks.length / itemsPerPage);
+
+	// 필터링 된 blocks 에서 16개씩 가져오기
+	$: paginatedBlocks = filteredBlocks.slice(
+		(current_page - 1) * itemsPerPage,
+		current_page * itemsPerPage
+	);
 
 	function handlePopState(event: PopStateEvent) {
 		if (event.state?.page) {
@@ -86,29 +84,33 @@
 		}
 	}
 
-	// TODO; 하드코딩이라서 유연하지 않음
-	// 적당한 방법으로 변경해야함..
-	// 근데 적당한 방법이 안떠오름...
-	function calculateBlockHeight(block: any) {
+	function calculateBlockHeight(block: { artists: string[]; groups: string[] }): string {
 		const artistCount = block.artists.length;
 		const groupCount = block.groups.length;
 
-		// artist가 9개 이상이거나 group이 5개 이상인 경우
-		if (artistCount >= 9) {
-			return 9; // 큰 높이
+		if (artistCount >= 9 || groupCount >= 5) {
+			return 'h-[7rem]'; // 큰 높이
 		}
-		return 3.4; // 중간 높이
+		return 'h-[6rem]'; // 중간 높이
 	}
-	
-    function getColorTag(block: typeof data) {
-        return block.groups[0].id === 8 ? block.artists[0]?.color : block.groups[0]?.color;
-    }
+
+	$: contentHeight = paginatedBlocks.reduce((height, block) => {
+		const blockHeight = parseFloat(calculateBlockHeight(block).match(/\d+/)[0]);
+		return height + blockHeight + 0.7; // 0.5rem 여백
+	}, 0);
+
+	// 계산된 Height 를 상위 컴포넌트로 전파 ( +page.svelte )
+	$: onHeightChange(contentHeight);
+
+	function getColorTag(block: typeof data) {
+		return block.groups[0].id === 8 ? block.artists[0]?.color : block.groups[0]?.color;
+	}
 </script>
 
 <div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
 	<div
 		id="content-main"
-		style="min-height: {contentHeightPx}px"
+		style="height: {contentHeight + 5}rem"
 		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
 		{#if $view_mode == 'viewByAlbums'}
@@ -117,10 +119,11 @@
 			<Table {data} />
 		{:else}
 			<div class="flex w-full flex-col lg:flex-row">
-				<div class="common-card w-[21%]">{content_lang['songName']}</div>
-				<div class="common-card w-[10%]">{content_lang['group']}</div>
-				<div class="common-card w-[32%]">{content_lang['artist']}</div>
-				<div class="common-card w-[20%]">{content_lang['album']}</div>
+				<div class="common-card w-[9%]"></div>
+				<div class="common-card w-[13%]">{content_lang['songName']}</div>
+				<div class="common-card w-[20%]">{content_lang['group']}</div>
+				<div class="common-card w-[33%]">{content_lang['artist']}</div>
+				<div class="common-card w-[18.5%]">{content_lang['album']}</div>
 				<div class="common-card">{content_lang['releaseDate']}</div>
 			</div>
 			<div id="blocks" class="gap flex h-full w-full flex-col">

@@ -18,11 +18,10 @@
 	export let announce_date: string;
 
 	let imgSrc = '/images/music/0.webp';
-	let isLoading = true; // 로딩 상태 추가
+	let isLoading = true;
 
-	// id가 변경될 때마다 로딩 상태를 리셋
 	$: if (browser && id !== undefined) {
-		isLoading = true; // 새로운 이미지 로딩 시작
+		isLoading = true;
 		imgSrc = `/images/music/${id}.webp`;
 	}
 
@@ -44,10 +43,9 @@
 		}
 	}
 
-	$: seperator_height = artists.length === 10 ? 'h-32' : 'h-28';
+	$: seperator_height = artists.length === 10 ? 'h-24' : 'h-20';
 
-	$: block_height =
-		artists.length === 10 ? 'h-[9rem]' : artists.length < 9 && groups.length >= 3 ? 'h-32' : 'h-28';
+	$: block_height = artists.length === 10 ? 'h-[7rem]' : 'h-[6rem]';
 </script>
 
 <div
@@ -71,7 +69,7 @@
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
 			<!-- 썸네일 -->
-			<div class="relative h-[7%] w-[7%] flex-shrink-0">
+			<div class="relative h-[5%] w-[5%] flex-shrink-0">
 				{#if isLoading}
 					<div class="absolute inset-0 flex items-center justify-center">
 						<span class="loading loading-spinner loading-md"></span>
@@ -79,7 +77,7 @@
 				{/if}
 				<img
 					src={imgSrc}
-					class="h-24 w-24 object-contain transition-opacity duration-200 {isLoading
+					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200 {isLoading
 						? 'opacity-0'
 						: 'opacity-100'}"
 					alt="thumbnail"
@@ -87,7 +85,9 @@
 					on:load={handleImageLoad}
 				/>
 			</div>
-			<div class="w-[12%] flex-shrink-0 whitespace-pre-line px-4">
+
+			<!-- 노래 제목 -->
+			<div class="w-[12%] flex-shrink-0 whitespace-pre-line px-4 text-lg">
 				{title.replace(/[~(]/, '\n$&')}
 			</div>
 
@@ -96,6 +96,8 @@
 					? 'border-base-100'
 					: 'border-base-300'} {seperator_height}"
 			/>
+
+			<!-- 그룹 -->
 			<div class="w-[10%] flex-shrink-0 px-4">
 				<ColorTag texts={groups} />
 			</div>
@@ -105,6 +107,8 @@
 					? 'border-base-100'
 					: 'border-base-300'} {seperator_height}"
 			/>
+
+			<!-- 아티스트 -->
 			<div class="w-[33%] flex-shrink-0 px-4">
 				<ColorTag texts={artists} />
 			</div>
@@ -115,7 +119,8 @@
 					: 'border-base-300'} {seperator_height}"
 			/>
 
-			<div class="w-[20%] flex-shrink-0 px-4">
+			<!-- 수록 앨범 -->
+			<div class="w-[30%] flex-shrink-0 px-4">
 				<ColorTag texts={included_albums} />
 			</div>
 
@@ -125,7 +130,8 @@
 					: 'border-base-300'} {seperator_height}"
 			/>
 
-			<div class="w-[17%] flex-shrink-0 px-4">
+			<!-- 공개일 -->
+			<div class="w-[9%] flex-shrink-0 px-4">
 				{announce_date}
 			</div>
 		</div>

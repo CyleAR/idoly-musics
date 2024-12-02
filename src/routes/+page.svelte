@@ -27,9 +27,20 @@
 	$: if ($currentLanguage && browser) {
 		invalidateAll();
 	}
+
+	let contentHeight = 0;
+
+	// 하위 컴포넌트로( content.svelte ) 전달하는 callback 함수.
+	// Height 를 전달 받음.
+	function updateContentHeight(height: number) {
+		contentHeight = height + 13; // 13 은 페이지 여백
+	}
 </script>
 
-<div class="relative flex h-[2600px] flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12">
+<div
+	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12"
+	style="height: {contentHeight + 5}rem"
+>
 	{#if !isDrawerOpen}
 		<div class="fixed top-[110] z-50">
 			<SideNavigation {data} />
@@ -40,7 +51,7 @@
 			? 'ml-[1%] mr-[30%] px-4' // drawer 열린 경우
 			: 'ml-[calc(10vh+3rem)]'} flex-1"
 	>
-		<Content {data} />
+		<Content {data} onHeightChange={updateContentHeight} />
 	</div>
 
 	{#if isDrawerOpen}
@@ -58,15 +69,15 @@
 					on:error={handleImageError}
 				/>
 			</div>
-            <!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->
+			<!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->
 			<!-- 제목 섹션 -->
 			<div class="mb-2 text-2xl font-bold">
-				<span> {data.musics.results[$selectedBlock-1].music_name} </span>
+				<span> {data.musics.results[$selectedBlock - 1].music_name} </span>
 			</div>
 
 			<!-- 태그 섹션 -->
 			<div class="mb-4 flex flex-wrap gap-2">
-				<div class="">{data.musics.results[$selectedBlock-1].groups[0].name}</div>
+				<div class="">{data.musics.results[$selectedBlock - 1].groups[0].name}</div>
 				<div class="btn h-2">자켓</div>
 				<div class="btn h-2">유튜브</div>
 				<div class="btn h-2">MV</div>
