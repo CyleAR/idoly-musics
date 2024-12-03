@@ -6,7 +6,7 @@ import { currentLanguage } from '$lib/stores';
 import { dev } from '$app/environment';
 import * as type from '$lib/types';
 
-const dbPath = dev ? './static/music.db' : './music.db';
+const dbPath = './static/music.db';
 
 type ArtistCache = {
 	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
