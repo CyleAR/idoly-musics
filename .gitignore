@@ -1,5 +1,5 @@
 node_modules
-ecosystem.config.js
+ecosystem.config.cjs
 
 # Output
 .output
