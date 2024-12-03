@@ -10,6 +10,7 @@ export interface MusicRow {
     music_id: number;
 	music_name: string;
 	announce_date: string;
+    lyrics: string;
 }
 
 export interface MusicData {
@@ -34,6 +35,7 @@ export interface MusicData {
 		release_date: string;
 	}[];
 	announce_date: string;
+    lyrics: string;
 }
 
 export interface ArtistRow {

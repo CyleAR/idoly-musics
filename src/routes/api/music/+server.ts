@@ -41,7 +41,8 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
         SELECT
             id,
             COALESCE(${nameColumn}, name_ja) as music_name,
-            announce_date
+            announce_date,
+            lyrics_ja as lyrics
         FROM musics
         ORDER BY id
     `);
@@ -107,7 +108,8 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 				color: album.color || '#000000',
 				release_date: album.release_date || ''
 			})),
-		announce_date: music.announce_date || ''
+		announce_date: music.announce_date || '',
+        lyrics: music.lyrics || '',
 	}));
 }
 

@@ -63,12 +63,12 @@
 
 	{#if isDrawerOpen}
 		<div
-			class="fixed right-0 z-50 flex h-full w-[30%] flex-col overflow-y-auto rounded-xl bg-base-100 p-8 shadow-xl"
+			class="fixed right-1.5 z-50 flex h-[90%] w-[30%] flex-col overflow-y-auto rounded-xl bg-base-100 p-4 shadow-xl"
 			style="transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
 		>
 			<!-- 앨범 이미지 섹션 -->
-			<div class="relative mb-4 flex w-full justify-center rounded-xl bg-base-200 p-4">
+			<div class="relative mb-2 flex w-full justify-center rounded-xl bg-base-200 p-4">
 				{#if isLoading}
 					<div class="absolute inset-0 flex items-center justify-center">
 						<span class="loading loading-spinner loading-md"></span>
@@ -76,7 +76,7 @@
 				{/if}
 				<img
 					src={imgSrc}
-					class="aspect-square w-96 rounded-lg object-cover {isLoading
+					class="aspect-square w-[50%] rounded-lg object-cover {isLoading
 						? 'opacity-0'
 						: 'opacity-100'}"
 					alt="Album cover"
@@ -86,12 +86,12 @@
 			</div>
 			<!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->
 			<!-- 제목 섹션 -->
-			<div class="mb-2 text-2xl font-bold">
+			<div class="text-2xl font-bold">
 				<span> {data.musics.results[$selectedBlock - 1].music_name} </span>
 			</div>
 
 			<!-- 태그 섹션 -->
-			<div class="mb-4 flex flex-wrap items-center justify-between gap-2 text-lg">
+			<div class="mb-2 flex flex-wrap items-center justify-between gap-2 text-lg">
 				<div class="">
 					{data.musics.results[$selectedBlock - 1].groups[0].name}
 				</div>
@@ -110,29 +110,9 @@
 
 			<!-- 가사 섹션 -->
 			<div
-				class="scrollbar-hide text-bas4 h-[37%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6"
+				class="scrollbar-hide text-bas4 min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6 text-lg font-bold"
 			>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
-				<span> {data.musics.results[$selectedBlock - 1].music_name}<br /> </span>
+				{data.musics.results[$selectedBlock - 1].lyrics}
 			</div>
 		</div>
 	{/if}

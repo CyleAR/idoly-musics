@@ -87,7 +87,7 @@
 			</div>
 
 			<!-- 노래 제목 -->
-			<div class="w-[12%] flex-shrink-0 whitespace-pre-line px-4 text-lg">
+			<div class="w-[12%] flex-shrink-0 whitespace-pre-line px-4 text-base">
 				{title.replace(/[~(]/, '\n$&')}
 			</div>
 
