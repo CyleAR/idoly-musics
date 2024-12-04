@@ -44,6 +44,10 @@
 	}
 </script>
 
+<svelte:head>
+    <title>IDOLY MUSICS</title> 
+</svelte:head>
+
 <div
 	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12"
 	style="height: {contentHeight + 5}rem"

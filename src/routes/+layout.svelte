@@ -53,10 +53,12 @@
 			</ul>
 		</div>
 	</div>
-	<div class="flex-1 pt-[6vh]">
+	<div class="flex-1 pt-[4.5vh]">
 		<slot />
 	</div>
 	<footer class="mt-auto bg-base-100 py-4 text-center shadow-inner">
-		<p class="text-sm text-gray-600">© 2023 IDOLY MUSICS.</p>
+        <p class="text-sm text-gray-400">This site is a fan project of IDOLYPRIDE</p>
+        <p class="text-sm text-gray-400">Some data may be inaccurate</p>
+		<p class="text-sm text-gray-400">Contents © QualiArts and associates</p>
 	</footer>
 </div>
