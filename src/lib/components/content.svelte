@@ -39,8 +39,8 @@
 	$: artistCache = data.musics.artistCache;
 	$: albumCache = data.musics.albumCache;
 
-	$: content_lang = language_table[$currentLanguage]['content'];
 	$: isDrawerOpen = $selectedBlock !== null;
+	$: content_lang = language_table[$currentLanguage]['content'];
 
 	// 너무 무식한 방법이긴 한데..
 	// 시간 너무 먹힌다

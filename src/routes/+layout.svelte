@@ -9,7 +9,8 @@
 		current_filter_type,
 		previous_filter_type,
 		currentLanguage,
-		view_mode
+		view_mode,
+		selectedBlock
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import '../app.css';
@@ -27,8 +28,9 @@
 		if (theme) {
 			document.documentElement.setAttribute('data-theme', theme);
 			$global_theme = theme;
-			filter.set([]);
 			localStorage.setItem('theme', theme);
+
+			filter.set([]);
 			previous_filter_type.set('');
 			current_filter_type.set('');
 			view_mode.set('');
@@ -48,9 +50,12 @@
 <div class="flex min-h-screen flex-col bg-base-300">
 	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
-			<div>
+			<div class="z-[52]">
 				<label for="my-drawer" class="drawer-button">
 					<svg
+						on:click={() => {
+							selectedBlock.set(null);
+						}}
 						xmlns="http://www.w3.org/2000/svg"
 						class="drawer-menu drawer-button h-8 w-8"
 						viewBox="0 0 24 24"
