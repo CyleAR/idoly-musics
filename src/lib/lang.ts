@@ -12,16 +12,16 @@ export const language_table = {
 			viewByGroup: '그룹별\n보기',
 			viewByAlbum: '앨범별\n보기',
 			viewByCharacter: '캐릭터별\n보기',
-			viewByCharacterModal: {
-				title: '캐릭터 필터 선택',
+			viewByArtistModal: {
+				title: '아티스트 필터 선택',
 				close: '완료'
 			},
 			viewByAlbumModal: {
-				title: '캐릭터 필터 선택',
+				title: '앨범 필터 선택',
 				close: '완료'
 			},
 			viewByGroupModal: {
-				title: '캐릭터 필터 선택',
+				title: '그룹 필터 선택',
 				close: '완료'
 			}
 		}
@@ -40,7 +40,7 @@ export const language_table = {
 			viewByGroup: 'View by\nGroup',
 			viewByAlbum: 'View by\nAlbum',
 			viewByCharacter: 'View by\nCharacter',
-			viewByCharacterModal: {
+			viewByArtistModal: {
 				title: 'Select Character Filter',
 				close: 'Done'
 			},
@@ -68,7 +68,7 @@ export const language_table = {
 			viewByGroup: 'グループ別\n表示',
 			viewByAlbum: 'アルバム別\n表示',
 			viewByCharacter: 'キャラクター別\n表示',
-			viewByCharacterModal: {
+			viewByArtistModal: {
 				title: 'キャラクターフィルター選択',
 				close: '完了'
 			},
@@ -96,7 +96,7 @@ export const language_table = {
 			viewByGroup: '按组合\n查看',
 			viewByAlbum: '按专辑\n查看',
 			viewByCharacter: '按角色\n查看',
-			viewByCharacterModal: {
+			viewByArtistModal: {
 				title: '选择角色筛选',
 				close: '完成'
 			},

@@ -3,7 +3,7 @@
 	import { onMount } from 'svelte';
 	import LangDrop from '$lib/components/lang-drop.svelte';
 	import { page } from '$app/stores';
-	import { global_theme, character_filter } from '$lib/stores';
+	import { global_theme, filter, current_filter_type, previous_filter_type } from '$lib/stores';
 	import '../app.css';
 
 	onMount(() => {
@@ -19,17 +19,23 @@
 		const theme = action.searchParams.get('theme');
 		if (theme) {
 			document.documentElement.setAttribute('data-theme', theme);
-			character_filter.set([]);
+			filter.set([]);
 			$global_theme = theme;
 			localStorage.setItem('theme', theme);
 		}
 	};
+
+	function reset() {
+		filter.set([]);
+		$current_filter_type.set('');
+		$previous_filter_type.set('');
+	}
 </script>
 
 <div class="flex min-h-screen flex-col bg-base-300">
 	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
-			<a href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
+			<a on:click={reset} href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
 		</div>
 		<div id="change-lang-theme" class="z-[51] flex-none">
 			<LangDrop />
@@ -57,8 +63,8 @@
 		<slot />
 	</div>
 	<footer class="mt-auto bg-base-100 py-4 text-center shadow-inner">
-        <p class="text-sm text-gray-400">This site is a fan project of IDOLYPRIDE</p>
-        <p class="text-sm text-gray-400">Some data may be inaccurate</p>
+		<p class="text-sm text-gray-400">This site is a fan project of IDOLYPRIDE</p>
+		<p class="text-sm text-gray-400">Some data may be inaccurate</p>
 		<p class="text-sm text-gray-400">Contents © QualiArts and associates</p>
 	</footer>
 </div>

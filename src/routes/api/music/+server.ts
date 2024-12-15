@@ -11,6 +11,12 @@ const dbPath = './static/music.db';
 type ArtistCache = {
 	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
 };
+type GroupCache = {
+	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
+};
+type AlbumCache = {
+	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
+};
 type CacheType = {
 	[key in 'en' | 'ja' | 'ko' | 'zh']: type.MusicData[];
 };
@@ -21,7 +27,18 @@ const artistCache: ArtistCache = {
 	ko: [],
 	zh: []
 };
-
+const groupCache: GroupCache = {
+	en: [],
+	ja: [],
+	ko: [],
+	zh: []
+};
+const albumCache: AlbumCache = {
+	en: [],
+	ja: [],
+	ko: [],
+	zh: []
+};
 const cache: CacheType = {
 	en: [],
 	ja: [],
@@ -84,12 +101,12 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const albums = albumQuery.all() as (type.AlbumRow & { music_id: number })[];
 
 	return musics.map((music) => ({
-        id: music.id,
+		id: music.id,
 		music_name: music.music_name || '',
 		groups: groups
 			.filter((g) => g.music_id === music.id)
 			.map((group) => ({
-                id: group.group_id,
+				id: group.group_id,
 				name: group.name,
 				color: group.color || '#000000'
 			})),
@@ -103,19 +120,23 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 		albums: albums
 			.filter((a) => a.music_id === music.id)
 			.map((album) => ({
-                id: album.album_id,
+				id: album.album_id,
 				name: album.name,
 				color: album.color || '#000000',
 				release_date: album.release_date || ''
 			})),
 		announce_date: music.announce_date || '',
-        lyrics: music.lyrics || '',
+		lyrics: music.lyrics || ''
 	}));
 }
 
 function initializeCache() {
 	const db = new Database(dbPath);
+
 	loadArtistCache(db);
+	loadGroupCache(db);
+	loadAlbumCache(db);
+
 	try {
 		['en', 'ja', 'ko', 'zh'].forEach((lang) => {
 			cache[lang as keyof CacheType] = loadLanguageData(db, lang as keyof CacheType);
@@ -141,8 +162,38 @@ function loadArtistCache(db: any) {
 		artistCache.en.push({ id: artist.id, name: artist.name_en });
 		artistCache.zh.push({ id: artist.id, name: artist.name_zh });
 	});
+}
 
-	//console.log(artists);
+// 그룹 캐시 로드 함수
+function loadGroupCache(db: any) {
+	const query = db.prepare(`
+        SELECT id, name_ko, name_ja, name_en, name_zh FROM groups
+    `);
+
+	const groups = query.all();
+
+	groups.forEach((group: type.GroupData) => {
+		groupCache.ko.push({ id: group.id, name: group.name_ko });
+		groupCache.ja.push({ id: group.id, name: group.name_ja });
+		groupCache.en.push({ id: group.id, name: group.name_en });
+		groupCache.zh.push({ id: group.id, name: group.name_zh });
+	});
+}
+
+// 앨범 캐시 로드 함수
+function loadAlbumCache(db: any) {
+	const query = db.prepare(`
+        SELECT id, name_ko, name_ja, name_en, name_zh FROM albums
+    `);
+
+	const albums = query.all();
+
+	albums.forEach((album: type.AlbumData) => {
+		albumCache.ko.push({ id: album.id, name: album.name_ko });
+		albumCache.ja.push({ id: album.id, name: album.name_ja });
+		albumCache.en.push({ id: album.id, name: album.name_en });
+		albumCache.zh.push({ id: album.id, name: album.name_zh });
+	});
 }
 
 initializeCache();
@@ -155,6 +206,8 @@ export async function GET({ url }: RequestEvent) {
 	const results = cache[lang].slice(start - 1, end);
 	return json({
 		results,
-		artistCache: artistCache[lang]
+		artistCache: artistCache[lang],
+		groupCache: groupCache[lang],
+		albumCache: albumCache[lang]
 	});
 }

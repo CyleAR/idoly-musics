@@ -1,27 +1,27 @@
 <script lang="ts">
 	export let data;
-	import { global_theme, character_filter } from '$lib/stores'; // theme store import 추가
+	import { global_theme, filter, current_filter_type, previous_filter_type } from '$lib/stores'; // theme store import 추가
 
-	$: artists_raw = data.musics.artistCache;
 	let selectedArtists: boolean[] = [];
 
-	$: if (artists_raw) {
-		selectedArtists = new Array(artists_raw.length).fill(false);
+	$: cache = data;
+
+	$: if ($current_filter_type != $previous_filter_type) {
+		selectedArtists = new Array(cache.length).fill(false);
 	}
 
 	function toggleSelection(index: number) {
 		selectedArtists[index] = !selectedArtists[index];
 		selectedArtists = [...selectedArtists];
 
-		// character_filter store 업데이트
-		const selectedIds = artists_raw.filter((_, i) => selectedArtists[i]).map((artist) => artist.id);
+		const selectedNames = cache.filter((_, i) => selectedArtists[i]).map((artist) => artist.name);
 
-		character_filter.set(selectedIds);
+		filter.set(selectedNames);
 	}
 </script>
 
 <div class="flex flex-wrap justify-center gap-4">
-	{#each artists_raw || [] as item, i}
+	{#each cache || [] as item, i}
 		<button
 			on:click={() => toggleSelection(i)}
 			class="btn relative h-32 w-32 border-none bg-transparent p-0 transition-all duration-200 hover:-translate-y-1"

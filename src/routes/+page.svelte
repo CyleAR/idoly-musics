@@ -45,22 +45,22 @@
 </script>
 
 <svelte:head>
-    <title>IDOLY MUSICS</title> 
+	<title>IDOLY MUSICS</title>
 </svelte:head>
 
 <div
 	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12"
 	style="height: {contentHeight + 5}rem"
 >
-	{#if !isDrawerOpen}
+	<!-- {#if !isDrawerOpen}
 		<div class="fixed top-[110] z-50">
 			<SideNavigation {data} />
 		</div>
-	{/if}
+	{/if} -->
 	<div
 		class="{isDrawerOpen
 			? 'ml-[1%] mr-[30%] px-4' // drawer 열린 경우
-			: 'ml-[calc(10vh+3rem)]'} flex-1"
+			: ''} flex-1"
 	>
 		<Content {data} onHeightChange={updateContentHeight} />
 	</div>
@@ -114,7 +114,7 @@
 
 			<!-- 가사 섹션 -->
 			<div
-				class="scrollbar-hide text-bas4 min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6 text-lg font-bold"
+				class="text-bas4 min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6 text-lg font-bold scrollbar-hide"
 			>
 				{data.musics.results[$selectedBlock - 1].lyrics}
 			</div>

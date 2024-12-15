@@ -1,7 +1,7 @@
 <script>
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
-	import { currentLanguage, character_filter } from '$lib/stores';
+	import { currentLanguage, filter } from '$lib/stores';
 	import { onMount } from 'svelte';
 
 	const languageLabels = {
@@ -51,7 +51,7 @@
 
 	async function handleLanguageChange(lang) {
 		currentLanguage.set(lang);
-		character_filter.set([]);
+		filter.set([]);
 		localStorage.setItem('language', lang);
 		document.documentElement.setAttribute('data-lang', lang);
 		isOpen = false;

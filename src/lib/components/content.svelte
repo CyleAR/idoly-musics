@@ -2,15 +2,18 @@
 	import {
 		global_theme,
 		currentLanguage,
-		character_filter,
+		filter,
 		view_mode,
-		selectedBlock
+		selectedBlock,
+		current_filter_type,
+		previous_filter_type
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
 	import { invalidateAll } from '$app/navigation';
 
+	import Profile from './profile.svelte';
 	import Table from './table.svelte';
 	import Block from './block.svelte';
 
@@ -32,20 +35,51 @@
 	let current_page = 1;
 
 	$: blocks_info = data.musics.results;
+	$: groupCache = data.musics.groupCache;
+	$: artistCache = data.musics.artistCache;
+	$: albumCache = data.musics.albumCache;
+
 	$: content_lang = language_table[$currentLanguage]['content'];
 	$: isDrawerOpen = $selectedBlock !== null;
 
-	// 필터링된 블록을 계산하는 반응형 선언 추가
 	$: filteredBlocks = blocks_info.filter((block) => {
-		// character_filter가 비어있으면 모든 블록 표시
-		if ($character_filter.length === 0 || $character_filter == undefined) return true;
+		// filter가 비어있으면 모든 블록 표시
+		if ($filter.length === 0 || $filter == undefined) return true;
 
 		current_page = 1;
 
-		// 모든 선택된 artist가 block의 artists에 포함되어 있는지 확인 (AND 조건)
-		return $character_filter.every((selectedArtistId) =>
-			block.artists.some((artist) => artist.id === selectedArtistId)
+		// 선택된 필터 이름들을 타입별로 분류
+		const selectedArtists = $filter.filter((name) =>
+			artistCache.some((artist) => artist.name === name)
 		);
+		const selectedGroups = $filter.filter((name) =>
+			groupCache.some((group) => group.name === name)
+		);
+		const selectedAlbums = $filter.filter((name) =>
+			albumCache.some((album) => album.name === name)
+		);
+
+		// 각 타입별로 필터링 조건 체크
+		const hasMatchingArtists =
+			selectedArtists.length === 0 ||
+			selectedArtists.every((selectedName) =>
+				block.artists.some((artist) => artist.name === selectedName)
+			);
+
+		const hasMatchingGroups =
+			selectedGroups.length === 0 ||
+			selectedGroups.every((selectedName) =>
+				block.groups.some((group) => group.name === selectedName)
+			);
+
+		const hasMatchingAlbums =
+			selectedAlbums.length === 0 ||
+			selectedAlbums.every((selectedName) =>
+				block.albums.some((album) => album.name === selectedName)
+			);
+
+		// 모든 조건을 만족해야 true 반환 (AND 조건)
+		return hasMatchingArtists && hasMatchingGroups && hasMatchingAlbums;
 	});
 
 	// 전체 페이지 수 계산
@@ -68,7 +102,6 @@
 	}
 
 	function goToPage(page: number) {
-		console.log(data);
 		if (page !== current_page) {
 			current_page = page;
 			// 새로운 페이지 상태를 history에 추가
@@ -106,6 +139,36 @@
 	function getColorTag(block: typeof data) {
 		return block.groups[0].id === 8 ? block.artists[0]?.color : block.groups[0]?.color;
 	}
+
+	const HEADERS = [
+		{ width: 'w-[9%]', text: '' },
+		{ width: 'w-[13%]', text: 'songName' },
+		{ width: 'w-[20%]', text: 'group' },
+		{ width: 'w-[33%]', text: 'artist' },
+		{ width: 'w-[18.5%]', text: 'album' },
+		{ width: '', text: 'releaseDate' }
+	];
+
+	$: sideNav_lang = language_table[$currentLanguage]['sideNav'];
+
+	function showModal(id: string) {
+		const modal = document.getElementById(id) as HTMLDialogElement;
+		if (modal) {
+			modal.showModal();
+			// 이전과 다른 필터를 선택했을 때만 초기화
+			if ($current_filter_type !== id) {
+				filter.set([]);
+			}
+			previous_filter_type.set($current_filter_type);
+			current_filter_type.set(id);
+		}
+		$view_mode = id;
+	}
+
+	const FILTER_ICON = {
+		viewBox: '0 0 24 24',
+		paths: ['M4 18H10', 'M4 12L16 12', 'M4 6L20 6']
+	};
 </script>
 
 <div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
@@ -119,13 +182,36 @@
 		{:else if $view_mode == 'viewByGroup'}
 			<Table {data} />
 		{:else}
-			<div class="flex w-full flex-col lg:flex-row">
-				<div class="common-card w-[9%]"></div>
-				<div class="common-card w-[13%]">{content_lang['songName']}</div>
-				<div class="common-card w-[20%]">{content_lang['group']}</div>
-				<div class="common-card w-[33%]">{content_lang['artist']}</div>
-				<div class="common-card w-[18.5%]">{content_lang['album']}</div>
-				<div class="common-card">{content_lang['releaseDate']}</div>
+			<div class="flex w-full flex-row">
+				{#each HEADERS as header}
+					<div class="header {header.width}">
+						{#if header.text}
+							<div
+								class="header-text flex items-center gap-1"
+								on:click={() => showModal(header.text)}
+							>
+								<span>{content_lang[header.text]}</span>
+								{#if header.text !== 'songName' && header.text !== 'releaseDate'}
+									<svg
+										class="h-4 w-4"
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox={FILTER_ICON.viewBox}
+										fill="none"
+									>
+										{#each FILTER_ICON.paths as path}
+											<path
+												d={path}
+												stroke="currentColor"
+												stroke-width="2"
+												stroke-linecap="round"
+											/>
+										{/each}
+									</svg>
+								{/if}
+							</div>
+						{/if}
+					</div>
+				{/each}
 			</div>
 			<div id="blocks" class="gap flex h-full w-full flex-col">
 				{#each paginatedBlocks as block}
@@ -169,10 +255,60 @@
 	</div>
 </div>
 
+<!-- 그룹 -->
+<dialog id="group" class="modal" on:click|self={() => document.getElementById('group').close()}>
+	<div class="modal-box max-w-5xl">
+		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByGroupModal'].title}</h3>
+		<Profile data={groupCache} />
+		<div class="modal-action">
+			<form method="dialog">
+				<button class="btn">{sideNav_lang['viewByGroupModal'].close}</button>
+			</form>
+		</div>
+	</div>
+</dialog>
+
+<!-- 작가( Artist ) -->
+<dialog id="artist" class="modal" on:click|self={() => document.getElementById('artist').close()}>
+	<div class="modal-box max-w-5xl">
+		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByArtistModal'].title}</h3>
+		<Profile data={artistCache} />
+		<div class="modal-action">
+			<form method="dialog">
+				<button class="btn">{sideNav_lang['viewByArtistModal'].close}</button>
+			</form>
+		</div>
+	</div>
+</dialog>
+
+<!-- 앨범 -->
+<dialog id="album" class="modal" on:click|self={() => document.getElementById('album').close()}>
+	<div class="modal-box max-w-5xl">
+		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByAlbumModal'].title}</h3>
+		<Profile data={albumCache} />
+		<div class="modal-action">
+			<form method="dialog">
+				<button class="btn">{sideNav_lang['viewByAlbumModal'].close}</button>
+			</form>
+		</div>
+	</div>
+</dialog>
+
 <style lang="postcss">
-	.common-card {
+	.header {
 		@apply card grid h-14 items-center justify-start rounded-box bg-base-100 pt-4;
+		transition: transform 0.2s ease;
 	}
+
+	.header-text:hover {
+		cursor: pointer;
+		transition: transform 0.2s ease;
+	}
+
+	.header-text:active {
+		transform: scale(0.95);
+	}
+
 	.icon-white {
 		-webkit-filter: brightness(0) invert(1);
 		filter: brightness(0) invert(1);
