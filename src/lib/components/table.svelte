@@ -1,256 +1,121 @@
 <script>
 	export let data;
+	export let cache;
+	export let type;
 
-	$: musics = data.musics.results;
-	$: groups = [
-		{ id: 0, name: '그 외' },
-		{ id: 1, name: '달의 템페스트' },
-		{ id: 2, name: '서니 피스' },
-		{ id: 3, name: 'TRINITYAiLE' },
-		{ id: 4, name: 'LizNoir' },
-		{ id: 5, name: 'IIIX' },
-		{ id: 6, name: '나가세 마나' },
-		{ id: 7, name: '호시미 프로덕션' },
-		{ id: 8, name: '솔로' },
-		{ id: 9, name: '듀엣' },
-		{ id: 10, name: '콜라보' },
-		{ id: 11, name: '도리큥' },
-		{ id: 12, name: '파자파!' },
-		{ id: 13, name: '커버' },
-		{ id: 14, name: '만우절' }
-	];
-
-	// $: groups = data.musics.artistCache;
-
-	$: if (groups) {
-		// groups 배열을 3등분
-		const chunkSize = Math.ceil(groups.length / 3);
-		firstColumn = groups.slice(0, chunkSize);
-		secondColumn = groups.slice(chunkSize, chunkSize * 2);
-		thirdColumn = groups.slice(chunkSize * 2);
-	}
-
-	function getMusicsByGroup(groupName) {
-		return musics.filter((music) => music.groups.some((group) => group.name === groupName));
-	}
-
+	let isLoading = {};
+	let imageSources = {};
 	let firstColumn = [];
 	let secondColumn = [];
 	let thirdColumn = [];
 	let activeIndices = {};
-	let carouselIndices = {};
+
+	$: musics = data.musics.results;
+	$: columns = [firstColumn, secondColumn, thirdColumn];
+
+	$: if (cache) {
+		const chunkSize = Math.ceil(cache.length / 3);
+		firstColumn = cache.slice(0, chunkSize);
+		secondColumn = cache.slice(chunkSize, chunkSize * 2);
+		thirdColumn = cache.slice(chunkSize * 2);
+		cache.forEach((item) => {
+			isLoading[item.id] = true;
+			imageSources[item.id] = `/images/${type}/${item.id}.webp`;
+		});
+	}
+
+	function load_image(id) {
+		if (!imageSources[id]) {
+			imageSources[id] = `/images/${type}/${id}.webp`;
+		}
+		return imageSources[id];
+	}
+
+	function handleImageError(id) {
+		return () => {
+			imageSources[id] = `/images/${type}/0.webp`;
+			imageSources = { ...imageSources };
+			isLoading[id] = false;
+			isLoading = { ...isLoading };
+		};
+	}
+
+	function handleImageLoad(id) {
+		return () => {
+			isLoading[id] = false;
+			isLoading = { ...isLoading };
+		};
+	}
+
+	function getMusics(name) {
+		return musics.filter(
+			(music) =>
+				music.groups.some((group) => group.name === name) ||
+				music.artists.some((artist) => artist.name === name) ||
+				music.albums.some((album) => album.name === name)
+		);
+	}
 </script>
 
 <div class="p-6">
 	<div class="mx-auto grid max-w-[1600px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-		<!-- 첫 번째 열 -->
-		<div class="flex flex-col gap-4">
-			{#each firstColumn as group}
-				<div
-					class="collapse collapse-plus rounded-xl bg-base-200 shadow-md transition-all duration-500 ease-in-out hover:shadow-lg"
-				>
-					<input
-						type="checkbox"
-						checked={activeIndices[group.name]}
-						on:change={() => {
-							activeIndices[group.name] = !activeIndices[group.name];
-							activeIndices = activeIndices;
-						}}
-					/>
-					<div class="collapse-title text-xl font-medium" style="color: {group.color}">
-						{group.name}
-					</div>
-					<div class="collapse-content">
-						<div class="flex flex-col gap-4">
-							<!-- Carousel -->
-							<div class="relative aspect-square w-full overflow-hidden rounded-box">
-								{#each ['photo-1559703248-dcaaec9fab78', 'photo-1565098772267-60af42b81ef2', 'photo-1494253109108-2e30c049369b'] as img, i}
-									<div
-										class="absolute h-full w-full transition-all duration-300 ease-in-out"
-										style="transform: translateX({(i - (carouselIndices[group.name] || 0)) * 100}%)"
-									>
-										<img
-											src="https://img.daisyui.com/images/stock/{img}.webp"
-											class="h-full w-full object-cover"
-											alt="Carousel item {i + 1}"
-										/>
-									</div>
-								{/each}
-							</div>
-
-							<!-- Table -->
-							<div
-								class="scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 max-h-48 overflow-y-auto"
-							>
-								<table class="table-hover table table-sm bg-base-100">
-									<thead class="sticky top-0 z-10 bg-base-100">
-										<tr>
-											<th></th>
-											<th>Music Name</th>
-											<th>Date</th>
-										</tr>
-									</thead>
-									<tbody>
-										{#each getMusicsByGroup(group.name) as music, i}
-											<tr
-												class="cursor-pointer"
-												on:click={() => {
-													carouselIndices[group.name] = i;
-													carouselIndices = carouselIndices;
-												}}
-											>
-												<th>{i + 1}</th>
-												<td>{music.music_name}</td>
-												<td>{music.announce_date}</td>
-											</tr>
-										{/each}
-									</tbody>
-								</table>
+		{#each columns as column}
+			<div class="flex flex-col gap-4">
+				{#each column as item}
+					<div
+						class="collapse collapse-plus rounded-xl bg-base-200 shadow-md transition-all duration-500 ease-in-out hover:shadow-lg"
+					>
+						<input
+							type="checkbox"
+							checked={activeIndices[item.name]}
+							on:change={() => {
+								activeIndices[item.name] = !activeIndices[item.name];
+								activeIndices = activeIndices;
+							}}
+						/>
+						<div
+							class="collapse-title flex flex-row items-center p-2 text-xl font-medium"
+							style="color: {item.color}"
+						>
+							{#if isLoading[item.id]}
+								<div class="flex h-20 w-20 items-center justify-center">
+									<span class="loading loading-spinner loading-md"></span>
+								</div>
+							{/if}
+							<img
+								src={load_image(item.id)}
+								class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200
+                                    {isLoading[item.id] ? 'opacity-0' : 'opacity-100'}"
+								alt={item.name || 'thumbnail'}
+								on:error={handleImageError(item.id)}
+								on:load={handleImageLoad(item.id)}
+							/>
+							<span class="p-2">
+								{item.name}
+							</span>
+						</div>
+						<div class="collapse-content">
+							<div class="flex flex-col gap-4">
+								<div
+									class="scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 max-h-48 overflow-y-auto"
+								>
+									<table class="table-hover table table-sm bg-base-100">
+										<tbody>
+											{#each getMusics(item.name) as music, i}
+												<tr class="cursor-pointer">
+													<th>{i + 1}</th>
+													<td>{music.music_name}</td>
+													<td>{music.announce_date}</td>
+												</tr>
+											{/each}
+										</tbody>
+									</table>
+								</div>
 							</div>
 						</div>
 					</div>
-				</div>
-			{/each}
-		</div>
-
-		<!-- 두 번째 열 -->
-		<div class="flex flex-col gap-4">
-			{#each secondColumn as group}
-				<div
-					class="collapse collapse-plus rounded-xl bg-base-200 shadow-md transition-all duration-500 ease-in-out hover:shadow-lg"
-				>
-					<input
-						type="checkbox"
-						checked={activeIndices[group.name]}
-						on:change={() => {
-							activeIndices[group.name] = !activeIndices[group.name];
-							activeIndices = activeIndices;
-						}}
-					/>
-					<div class="collapse-title text-xl font-medium" style="color: {group.color}">
-						{group.name}
-					</div>
-					<div class="collapse-content">
-						<div class="flex flex-col gap-4">
-							<!-- Carousel -->
-							<div class="relative aspect-square w-full overflow-hidden rounded-box">
-								{#each ['photo-1559703248-dcaaec9fab78', 'photo-1565098772267-60af42b81ef2'] as img, i}
-									<div
-										class="absolute h-full w-full transition-all duration-300 ease-in-out"
-										style="transform: translateX({(i - (carouselIndices[group.name] || 0)) * 100}%)"
-									>
-										<img
-											src="https://img.daisyui.com/images/stock/{img}.webp"
-											class="h-full w-full object-cover"
-											alt="Carousel item {i + 1}"
-										/>
-									</div>
-								{/each}
-							</div>
-
-							<!-- Table -->
-							<div
-								class="scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 max-h-48 overflow-y-auto"
-							>
-								<table class="table-hover table table-sm bg-base-100">
-									<thead class="sticky top-0 z-10 bg-base-100">
-										<tr>
-											<th></th>
-											<th>Music Name</th>
-											<th>Date</th>
-										</tr>
-									</thead>
-									<tbody>
-										{#each getMusicsByGroup(group.name) as music, i}
-											<tr
-												class="cursor-pointer"
-												on:click={() => {
-													carouselIndices[group.name] = i;
-													carouselIndices = carouselIndices;
-												}}
-											>
-												<th>{i + 1}</th>
-												<td>{music.music_name}</td>
-												<td>{music.announce_date}</td>
-											</tr>
-										{/each}
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			{/each}
-		</div>
-
-		<!-- 세 번째 열 -->
-		<div class="flex flex-col gap-4">
-			{#each thirdColumn as group}
-				<div
-					class="collapse collapse-plus rounded-xl bg-base-200 shadow-md transition-all duration-500 ease-in-out hover:shadow-lg"
-				>
-					<input
-						type="checkbox"
-						checked={activeIndices[group.name]}
-						on:change={() => {
-							activeIndices[group.name] = !activeIndices[group.name];
-							activeIndices = activeIndices;
-						}}
-					/>
-					<div class="collapse-title text-xl font-medium" style="color: {group.color}">
-						{group.name}
-					</div>
-					<div class="collapse-content">
-						<div class="flex flex-col gap-4">
-							<!-- Carousel -->
-							<div class="relative aspect-square w-full overflow-hidden rounded-box">
-								{#each (['photo-1559703248-dcaaec9fab78'], ['photo-1559703248-dcaaec9fab78']) as img, i}
-									<div
-										class="absolute h-full w-full transition-all duration-300 ease-in-out"
-										style="transform: translateX({(i - (carouselIndices[group.name] || 0)) * 100}%)"
-									>
-										<img
-											src="https://img.daisyui.com/images/stock/{img}.webp"
-											class="h-full w-full object-cover"
-											alt="Carousel item {i + 1}"
-										/>
-									</div>
-								{/each}
-							</div>
-
-							<!-- Table -->
-							<div
-								class="scrollbar-thin scrollbar-thumb-base-300 scrollbar-track-base-100 max-h-48 overflow-y-auto"
-							>
-								<table class="table-hover table table-sm bg-base-100">
-									<thead class="sticky top-0 z-10 bg-base-100">
-										<tr>
-											<th></th>
-											<th>Music Name</th>
-											<th>Date</th>
-										</tr>
-									</thead>
-									<tbody>
-										{#each getMusicsByGroup(group.name) as music, i}
-											<tr
-												class="cursor-pointer"
-												on:click={() => {
-													carouselIndices[group.name] = i;
-													carouselIndices = carouselIndices;
-												}}
-											>
-												<th>{i + 1}</th>
-												<td>{music.music_name}</td>
-												<td>{music.announce_date}</td>
-											</tr>
-										{/each}
-									</tbody>
-								</table>
-							</div>
-						</div>
-					</div>
-				</div>
-			{/each}
-		</div>
+				{/each}
+			</div>
+		{/each}
 	</div>
 </div>

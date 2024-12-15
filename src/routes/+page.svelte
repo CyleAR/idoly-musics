@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { PageData } from '../../routes/$types';
-	import { currentLanguage, selectedBlock } from '$lib/stores';
+	import { currentLanguage, selectedBlock, view_mode } from '$lib/stores';
 	import SideNavigation from '$lib/components/side-nav.svelte';
 	import Content from '$lib/components/content.svelte';
 	import { browser } from '$app/environment';

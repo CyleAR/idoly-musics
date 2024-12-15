@@ -5,9 +5,6 @@
 	let selectedArtists: boolean[] = [];
 
 	$: cache = data;
-	$: if (cache) {
-		console.log(cache);
-	}
 
 	$: if (
 		$current_filter_type != $previous_filter_type ||

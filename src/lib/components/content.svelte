@@ -42,6 +42,8 @@
 	$: content_lang = language_table[$currentLanguage]['content'];
 	$: isDrawerOpen = $selectedBlock !== null;
 
+	// 너무 무식한 방법이긴 한데..
+	// 시간 너무 먹힌다
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// filter가 비어있으면 모든 블록 표시
 		if ($filter.length === 0 || $filter == undefined) return true;
@@ -130,6 +132,9 @@
 
 	$: contentHeight = paginatedBlocks.reduce((height, block) => {
 		const blockHeight = parseFloat(calculateBlockHeight(block).match(/\d+/)[0]);
+		if ($view_mode == 'idol') {
+			return height + blockHeight + 15;
+		}
 		return height + blockHeight + 0.7; // 0.5rem 여백
 	}, 0);
 
@@ -152,6 +157,7 @@
 	$: sideNav_lang = language_table[$currentLanguage]['sideNav'];
 
 	function showModal(id: string) {
+		console.log(data.musics);
 		const modal = document.getElementById(id) as HTMLDialogElement;
 		if (modal) {
 			modal.showModal();
@@ -178,9 +184,11 @@
 		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
 		{#if $view_mode == 'viewByAlbums'}
-			<Table {data} />
+			<Table {data} cache={albumCache} type={'album'} />
 		{:else if $view_mode == 'viewByGroup'}
-			<Table {data} />
+			<Table {data} cache={groupCache} type={'group'} />
+		{:else if $view_mode == 'viewByArtist'}
+			<Table {data} cache={artistCache} type={'idol'} />
 		{:else}
 			<div class="flex w-full flex-row">
 				{#each HEADERS as header}

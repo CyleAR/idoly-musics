@@ -1,4 +1,5 @@
 <script>
+	import { view_mode } from '$lib/stores';
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import { currentLanguage, filter } from '$lib/stores';
@@ -51,6 +52,7 @@
 
 	async function handleLanguageChange(lang) {
 		currentLanguage.set(lang);
+		view_mode.set('');
 		filter.set([]);
 		localStorage.setItem('language', lang);
 		document.documentElement.setAttribute('data-lang', lang);
