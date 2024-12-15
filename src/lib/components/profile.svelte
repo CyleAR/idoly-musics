@@ -6,7 +6,10 @@
 
 	$: cache = data;
 
-	$: if ($current_filter_type != $previous_filter_type) {
+	$: if (
+		$current_filter_type != $previous_filter_type ||
+		($previous_filter_type && $current_filter_type)
+	) {
 		selectedArtists = new Array(cache.length).fill(false);
 	}
 

@@ -19,16 +19,18 @@
 		const theme = action.searchParams.get('theme');
 		if (theme) {
 			document.documentElement.setAttribute('data-theme', theme);
-			filter.set([]);
 			$global_theme = theme;
+			filter.set([]);
 			localStorage.setItem('theme', theme);
+			previous_filter_type.set('');
+			current_filter_type.set('');
 		}
 	};
 
 	function reset() {
 		filter.set([]);
-		$current_filter_type.set('');
-		$previous_filter_type.set('');
+		current_filter_type.set('');
+		previous_filter_type.set('');
 	}
 </script>
 
