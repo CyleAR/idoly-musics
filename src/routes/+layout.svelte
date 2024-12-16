@@ -10,6 +10,7 @@
 		previous_filter_type,
 		currentLanguage,
 		view_mode,
+		current_page,
 		selectedBlock
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
@@ -44,6 +45,7 @@
 		current_filter_type.set('');
 		previous_filter_type.set('');
 		view_mode.set('');
+		current_page.set(1);
 	}
 </script>
 

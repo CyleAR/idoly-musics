@@ -16,6 +16,8 @@ export const selectedBlock = writable<number | null>(null);
 
 export const filter_type = writable('');
 
+export const current_page = writable(1);
+
 export const group_images = writable('');
 export const album_images = writable('');
 export const artist_images = writable('');

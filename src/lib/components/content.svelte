@@ -7,7 +7,8 @@
 		selectedBlock,
 		current_filter_type,
 		previous_filter_type,
-		filter_type
+		filter_type,
+		current_page
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
@@ -22,7 +23,7 @@
 	export let onHeightChange: (height: number) => void;
 
 	onMount(() => {
-		const initialState = { page: current_page };
+		const initialState = { page: $current_page };
 		history.replaceState(initialState, '', window.location.href);
 
 		window.addEventListener('popstate', handlePopState);
@@ -31,8 +32,6 @@
 			window.removeEventListener('popstate', handlePopState);
 		};
 	});
-
-	let current_page = 1;
 
 	$: blocks_info = data.musics.results;
 	$: groupCache = data.musics.groupCache;
@@ -48,7 +47,7 @@
 		// filter가 비어있으면 모든 블록 표시
 		if ($filter.length === 0 || $filter == undefined) return true;
 
-		current_page = 1;
+		$current_page = 1;
 
 		// 선택된 필터 이름들을 타입별로 분류
 		const selectedArtists = $filter.filter((name) =>
@@ -89,13 +88,13 @@
 
 	// 필터링 된 blocks 에서 16개씩 가져오기
 	$: paginatedBlocks = filteredBlocks.slice(
-		(current_page - 1) * itemsPerPage,
-		current_page * itemsPerPage
+		($current_page - 1) * itemsPerPage,
+		$current_page * itemsPerPage
 	);
 
 	function handlePopState(event: PopStateEvent) {
 		if (event.state?.page) {
-			current_page = event.state.page;
+			$current_page = event.state.page;
 			document.getElementById('content-main')?.scrollIntoView({
 				behavior: 'smooth',
 				block: 'start'
@@ -104,8 +103,8 @@
 	}
 
 	function goToPage(page: number) {
-		if (page !== current_page) {
-			current_page = page;
+		if (page !== $current_page) {
+			$current_page = page;
 			// 새로운 페이지 상태를 history에 추가
 			const newState = { page: page };
 			const newUrl = new URL(window.location.href);
@@ -240,23 +239,23 @@
 			</div>
 
 			<div class="flex justify-center gap-2 p-4">
-				{#if current_page > 1}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage(current_page - 1)}>
+				{#if $current_page > 1}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page - 1)}>
 						«
 					</button>
 				{/if}
 
 				{#each Array(totalPages) as _, i}
 					<button
-						class="btn btn-circle btn-sm {current_page === i + 1 ? 'btn-primary' : ''}"
+						class="btn btn-circle btn-sm {$current_page === i + 1 ? 'btn-primary' : ''}"
 						on:click={() => goToPage(i + 1)}
 					>
 						{i + 1}
 					</button>
 				{/each}
 
-				{#if current_page < totalPages}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage(current_page + 1)}>
+				{#if $current_page < totalPages}
+					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page + 1)}>
 						»
 					</button>
 				{/if}
