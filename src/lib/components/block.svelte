@@ -4,10 +4,9 @@
 그리고 태그에 배경색은 db에 다 아티스트 개인별, 그룹별, 앨범별 테이블에 color 지정되어있으니 id별로 연동된 색을 바탕색으로 쓸 수 있게 하면될듯 -->
 
 <script lang="ts">
-	import { global_theme, selectedBlock } from '$lib/stores';
+	import { music_images, global_theme, selectedBlock } from '$lib/stores';
+
 	import ColorTag from './tag.svelte';
-	import { browser } from '$app/environment';
-	import { onMount } from 'svelte';
 
 	export let id: number;
 	export let title: string;
@@ -17,28 +16,16 @@
 	export let included_albums: string;
 	export let announce_date: string;
 
-	let imgSrc = '/images/music/0.webp';
-	let isLoading = true;
-
-	$: if (browser && id !== undefined) {
-		isLoading = true;
-		imgSrc = `/images/music/${id}.webp`;
-	}
-
-	function handleImageError() {
-		imgSrc = '/images/music/0.webp';
-		isLoading = false;
-	}
-
-	function handleImageLoad() {
-		isLoading = false;
+	function load_image() {
+		const imagePath = `/src/images/music/${id}.webp`;
+		const exists = $music_images[imagePath];
+		return exists ? exists.default : $music_images[`/src/images/music/0.webp`].default;
 	}
 
 	function handleClick() {
 		if ($selectedBlock === id) {
 			$selectedBlock = null;
 		} else {
-			console.log(id);
 			$selectedBlock = id;
 		}
 	}
@@ -70,19 +57,10 @@
 		<div class="flex flex-1 items-center">
 			<!-- 썸네일 -->
 			<div class="relative h-[5%] w-[5%] flex-shrink-0">
-				{#if isLoading}
-					<div class="absolute inset-0 flex items-center justify-center">
-						<span class="loading loading-spinner loading-md"></span>
-					</div>
-				{/if}
 				<img
-					src={imgSrc}
-					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200 {isLoading
-						? 'opacity-0'
-						: 'opacity-100'}"
+					src={load_image()}
+					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
 					alt="thumbnail"
-					on:error={handleImageError}
-					on:load={handleImageLoad}
 				/>
 			</div>
 

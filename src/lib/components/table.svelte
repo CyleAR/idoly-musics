@@ -3,12 +3,16 @@
 	export let cache;
 	export let type;
 
-	let isLoading = {};
+	import { group_images, album_images, artist_images } from '$lib/stores';
+
 	let imageSources = {};
 	let firstColumn = [];
 	let secondColumn = [];
 	let thirdColumn = [];
 	let activeIndices = {};
+
+	$: imageStore =
+		type === 'group' ? $group_images : type === 'album' ? $album_images : $artist_images;
 
 	$: musics = data.musics.results;
 	$: columns = [firstColumn, secondColumn, thirdColumn];
@@ -18,33 +22,12 @@
 		firstColumn = cache.slice(0, chunkSize);
 		secondColumn = cache.slice(chunkSize, chunkSize * 2);
 		thirdColumn = cache.slice(chunkSize * 2);
-		cache.forEach((item) => {
-			isLoading[item.id] = true;
-			imageSources[item.id] = `/images/${type}/${item.id}.webp`;
-		});
 	}
 
 	function load_image(id) {
-		if (!imageSources[id]) {
-			imageSources[id] = `/images/${type}/${id}.webp`;
-		}
-		return imageSources[id];
-	}
-
-	function handleImageError(id) {
-		return () => {
-			imageSources[id] = `/images/${type}/0.webp`;
-			imageSources = { ...imageSources };
-			isLoading[id] = false;
-			isLoading = { ...isLoading };
-		};
-	}
-
-	function handleImageLoad(id) {
-		return () => {
-			isLoading[id] = false;
-			isLoading = { ...isLoading };
-		};
+		const imagePath = `/src/images/${type}/${id}.webp`;
+		const exists = imageStore[imagePath];
+		return exists ? exists.default : imageStore[`/src/images/${type}/0.webp`].default;
 	}
 
 	function getMusics(name) {
@@ -77,18 +60,10 @@
 							class="collapse-title flex flex-row items-center p-2 text-xl font-medium"
 							style="color: {item.color}"
 						>
-							{#if isLoading[item.id]}
-								<div class="flex h-20 w-20 items-center justify-center">
-									<span class="loading loading-spinner loading-md"></span>
-								</div>
-							{/if}
 							<img
 								src={load_image(item.id)}
-								class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200
-                                    {isLoading[item.id] ? 'opacity-0' : 'opacity-100'}"
+								class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
 								alt={item.name || 'thumbnail'}
-								on:error={handleImageError(item.id)}
-								on:load={handleImageLoad(item.id)}
 							/>
 							<span class="p-2">
 								{item.name}

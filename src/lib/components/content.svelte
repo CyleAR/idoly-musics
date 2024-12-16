@@ -6,12 +6,12 @@
 		view_mode,
 		selectedBlock,
 		current_filter_type,
-		previous_filter_type
+		previous_filter_type,
+		filter_type
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import type { PageData } from './$types';
 	import { onMount } from 'svelte';
-	import { invalidateAll } from '$app/navigation';
 
 	import Profile from './profile.svelte';
 	import Table from './table.svelte';
@@ -157,9 +157,9 @@
 	$: sideNav_lang = language_table[$currentLanguage]['sideNav'];
 
 	function showModal(id: string) {
-		console.log(data.musics);
 		const modal = document.getElementById(id) as HTMLDialogElement;
 		if (modal) {
+			filter_type.set(id);
 			modal.showModal();
 			// 이전과 다른 필터를 선택했을 때만 초기화
 			if ($current_filter_type !== id) {
@@ -168,6 +168,8 @@
 			previous_filter_type.set($current_filter_type);
 			current_filter_type.set(id);
 		}
+
+		// 이거 왜 넣었더라?
 		$view_mode = id;
 	}
 
@@ -267,7 +269,7 @@
 <dialog id="group" class="modal" on:click|self={() => document.getElementById('group').close()}>
 	<div class="modal-box max-w-5xl">
 		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByGroupModal'].title}</h3>
-		<Profile data={groupCache} />
+		<Profile data={groupCache} type={'group'} />
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByGroupModal'].close}</button>
@@ -280,7 +282,7 @@
 <dialog id="artist" class="modal" on:click|self={() => document.getElementById('artist').close()}>
 	<div class="modal-box max-w-5xl">
 		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByArtistModal'].title}</h3>
-		<Profile data={artistCache} />
+		<Profile data={artistCache} type={'idol'} />
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByArtistModal'].close}</button>
@@ -293,7 +295,7 @@
 <dialog id="album" class="modal" on:click|self={() => document.getElementById('album').close()}>
 	<div class="modal-box max-w-5xl">
 		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByAlbumModal'].title}</h3>
-		<Profile data={albumCache} />
+		<Profile data={albumCache} type={'album'} />
 		<div class="modal-action">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByAlbumModal'].close}</button>

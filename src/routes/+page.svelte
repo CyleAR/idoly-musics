@@ -1,6 +1,14 @@
 <script lang="ts">
 	import type { PageData } from '../../routes/$types';
-	import { currentLanguage, selectedBlock, view_mode } from '$lib/stores';
+	import {
+		currentLanguage,
+		selectedBlock,
+		view_mode,
+		group_images,
+		album_images,
+		artist_images,
+		music_images
+	} from '$lib/stores';
 	import SideNavigation from '$lib/components/side-nav.svelte';
 	import Content from '$lib/components/content.svelte';
 	import { browser } from '$app/environment';
@@ -11,22 +19,15 @@
 
 	export let data: PageData;
 
-	let imgSrc = '/images/music/0.webp';
-	let base = '/images/music/0.webp';
-	let isLoading = true;
+	$group_images = import.meta.glob('/src/images/group/*.webp', { eager: true });
+	$album_images = import.meta.glob('/src/images/album/*.webp', { eager: true });
+	$artist_images = import.meta.glob('/src/images/idol/*.webp', { eager: true });
+	$music_images = import.meta.glob('/src/images/music/*.webp', { eager: true });
 
-	$: if (selectedBlock) {
-		imgSrc = `/images/music/${$selectedBlock}.webp`;
-		isLoading = true;
-	}
-
-	function handleImageError() {
-		imgSrc = base;
-		isLoading = false;
-	}
-
-	function handleImageLoad() {
-		isLoading = false;
+	function load_image() {
+		const imagePath = `/src/images/music/${$selectedBlock}.webp`;
+		const exists = $music_images[imagePath];
+		return exists ? exists.default : $music_images[`/src/images/music/0.webp`].default;
 	}
 
 	$: isDrawerOpen = $selectedBlock !== null;
@@ -52,11 +53,6 @@
 	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12"
 	style="height: {contentHeight + 5}rem"
 >
-	<!-- {#if !isDrawerOpen}
-		<div class="fixed top-[110] z-50">
-			<SideNavigation {data} />
-		</div>
-	{/if} -->
 	<div
 		class="{isDrawerOpen
 			? 'ml-[1%] mr-[30%] px-4' // drawer 열린 경우
@@ -73,19 +69,10 @@
 		>
 			<!-- 앨범 이미지 섹션 -->
 			<div class="relative mb-2 flex w-full justify-center rounded-xl bg-base-200 p-4">
-				{#if isLoading}
-					<div class="absolute inset-0 flex items-center justify-center">
-						<span class="loading loading-spinner loading-md"></span>
-					</div>
-				{/if}
 				<img
-					src={imgSrc}
-					class="aspect-square w-[50%] rounded-lg object-cover {isLoading
-						? 'opacity-0'
-						: 'opacity-100'}"
+					src={load_image()}
+					class="aspect-square w-[50%] rounded-lg object-cover"
 					alt="Album cover"
-					on:error={handleImageError}
-					on:load={handleImageLoad}
 				/>
 			</div>
 			<!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->

@@ -1,54 +1,67 @@
 <script lang="ts">
 	export let data;
-	import { global_theme, filter, current_filter_type, previous_filter_type } from '$lib/stores'; // theme store import 추가
+	export let type;
+	import { global_theme, filter, group_images, album_images, artist_images } from '$lib/stores';
+	import { onMount } from 'svelte';
 
 	let selectedArtists: boolean[] = [];
+	let img_src: { [key: string]: string } = {};
+
+	$: imageStore =
+		type === 'group' ? $group_images : type === 'album' ? $album_images : $artist_images;
 
 	$: cache = data;
 
-	$: if (
-		$current_filter_type != $previous_filter_type ||
-		($previous_filter_type && $current_filter_type)
-	) {
-		selectedArtists = new Array(cache.length).fill(false);
+	$: if (cache) {
+		img_src = Object.fromEntries(
+			cache.map((item) => {
+				const imagePath = `/src/images/${type}/${item.id}.webp`;
+				const exists = imageStore[imagePath];
+				return [
+					item.id,
+					exists ? exists.default : imageStore[`/src/images/${type}/0.webp`].default
+				];
+			})
+		);
 	}
 
-	function toggleSelection(index: number) {
+	function handleImageError(id) {
+		img_src[id] = images[`/src/images/${type}/0.webp`].default;
+		img_src = { ...img_src };
+	}
+
+	function toggleSelection(index) {
 		selectedArtists[index] = !selectedArtists[index];
 		selectedArtists = [...selectedArtists];
 
 		const selectedNames = cache.filter((_, i) => selectedArtists[i]).map((artist) => artist.name);
-
 		filter.set(selectedNames);
 	}
 </script>
 
 <div class="flex flex-wrap justify-center gap-4">
 	{#each cache || [] as item, i}
-		{#if item && item.id && item.name}
+		{#if item?.id && item?.name}
 			<button
 				on:click={() => toggleSelection(i)}
 				class="btn relative h-32 w-32 border-none bg-transparent p-0 transition-all duration-200 hover:-translate-y-1"
 			>
-				<div class="relative h-full w-full {selectedArtists[i]}">
-					<!-- 어두운 오버레이 -->
+				<div class="relative h-full w-full">
 					{#if !selectedArtists[i]}
 						<div
-							class="absolute inset-0 z-10 rounded-xl {$global_theme === 'dark'
+							class="absolute inset-0 z-10 rounded-lg {$global_theme === 'dark'
 								? 'bg-black/60'
 								: 'bg-black/30'} transition-opacity duration-200"
 						/>
 					{/if}
-
 					<img
-						src={`/images/idol/${item.id}.webp`}
-						class="h-full w-full rounded-lg object-cover {selectedArtists[i] &&
-						$global_theme === 'dark'
-							? 'brightness-125'
-							: ''}"
-						alt="thumbnail"
+						src={img_src[item.id]}
+						on:error={() => handleImageError(item.id)}
+						class="h-full w-full rounded-lg object-cover transition-opacity duration-200
+                        {selectedArtists[i] && $global_theme === 'dark' ? 'brightness-125' : ''}"
+						alt={item.name || ''}
 					/>
-					<!-- 텍스트를 위한 그라데이션 배경 -->
+
 					<div
 						class="absolute bottom-0 left-0 right-0 h-12 rounded-b-lg bg-gradient-to-t from-black/70 to-transparent"
 					/>
