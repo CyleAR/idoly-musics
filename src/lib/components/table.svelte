@@ -39,6 +39,14 @@
 	}
 
 	function getMusics(name) {
+		console.log(
+			musics.filter(
+				(music) =>
+					music.groups.some((group) => group.name === name) ||
+					music.artists.some((artist) => artist.name === name) ||
+					music.albums.some((album) => album.name === name)
+			)
+		);
 		return musics.filter(
 			(music) =>
 				music.groups.some((group) => group.name === name) ||

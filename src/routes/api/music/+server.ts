@@ -69,7 +69,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const artistQuery = db.prepare(`
         SELECT 
             ma.music_id,
-			a.id as artist_id,
+            a.id as artist_id,
             COALESCE(a.${nameColumn}, a.name_ja) as name,
             a.color
         FROM music_artists ma
@@ -155,9 +155,14 @@ function initializeCache() {
 
 function loadArtistCache(db: any) {
 	const query = db.prepare(`
-		SELECT id, name_ko, name_ja, name_en, name_zh FROM artists
-	`);
-
+        SELECT 
+            id, 
+            COALESCE(name_ko, name_ja) as name_ko,
+            name_ja,
+            COALESCE(name_en, name_ja) as name_en,
+            COALESCE(name_zh, name_ja) as name_zh 
+        FROM artists
+    `);
 	const artists = query.all();
 
 	artists.forEach((artist: type.ArtistData) => {
@@ -171,7 +176,13 @@ function loadArtistCache(db: any) {
 // 그룹 캐시 로드 함수
 function loadGroupCache(db: any) {
 	const query = db.prepare(`
-        SELECT id, name_ko, name_ja, name_en, name_zh FROM groups
+        SELECT 
+            id, 
+            COALESCE(name_ko, name_ja) as name_ko,
+            name_ja,
+            COALESCE(name_en, name_ja) as name_en,
+            COALESCE(name_zh, name_ja) as name_zh 
+        FROM groups
     `);
 
 	const groups = query.all();
@@ -187,7 +198,13 @@ function loadGroupCache(db: any) {
 // 앨범 캐시 로드 함수
 function loadAlbumCache(db: any) {
 	const query = db.prepare(`
-        SELECT id, name_ko, name_ja, name_en, name_zh FROM albums
+        SELECT 
+            id, 
+            COALESCE(name_ko, name_ja) as name_ko,
+            name_ja,
+            COALESCE(name_en, name_ja) as name_en,
+            COALESCE(name_zh, name_ja) as name_zh 
+        FROM albums
     `);
 
 	const albums = query.all();
