@@ -24,6 +24,12 @@ export const language_table = {
 				title: '그룹 필터 선택',
 				close: '완료'
 			}
+		},
+		page: {
+			drawer: {
+				jacket: '자켓',
+				youtube: '유튜브'
+			}
 		}
 	},
 

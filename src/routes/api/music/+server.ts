@@ -59,7 +59,9 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
             id,
             COALESCE(${nameColumn}, name_ja) as music_name,
             announce_date,
-            lyrics_ja as lyrics
+            lyrics_ja as lyrics,
+            stream_url,   
+            mv_url        
         FROM musics
         ORDER BY id
     `);
@@ -106,27 +108,29 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 		groups: groups
 			.filter((g) => g.music_id === music.id)
 			.map((group) => ({
-				id: group.group_id,
+				id: group.id,
 				name: group.name,
 				color: group.color || '#000000'
 			})),
 		artists: artists
 			.filter((a) => a.music_id === music.id)
 			.map((artist) => ({
-				id: artist.artist_id,
+				id: artist.id,
 				name: artist.name,
 				color: artist.color || '#000000'
 			})),
 		albums: albums
 			.filter((a) => a.music_id === music.id)
 			.map((album) => ({
-				id: album.album_id,
+				id: album.id,
 				name: album.name,
 				color: album.color || '#000000',
 				release_date: album.release_date || ''
 			})),
 		announce_date: music.announce_date || '',
-		lyrics: music.lyrics || ''
+		lyrics: music.lyrics || '',
+		stream_url: music.stream_url || '',
+		mv_url: music.mv_url || ''
 	}));
 }
 

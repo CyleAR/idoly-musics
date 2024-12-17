@@ -87,5 +87,9 @@ export default {
 		'bg-artist-lime', // #ff0000
 		'bg-artist-satomi' // #0092ce
 	],
-	plugins: [require('daisyui'), require('tailwind-scrollbar-hide')]
+	plugins: [
+		require('@tailwindcss/aspect-ratio'),
+		require('daisyui'),
+		require('tailwind-scrollbar-hide')
+	]
 } as Config;
