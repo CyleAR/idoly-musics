@@ -35,6 +35,7 @@
 			previous_filter_type.set('');
 			current_filter_type.set('');
 			view_mode.set('');
+			selectedBlock.set(null);
 		}
 	};
 

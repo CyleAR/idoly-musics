@@ -3,7 +3,7 @@
 	export let cache;
 	export let type;
 
-	import { group_images, album_images, artist_images } from '$lib/stores';
+	import { group_images, album_images, artist_images, selectedBlock } from '$lib/stores';
 
 	let imageSources = {};
 	let firstColumn = [];
@@ -22,6 +22,14 @@
 		firstColumn = cache.slice(0, chunkSize);
 		secondColumn = cache.slice(chunkSize, chunkSize * 2);
 		thirdColumn = cache.slice(chunkSize * 2);
+	}
+
+	function handleClick(id) {
+		if ($selectedBlock === id) {
+			$selectedBlock = null;
+		} else {
+			$selectedBlock = id;
+		}
 	}
 
 	function load_image(id) {
@@ -77,7 +85,12 @@
 									<table class="table-hover table table-sm bg-base-100">
 										<tbody>
 											{#each getMusics(item.name) as music, i}
-												<tr class="cursor-pointer">
+												<tr
+													class="item hover:bg-base-200"
+													on:click={() => {
+														handleClick(music.id);
+													}}
+												>
 													<th>{i + 1}</th>
 													<td>{music.music_name}</td>
 													<td>{music.announce_date}</td>
@@ -94,3 +107,14 @@
 		{/each}
 	</div>
 </div>
+
+<style>
+	.item:hover {
+		cursor: pointer;
+		transition: transform 0.2s ease;
+	}
+
+	.item:active {
+		transform: scale(0.95);
+	}
+</style>
