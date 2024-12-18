@@ -9,47 +9,47 @@ import * as type from '$lib/types';
 const dbPath = './static/music.db';
 
 type ArtistCache = {
-	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
+	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string }[];
 };
 type GroupCache = {
-	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
+	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string }[];
 };
 type AlbumCache = {
-	[key in 'en' | 'ja' | 'ko' | 'zh']: { id: number; name: string }[];
+	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string }[];
 };
 type CacheType = {
-	[key in 'en' | 'ja' | 'ko' | 'zh']: type.MusicData[];
+	[key in 'ja' | 'ko' | 'en' | 'zh']: type.MusicData[];
 };
 
 const artistCache: ArtistCache = {
-	en: [],
 	ja: [],
 	ko: [],
+	en: [],
 	zh: []
 };
 const groupCache: GroupCache = {
-	en: [],
 	ja: [],
 	ko: [],
+	en: [],
 	zh: []
 };
 const albumCache: AlbumCache = {
-	en: [],
 	ja: [],
 	ko: [],
+	en: [],
 	zh: []
 };
 const cache: CacheType = {
-	en: [],
 	ja: [],
 	ko: [],
+	en: [],
 	zh: []
 };
 
 function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 	const nameColumn = {
-		ko: 'name_ko',
 		ja: 'name_ja',
+		ko: 'name_ko',
 		en: 'name_en',
 		zh: 'name_zh'
 	}[lang];
@@ -142,7 +142,7 @@ function initializeCache() {
 	loadAlbumCache(db);
 
 	try {
-		['en', 'ja', 'ko', 'zh'].forEach((lang) => {
+		['ja', 'ko', 'en', 'zh'].forEach((lang) => {
 			cache[lang as keyof CacheType] = loadLanguageData(db, lang as keyof CacheType);
 		});
 		console.log('Cache initialized successfully');
@@ -157,8 +157,8 @@ function loadArtistCache(db: any) {
 	const query = db.prepare(`
         SELECT 
             id, 
-            COALESCE(name_ko, name_ja) as name_ko,
             name_ja,
+            COALESCE(name_ko, name_ja) as name_ko,
             COALESCE(name_en, name_ja) as name_en,
             COALESCE(name_zh, name_ja) as name_zh 
         FROM artists
@@ -166,8 +166,8 @@ function loadArtistCache(db: any) {
 	const artists = query.all();
 
 	artists.forEach((artist: type.ArtistData) => {
-		artistCache.ko.push({ id: artist.id, name: artist.name_ko });
 		artistCache.ja.push({ id: artist.id, name: artist.name_ja });
+		artistCache.ko.push({ id: artist.id, name: artist.name_ko });
 		artistCache.en.push({ id: artist.id, name: artist.name_en });
 		artistCache.zh.push({ id: artist.id, name: artist.name_zh });
 	});
@@ -178,8 +178,8 @@ function loadGroupCache(db: any) {
 	const query = db.prepare(`
         SELECT 
             id, 
-            COALESCE(name_ko, name_ja) as name_ko,
             name_ja,
+            COALESCE(name_ko, name_ja) as name_ko,
             COALESCE(name_en, name_ja) as name_en,
             COALESCE(name_zh, name_ja) as name_zh 
         FROM groups
