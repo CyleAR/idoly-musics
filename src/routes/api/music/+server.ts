@@ -108,21 +108,21 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
 		groups: groups
 			.filter((g) => g.music_id === music.id)
 			.map((group) => ({
-				id: group.id,
+				id: group.group_id,
 				name: group.name,
 				color: group.color || '#000000'
 			})),
 		artists: artists
 			.filter((a) => a.music_id === music.id)
 			.map((artist) => ({
-				id: artist.id,
+				id: artist.artist_id,
 				name: artist.name,
 				color: artist.color || '#000000'
 			})),
 		albums: albums
 			.filter((a) => a.music_id === music.id)
 			.map((album) => ({
-				id: album.id,
+				id: album.album_id,
 				name: album.name,
 				color: album.color || '#000000',
 				release_date: album.release_date || ''
@@ -188,8 +188,8 @@ function loadGroupCache(db: any) {
 	const groups = query.all();
 
 	groups.forEach((group: type.GroupData) => {
+        groupCache.ja.push({ id: group.id, name: group.name_ja });
 		groupCache.ko.push({ id: group.id, name: group.name_ko });
-		groupCache.ja.push({ id: group.id, name: group.name_ja });
 		groupCache.en.push({ id: group.id, name: group.name_en });
 		groupCache.zh.push({ id: group.id, name: group.name_zh });
 	});
@@ -200,8 +200,8 @@ function loadAlbumCache(db: any) {
 	const query = db.prepare(`
         SELECT 
             id, 
-            COALESCE(name_ko, name_ja) as name_ko,
             name_ja,
+            COALESCE(name_ko, name_ja) as name_ko,
             COALESCE(name_en, name_ja) as name_en,
             COALESCE(name_zh, name_ja) as name_zh 
         FROM albums
@@ -210,8 +210,8 @@ function loadAlbumCache(db: any) {
 	const albums = query.all();
 
 	albums.forEach((album: type.AlbumData) => {
+        albumCache.ja.push({ id: album.id, name: album.name_ja });
 		albumCache.ko.push({ id: album.id, name: album.name_ko });
-		albumCache.ja.push({ id: album.id, name: album.name_ja });
 		albumCache.en.push({ id: album.id, name: album.name_en });
 		albumCache.zh.push({ id: album.id, name: album.name_zh });
 	});
