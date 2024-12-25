@@ -28,7 +28,7 @@ export const language_table = {
 		page: {
 			drawer: {
 				jacket: '자켓',
-				youtube: '유튜브'
+				youtube: 'YOUTUBE'
 			}
 		}
 	},
@@ -58,6 +58,12 @@ export const language_table = {
 				title: 'Select Group Filter',
 				close: 'Done'
 			}
+		},
+		page: {
+			drawer: {
+				jacket: 'Jacket',
+				youtube: 'YOUTUBE'
+			}
 		}
 	},
 
@@ -86,6 +92,12 @@ export const language_table = {
 				title: 'グループフィルター選択',
 				close: '完了'
 			}
+		},
+		page: {
+			drawer: {
+				jacket: 'ジャケット',
+				youtube: 'YOUTUBE'
+			}
 		}
 	},
 
@@ -113,6 +125,12 @@ export const language_table = {
 			viewByGroupModal: {
 				title: '选择组合筛选',
 				close: '完成'
+			}
+		},
+		page: {
+			drawer: {
+				jacket: '封面',
+				youtube: 'YOUTUBE'
 			}
 		}
 	}
