@@ -1,38 +1,49 @@
-# sv
 
-Everything you need to build a Svelte project, powered by [`sv`](https://github.com/sveltejs/cli).
+<h1 align=center>
+IDOLY MUSICS
+</h1>
 
-## Creating a project
+<h3 align=center>
+<a href="https://idolypride.cyle.me">idolypride.cyle.me</a>
+</h3>
 
-If you're seeing this, you've probably already done this step. Congrats!
+**IDOLY MUSICS** is a unoffical web project that organizes and visualizes music data from the project **IDOLY PRIDE**, providing a user-friendly interface for exploring IDOLY PRIDE's music collection.
+
+---
+
+## Features
+
+### 🎵 Music Database
+- **Complete Music List:** Browse a well-organized list of ~~all~~ most tracks included in the project.
+- **Detailed Track Info:** View specific details for each track, such as title, artist, release date, and participating groups.
+
+### 🔍 Search & Filter
+- Quickly find tracks, artists, or albums with the search feature.
+- Filter by genres, release dates, and other criteria.
+
+## Data
+- Local Image Data: `/src/images/`
+- Database: `/static/music.db`
+
+## Local Setup
 
 ```bash
-# create a new project in the current directory
-npx sv create
-
-# create a new project in my-app
-npx sv create my-app
-```
-
-## Developing
-
-Once you've created a project and installed dependencies with `npm install` (or `pnpm install` or `yarn`), start a development server:
-
-```bash
+git clone https://github.com/CyleAR/idoly-musics.git
+cd idoly-musics
+npm install
 npm run dev
-
-# or start the server and open the app in a new browser tab
-npm run dev -- --open
 ```
 
-## Building
+## License
+- Various licenses (images, music data)
 
-To create a production version of your app:
+## Contributors
+- [jyto7034](https://github.com/jyto7034)
+- [Cyle](https://github.com/CyleAR)
 
-```bash
-npm run build
-```
+If you have any issues such as data errors, missing or site translation errors, please contact us via Discord DM @Cyle!
 
-You can preview the production build with `npm run preview`.
+## References & Links
 
-> To deploy your app, you may need to install an [adapter](https://svelte.dev/docs/kit/adapters) for your target environment.
+- [IDOLY PRIDE Official Website](https://idolypride.jp/)
+- [IDOLY PRIDE YouTube Channel](https://www.youtube.com/@IDOLYPRIDE)
