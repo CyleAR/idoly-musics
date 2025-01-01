@@ -193,6 +193,7 @@
 		{:else if $view_mode == 'viewByArtist'}
 			<Table {data} cache={artistCache} type={'idol'} />
 		{:else}
+        <!-- TODO 이거 어떻게든 수정, 작은 화면에선 없어지게-->
 			<div id="header-wrapper" class="flex w-full flex-row" >
 				{#each HEADERS as header}
 					<div class="header {header.width}">

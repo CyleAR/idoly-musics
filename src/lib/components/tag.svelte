@@ -27,7 +27,7 @@
 
 <style>
     .tag-container {
-        max-height: calc(3 * 2rem); /* 3줄의 높이로 제한 */
+        max-height: calc(3 * 1.9rem); /* 3줄의 높이로 제한 */
         overflow-y: auto;
     }
 </style>
