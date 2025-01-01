@@ -1,8 +1,3 @@
-<!-- 그리고 글자는 다 16px로 일단 해주시고 -->
-<!-- 그룹,노래,아티스트 이름 다 _translations에 id랑 연결된 테이블 있는데 거기서 가져오시면 되는데 언어별로 가져오는게 다르거든요 그래서 언어별로 사이트 보이는게 달라야 해요
-이건 그냥 kr,en,jp,zh(짱꺠어) 지정을 전역으로 하면 언어코드에 저장된 데이터 가져오면 될듯 (그래서 시안에 언어변경창이있는거)
-그리고 태그에 배경색은 db에 다 아티스트 개인별, 그룹별, 앨범별 테이블에 color 지정되어있으니 id별로 연동된 색을 바탕색으로 쓸 수 있게 하면될듯 -->
-
 <script lang="ts">
 	import { music_images, global_theme, selectedBlock } from '$lib/stores';
 
@@ -31,10 +26,11 @@
 	}
 
 	$: seperator_height = artists.length === 10 ? 'h-24' : 'h-20';
-
 	$: block_height = artists.length === 10 ? 'h-[7rem]' : 'h-[6rem]';
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore element_invalid_self_closing_tag -->
 <div
 	id="block-main"
 	class="btn flex w-full p-0 {block_height} flex-row rounded-xl {$global_theme === 'dark'
@@ -65,51 +61,38 @@
 			</div>
 
 			<!-- 노래 제목 -->
-			<div class="w-[12%] flex-shrink-0 whitespace-pre-line px-4 text-base">
+			<div
+				class="w-[12%] flex-shrink-0 overflow-hidden whitespace-pre-line px-4 text-base"
+				style="max-height: 3rem;"
+			>
 				{title.replace(/[~(]/, '\n$&')}
 			</div>
 
-			<div
-				class="seperator {$global_theme == 'dark'
-					? 'border-base-100'
-					: 'border-base-300'} {seperator_height}"
-			/>
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
 
 			<!-- 그룹 -->
 			<div class="w-[10%] flex-shrink-0 px-4">
 				<ColorTag texts={groups} />
 			</div>
 
-			<div
-				class="seperator {$global_theme == 'dark'
-					? 'border-base-100'
-					: 'border-base-300'} {seperator_height}"
-			/>
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
 
 			<!-- 아티스트 -->
 			<div class="w-[33%] flex-shrink-0 px-4">
 				<ColorTag texts={artists} />
 			</div>
 
-			<div
-				class="seperator {$global_theme == 'dark'
-					? 'border-base-100'
-					: 'border-base-300'} {seperator_height}"
-			/>
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
 
 			<!-- 수록 앨범 -->
 			<div class="w-[30%] flex-shrink-0 px-4">
 				<ColorTag texts={included_albums} />
 			</div>
 
-			<div
-				class="seperator {$global_theme == 'dark'
-					? 'border-base-100'
-					: 'border-base-300'} {seperator_height}"
-			/>
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden md:flex"/>
 
 			<!-- 공개일 -->
-			<div class="w-[9%] flex-shrink-0 px-4">
+			<div class="w-[9%] flex-shrink-0 px-4 hidden md:flex">
 				{announce_date}
 			</div>
 		</div>

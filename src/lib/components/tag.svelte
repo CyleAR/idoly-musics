@@ -25,13 +25,20 @@
     }
 </script>
 
-<div class="justify-left flex flex-wrap {sort_as_col ? 'flex-col' : ''}">
-	{#each texts as item}
-		<span
-			style="background-color: {hexToRgba(item.color)}; color : {getTextColor(item.color)}"
-			class="m-1 inline-block truncate whitespace-nowrap rounded-lg px-2 py-1 text-center text-black"
-		>
-			{item.name}
-		</span>
-	{/each}
+<style>
+    .tag-container {
+        max-height: calc(3 * 2rem); /* 3줄의 높이로 제한 */
+        overflow-y: auto;
+    }
+</style>
+
+<div class="tag-container justify-left flex flex-wrap {sort_as_col ? 'flex-col' : ''}">
+    {#each texts as item}
+        <span
+            style="background-color: {hexToRgba(item.color)}; color : {getTextColor(item.color)}"
+            class="m-1 inline-block truncate whitespace-nowrap rounded-lg px-2 py-1 text-center text-black"
+        >
+            {item.name}
+        </span>
+    {/each}
 </div>

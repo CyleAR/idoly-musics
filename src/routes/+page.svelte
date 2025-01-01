@@ -72,11 +72,12 @@
 </svelte:head>
 
 <div
-	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'px-36'} py-12"
+    id="page-main"
+	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'md:px-36'} py-12"
 	style="height: {contentHeight + 5}rem"
 >
 	<div
-		class="{isDrawerOpen
+		class="md:{isDrawerOpen
 			? 'ml-[1%] mr-[30%] px-4' // drawer 열린 경우
 			: ''} flex-1"
 	>
@@ -84,11 +85,11 @@
 	</div>
 
 	{#if isDrawerOpen}
-		<div
-			class="fixed right-1.5 z-50 flex h-[90%] w-[30%] flex-col overflow-y-auto rounded-xl bg-base-100 p-4 shadow-xl"
-			style="transition: top 0.2s ease-out;"
-			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
-		>
+        <div
+            class="fixed right-1.5 z-50 flex h-[90%] w-[80%] md:w-[30%] sm:w-[50%] flex-col overflow-y-auto rounded-xl bg-base-100 p-4 shadow-xl"
+            style="transition: top 0.2s ease-out;"
+            transition:fly={{ x: 600, duration: 300, easing: quintOut }}
+        >
 			{#if info_type == 'jacket'}
 				<!-- 앨범 이미지 섹션 -->
 				<div class="relative mb-2 flex w-full justify-center rounded-xl bg-base-200 p-4">

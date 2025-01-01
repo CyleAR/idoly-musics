@@ -178,6 +178,8 @@
 	};
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
 	<div
 		id="content-main"
@@ -224,7 +226,7 @@
 			</div>
 			<div id="blocks" class="gap flex h-full w-full flex-col">
 				{#each paginatedBlocks as block}
-					<div class="flex w-[100%] p-1.5">
+					<div class="flex w-[100%] p-1">
 						<Block
 							id={block.id}
 							title={block.music_name}
