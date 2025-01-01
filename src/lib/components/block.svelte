@@ -45,14 +45,19 @@
 	tabindex="0"
 >
 	<!-- 컬러 태그 -->
-	<div id="color-tag" class="h-full w-2 rounded-l-xl" style="background-color: {colorTag};"></div>
+	<div id="color-tag" class="h-full w-[1%] md:w-2  rounded-l-xl" style="background-color: {colorTag};"></div>
 
 	<!-- 메인 콘텐츠 -->
 	<div class="flex flex-1 items-center">
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
+            <!-- 
+            소형(폰) sm(640px) : 썸네일, 제목, 그룹 20% 39% 39%
+            중형(태블릿) md(768px) : 썸네일, 제목, 그룹, 아티스트 10% 20% 20% 48%
+            대형(데스크탑) lg(1024px) : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 5% 12% 33% 25% 14%
+            -->
 			<!-- 썸네일 -->
-			<div class="relative h-[5%] sm:w-[20%] md:w-[10%] lg:w-[5%] flex-shrink-0">
+			<div class="relative sm:w-[20%] md:w-[10%] lg:w-[5%] flex-shrink-0">
 				<img
 					src={load_image()}
 					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
@@ -62,20 +67,21 @@
 
 			<!-- 노래 제목 -->
 			<div
-				class="sm:w-[38%] md:w-[20%] lg:w-[12%] flex-grow overflow-hidden px-1 whitespace-pre-line text-base"
+				class="w-[39%] md:w-[20%] lg:w-[12%] px-1 overflow-hidden whitespace-pre-line text-base"
+                style="max-height: 5rem;"
 			>
 				{title.replace(/[~(]/, '\n$&')}
 			</div>
 
 			<!-- 그룹 -->
 			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
-			<div class="sm:w-[41%] md:w-[20%] lg:w-[10%] flex-grow px-3 sm:flex">
+			<div class="w-[39%] md:w-[20%] lg:w-[10%] flex-grow px-3">
 				<ColorTag texts={groups} />
 			</div>
 
 			<!-- 아티스트 -->
 			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden md:flex"/>
-			<div class="md:w-[49%] lg:w-[33%] flex-shrink-1 px-3 hidden md:flex">
+			<div class="w-[48%] lg:w-[33%] flex-shrink-1 px-3 hidden md:flex">
 				<ColorTag texts={artists} />
 			</div>
 
@@ -101,9 +107,3 @@
 		@apply border-r-4;
 	}
 </style>
-
-<!-- 
-소형(폰) sm(640px) : 썸네일, 제목, 그룹 20% 38% 41%
-중형(태블릿) md(768px) : 썸네일, 제목, 그룹, 아티스트 10% 20% 20% 49%
-대형(데스크탑) lg(1024px) : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 5% 12% 33% 25% 14%
--->

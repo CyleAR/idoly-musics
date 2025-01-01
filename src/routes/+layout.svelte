@@ -112,7 +112,7 @@
 					</div>
 				</div>
 			</div>
-            <a on:click={reset} href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
+            <a on:click={reset} href="/" class="ml-5 text-xl font-bold sm:text-base">IDOLY MUSICS</a>
 		</div>
 		<div id="change-lang-theme" class="z-[51] flex-none">
 			<LangDrop/>
