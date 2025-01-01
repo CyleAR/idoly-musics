@@ -6,10 +6,10 @@
 	import { onMount } from 'svelte';
 
 	const languageLabels = {
-		ko: '🇰🇷 한국어',
-		ja: '🇯🇵 日本語',
-		en: '🇺🇸 English',
-		zh: '🇨🇳 中文'
+		ko: '한국어',
+		ja: '日本語',
+		en: 'English',
+		zh: '中文'
 	};
 
 	let isOpen = false;
@@ -61,9 +61,9 @@
 </script>
 
 <details class="dropdown" bind:open={isOpen}>
-	<summary class="btn w-36">
+	<summary class="btn w-30">
 		{languageLabels[$currentLanguage]}
-		<ChevronDownOutline class="ms-2 h-6 w-6" />
+		<ChevronDownOutline class="h-6 w-6" />
 	</summary>
 	<ul class="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
 		{#each Object.entries(languageLabels) as [lang, label]}

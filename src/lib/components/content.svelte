@@ -182,7 +182,7 @@
 <!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
 	<div
-		id="content-main"
+		id="blocks-wrapper"
 		style="height: {contentHeight + 5}rem"
 		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
@@ -193,7 +193,7 @@
 		{:else if $view_mode == 'viewByArtist'}
 			<Table {data} cache={artistCache} type={'idol'} />
 		{:else}
-			<div class="flex w-full flex-row">
+			<div id="header-wrapper" class="flex w-full flex-row" >
 				{#each HEADERS as header}
 					<div class="header {header.width}">
 						{#if header.text}

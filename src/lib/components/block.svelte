@@ -52,7 +52,7 @@
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
 			<!-- 썸네일 -->
-			<div class="relative h-[5%] w-[5%] flex-shrink-0">
+			<div class="relative h-[5%] lg:w-[5%] sm:w-[30%] flex-shrink-0">
 				<img
 					src={load_image()}
 					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
@@ -62,7 +62,7 @@
 
 			<!-- 노래 제목 -->
 			<div
-				class="w-[12%] flex-shrink-0 overflow-hidden whitespace-pre-line px-4 text-base"
+				class="lg:w-[12%] sm:w-[30%] flex-shrink-0 overflow-hidden whitespace-pre-line px-4 text-base"
 				style="max-height: 3rem;"
 			>
 				{title.replace(/[~(]/, '\n$&')}
@@ -71,30 +71,30 @@
 			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
 
 			<!-- 그룹 -->
-			<div class="w-[10%] flex-shrink-0 px-4">
+			<div class="lg:w-[10%] sm:w-[39%] flex-shrink-0 px-4">
 				<ColorTag texts={groups} />
-			</div>
-
-			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
-
-			<!-- 아티스트 -->
-			<div class="w-[33%] flex-shrink-0 px-4">
-				<ColorTag texts={artists} />
-			</div>
-
-			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
-
-			<!-- 수록 앨범 -->
-			<div class="w-[30%] flex-shrink-0 px-4">
-				<ColorTag texts={included_albums} />
 			</div>
 
 			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden md:flex"/>
 
-			<!-- 공개일 -->
-			<div class="w-[9%] flex-shrink-0 px-4 hidden md:flex">
-				{announce_date}
+			<!-- 아티스트 -->
+			<div class="w-[33%] flex-shrink-0 px-4 hidden md:flex">
+				<ColorTag texts={artists} />
 			</div>
+
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden lg:flex"/>
+
+			<!-- 수록 앨범 -->
+			<div class="w-[25%] flex-shrink-0 px-4 hidden lg:flex">
+				<ColorTag texts={included_albums} />
+			</div>
+
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden lg:flex"/>
+
+			<!-- 공개일 -->
+            <div class="lg:w-[14%] flex-shrink-0 px-4 hidden lg:flex items-center justify-center">
+                {announce_date}
+            </div>
 		</div>
 	</div>
 </div>
@@ -104,3 +104,9 @@
 		@apply border-r-4;
 	}
 </style>
+
+<!-- 
+소형(폰) sm(640px) : 썸네일, 제목, 그룹 30% 30% 39%
+중형(태블릿) md(768px) : 썸네일, 제목, 그룹, 아티스트 20% 25
+대형(데스크탑) xl(1280px) : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 5% 12% 33% 25% 14%
+-->

@@ -50,8 +50,10 @@
 	}
 </script>
 
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="flex min-h-screen flex-col bg-base-300">
-	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-6 shadow-md">
+	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-3 lg:px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
 			<div class="z-[52]">
 				<label for="my-drawer" class="drawer-button">
@@ -63,12 +65,13 @@
 						class="drawer-menu drawer-button h-8 w-8"
 						viewBox="0 0 24 24"
 						fill="none"
+						role="button"
+						tabindex="0"
 					>
 						<path d="M4 18L20 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
 						<path d="M4 12L20 12" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
 						<path d="M4 6L20 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-					</svg></label
-				>
+					</svg></label>
 				<div class="drawer">
 					<input id="my-drawer" type="checkbox" class="drawer-toggle" />
 					<div class="drawer-content"></div>
@@ -76,40 +79,43 @@
 						<label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
 						<ul class="menu min-h-full w-80 bg-base-200 p-4 text-base-content">
 							<li>
-								<h3
+								<button
 									on:click={() => {
 										view_mode.set('viewByGroup');
 									}}
+									class="text-left"
 								>
 									{content_lang.viewByGroup}
-								</h3>
+								</button>
 							</li>
 							<li>
-								<h3
+								<button
 									on:click={() => {
 										view_mode.set('viewByAlbums');
 									}}
+									class="text-left"
 								>
 									{content_lang.viewByAlbum}
-								</h3>
+								</button>
 							</li>
 							<li>
-								<h3
+								<button
 									on:click={() => {
 										view_mode.set('viewByArtist');
 									}}
+									class="text-left"
 								>
 									{content_lang.viewByArtist}
-								</h3>
+								</button>
 							</li>
 						</ul>
 					</div>
 				</div>
 			</div>
-			<a on:click={reset} href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
+            <a on:click={reset} href="/" class="ml-5 text-xl font-bold">IDOLY MUSICS</a>
 		</div>
 		<div id="change-lang-theme" class="z-[51] flex-none">
-			<LangDrop />
+			<LangDrop/>
 			<ul class="menu menu-horizontal z-50 px-1">
 				<form method="POST" use:enhance={submitUpdateTheme}>
 					<button
@@ -141,11 +147,16 @@
 </div>
 
 <style>
+    .btn {
+        font-size: 0.7rem;
+    }
 	.drawer-menu:hover {
 		cursor: pointer;
 		transition: transform 0.2s ease;
 	}
-
+    .drawer-side {
+        top: 5rem; /* 네비게이션 바의 높이만큼 설정 */
+    }
 	.drawer-menu:active {
 		transform: scale(0.95);
 	}

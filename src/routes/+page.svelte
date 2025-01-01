@@ -72,12 +72,12 @@
 </svelte:head>
 
 <div
-    id="page-main"
-	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'md:px-36'} py-12"
+	class="relative flex flex-row {isDrawerOpen ? 'px-0' : 'xl:px-36'} py-12"
 	style="height: {contentHeight + 5}rem"
 >
 	<div
-		class="md:{isDrawerOpen
+        id="page-main"
+		class="{isDrawerOpen
 			? 'ml-[1%] mr-[30%] px-4' // drawer 열린 경우
 			: ''} flex-1"
 	>
