@@ -10,7 +10,9 @@
 	$: imageStore =
 		type === 'group' ? $group_images : type === 'album' ? $album_images : $artist_images;
 
-	$: cache = data;
+	$: cache = ['group', 'album', 'idol'].includes(type)
+		? [{ id: '0', name: type === 'album' ? '미수록' : '그 외' }, ...data]
+		: data;
 
 	$: if (cache) {
 		img_src = Object.fromEntries(

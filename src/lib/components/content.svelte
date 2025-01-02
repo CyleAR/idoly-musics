@@ -43,44 +43,37 @@
 
 	// 너무 무식한 방법이긴 한데..
 	// 시간 너무 먹힌다
+	$: if (filteredBlocks) {
+		const selectedGroups = $filter.filter((name) =>
+			groupCache.some((group) => group.name === name)
+		);
+		console.log(selectedGroups);
+		console.log(filteredBlocks);
+	}
+
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// filter가 비어있으면 모든 블록 표시
 		if ($filter.length === 0 || $filter == undefined) return true;
 
 		$current_page = 1;
 
-		// 선택된 필터 이름들을 타입별로 분류
-		const selectedArtists = $filter.filter((name) =>
-			artistCache.some((artist) => artist.name === name)
-		);
-		const selectedGroups = $filter.filter((name) =>
-			groupCache.some((group) => group.name === name)
-		);
-		const selectedAlbums = $filter.filter((name) =>
-			albumCache.some((album) => album.name === name)
-		);
-
-		// 각 타입별로 필터링 조건 체크
-		const hasMatchingArtists =
-			selectedArtists.length === 0 ||
-			selectedArtists.every((selectedName) =>
-				block.artists.some((artist) => artist.name === selectedName)
-			);
-
-		const hasMatchingGroups =
-			selectedGroups.length === 0 ||
-			selectedGroups.every((selectedName) =>
-				block.groups.some((group) => group.name === selectedName)
-			);
-
-		const hasMatchingAlbums =
-			selectedAlbums.length === 0 ||
-			selectedAlbums.every((selectedName) =>
-				block.albums.some((album) => album.name === selectedName)
-			);
-
-		// 모든 조건을 만족해야 true 반환 (AND 조건)
-		return hasMatchingArtists && hasMatchingGroups && hasMatchingAlbums;
+		// filter_type에 따라 해당하는 필터만 적용
+		switch ($filter_type) {
+			case 'artist':
+				return $filter.every((selectedName) =>
+					block.artists.some((artist) => artist.name === selectedName)
+				);
+			case 'group':
+				return $filter.every((selectedName) =>
+					block.groups.some((group) => group.name === selectedName)
+				);
+			case 'album':
+				return $filter.every((selectedName) =>
+					block.albums.some((album) => album.name === selectedName)
+				);
+			default:
+				return true;
+		}
 	});
 
 	// 전체 페이지 수 계산
@@ -193,8 +186,8 @@
 		{:else if $view_mode == 'viewByArtist'}
 			<Table {data} cache={artistCache} type={'idol'} />
 		{:else}
-        <!-- TODO 이거 어떻게든 수정, 작은 화면에선 없어지게-->
-			<div id="header-wrapper" class="flex w-full flex-row" >
+			<!-- TODO 이거 어떻게든 수정, 작은 화면에선 없어지게-->
+			<div id="header-wrapper" class="flex w-full flex-row">
 				{#each HEADERS as header}
 					<div class="header {header.width}">
 						{#if header.text}
