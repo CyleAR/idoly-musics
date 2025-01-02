@@ -180,7 +180,7 @@
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore element_invalid_self_closing_tag -->
-<div class="duration-50 flex transition-all" style="margin-left: {isDrawerOpen ? '-30px' : '0'}">
+<div class="duration-50 flex transition-all">
 	<div
 		id="blocks-wrapper"
 		style="height: {contentHeight + 5}rem"
