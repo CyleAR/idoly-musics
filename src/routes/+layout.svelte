@@ -48,6 +48,9 @@
 		view_mode.set('');
 		current_page.set(1);
 	}
+
+    const commitHash = __COMMIT_HASH__.slice(0, 7);
+    const commitLink = `https://github.com/CyleAR/idoly-musics/tree/${__COMMIT_HASH__}`;
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
@@ -143,6 +146,7 @@
 		<p class="text-sm text-gray-400">This site is a fan project of IDOLYPRIDE</p>
 		<p class="text-sm text-gray-400">Some data may be inaccurate</p>
 		<p class="text-sm text-gray-400">Contents © QualiArts and associates</p>
+		<p class="text-sm text-gray-400"><a href="https://github.com/CyleAR/idoly-musics" target="_blank" rel="noopener noreferrer">Source</a> @ <a href={commitLink} target="_blank rel="noopener noreferrer>{commitHash}</p>
 	</footer>
 </div>
 
