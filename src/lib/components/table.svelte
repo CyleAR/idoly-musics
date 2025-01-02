@@ -39,20 +39,18 @@
 	}
 
 	function getMusics(name) {
-		console.log(
-			musics.filter(
-				(music) =>
-					music.groups.some((group) => group.name === name) ||
-					music.artists.some((artist) => artist.name === name) ||
-					music.albums.some((album) => album.name === name)
-			)
-		);
-		return musics.filter(
-			(music) =>
-				music.groups.some((group) => group.name === name) ||
-				music.artists.some((artist) => artist.name === name) ||
-				music.albums.some((album) => album.name === name)
-		);
+		return musics.filter((music) => {
+			switch (type) {
+				case 'idol':
+					return music.artists.some((artist) => artist.name === name);
+				case 'group':
+					return music.groups.some((group) => group.name === name);
+				case 'album':
+					return music.albums.some((album) => album.name === name);
+				default:
+					return false;
+			}
+		});
 	}
 </script>
 
