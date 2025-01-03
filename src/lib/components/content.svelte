@@ -47,8 +47,8 @@
 		const selectedGroups = $filter.filter((name) =>
 			groupCache.some((group) => group.name === name)
 		);
-		console.log(selectedGroups);
-		console.log(filteredBlocks);
+		// console.log(selectedGroups);
+		// console.log(filteredBlocks);
 	}
 
 	$: filteredBlocks = blocks_info.filter((block) => {

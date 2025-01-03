@@ -27,8 +27,8 @@
 	$: disable_youtube_btn_flag = false;
 	$: disable_mv_btn_flag = false;
 	$: if ($selectedBlock >= 1) {
-		console.log($selectedBlock - 1);
-		console.log(data.musics.results[$selectedBlock - 1]);
+		// console.log($selectedBlock - 1);
+		// console.log(data.musics.results[$selectedBlock - 1]);
 		let _mvid = data.musics.results[$selectedBlock - 1].mv_url;
 		let _streamid = data.musics.results[$selectedBlock - 1].stream_url;
 
@@ -46,7 +46,7 @@
 	$music_images = import.meta.glob('/src/images/music/*.webp', { eager: true });
 
 	function load_image() {
-		console.log(data.musics.results[$selectedBlock - 1]);
+		// console.log(data.musics.results[$selectedBlock - 1]);
 		const imagePath = `/src/images/music/${$selectedBlock}.webp`;
 		const exists = $music_images[imagePath];
 		return exists ? exists.default : $music_images[`/src/images/music/0.webp`].default;
