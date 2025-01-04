@@ -52,9 +52,10 @@
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
             <!-- 
-            소형(폰) sm(640px) : 썸네일, 제목, 그룹 20% 39% 39%
-            중형(태블릿) md(768px) : 썸네일, 제목, 그룹, 아티스트 10% 20% 20% 48%
-            대형(데스크탑) lg(1024px) : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 5% 12% 33% 25% 14%
+            sm(640px) 미만 : 썸네일, 제목, 그룹 20% 40% 40%
+            sm(640px) 이상 : 썸네일, 제목, 그룹, 아티스트, 15% 25% 25% 25%
+            md(768px) 이상 : 썸네일, 제목, 그룹, 아티스트, 수록앨범 10% 20% 20% 48%
+            lg(1024px) 이상 : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 5% 12% 10% 33% 25% 14%
             -->
 			<!-- 썸네일 -->
 			<div class="relative sm:w-[20%] md:w-[10%] lg:w-[5%] flex-shrink-0">
@@ -67,7 +68,7 @@
 
 			<!-- 노래 제목 -->
 			<div
-				class="w-[39%] md:w-[20%] lg:w-[12%] px-1 overflow-hidden whitespace-pre-line text-base"
+				class="w-[39%] md:w-[20%] lg:w-[12%] px-1 overflow-hidden whitespace-pre-line text-sm sm:text-base"
                 style="max-height: 5rem;"
 			>
 				{title.replace(/[~(]/, '\n$&')}

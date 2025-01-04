@@ -80,7 +80,7 @@
 					<div class="drawer-content"></div>
 					<div class="drawer-side">
 						<label for="my-drawer" aria-label="close sidebar" class="drawer-overlay"></label>
-						<ul class="menu min-h-full w-80 bg-base-200 p-4 text-base-content">
+						<ul class="menu min-h-full w-80 bg-base-200 p-4 text-base text-base-content">
 							<li>
 								<button
 									on:click={() => {

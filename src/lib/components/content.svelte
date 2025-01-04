@@ -234,7 +234,7 @@
 				{/each}
 			</div>
 
-			<div class="flex justify-center gap-2 p-4">
+			<div class="flex flex-wrap justify-center gap-2 p-4">
 				{#if $current_page > 1}
 					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page - 1)}>
 						«

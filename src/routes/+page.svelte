@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { PageData } from '../../routes/$types';
 	import {
+        global_theme,
 		currentLanguage,
 		selectedBlock,
 		view_mode,
@@ -72,7 +73,7 @@
 </svelte:head>
 
 <div
-	class="relative flex flex-row xl:px-36 py-12"
+	class="relative flex flex-row px-0.5 lg:px-18 2xl:px-36 py-12"
 	style="height: {contentHeight + 5}rem"
 >
 	<div
@@ -84,7 +85,7 @@
 
 	{#if isDrawerOpen}
         <div
-            class="fixed right-1.5 z-50 flex h-[90%] w-[80%] md:w-[30%] sm:w-[50%] flex-col overflow-y-auto rounded-xl bg-base-100 p-4 shadow-xl"
+            class="fixed right-1.5 z-50 flex h-[90%] w-[75%] sm:w-[60%] md:w-[45%] lg:w-[35%] xl:w-[30%] flex-col overflow-y-auto rounded-xl bg-base-100 p-4 shadow-xl"
             style="transition: top 0.2s ease-out;"
             transition:fly={{ x: 600, duration: 300, easing: quintOut }}
         >
@@ -124,20 +125,20 @@
 			{/if}
 			<!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->
 			<!-- 제목 섹션 -->
-			<div class="text-2xl font-bold">
+			<div class="font-bold text-base md:text-lg lg:text-xl ">
 				<span> {data.musics.results[$selectedBlock - 1].music_name} </span>
 			</div>
 
 			<!-- 태그 섹션 -->
-			<div class="mb-2 flex flex-wrap items-center justify-between gap-2 text-lg">
+			<div class="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm md:text-base lg:text-lg">
 				<div>
 					{data.musics.results[$selectedBlock - 1].groups[0].name}
 				</div>
 				<div>
 					<button
-						class="btn !h-8 !min-h-0 {$currentLanguage == 'dark'
+						class="btn !h-8 !min-h-0 {$global_theme == 'dark'
 							? 'bg-blue-700'
-							: 'bg-blue-500'} text-black hover:bg-blue-600"
+							: 'bg-blue-500'} text-white hover:bg-blue-600"
 						on:click={() => {
 							info_type = 'jacket';
 						}}
@@ -167,7 +168,7 @@
 
 			<!-- 가사 섹션 -->
 			<div
-				class="text-bas4 min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6 text-lg font-bold scrollbar-hide"
+				class="min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6 font-bold scrollbar-hide text-base sm:text-lg"
 			>
 				{data.musics.results[$selectedBlock - 1].lyrics}
 			</div>
