@@ -57,7 +57,7 @@
 <!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="flex min-h-screen flex-col bg-base-300">
 	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-3 lg:px-6 shadow-md">
-		<div id="logo-text" class="md:flex-1">
+		<div id="logo-text" class="flex-1">
 			<div class="z-[52]">
 				<label for="my-drawer" class="drawer-button">
 					<svg
@@ -115,7 +115,7 @@
 					</div>
 				</div>
 			</div>
-            <a on:click={reset} href="/" class="ml-5 font-bold text-sm md:text-xl">IDOLY MUSICS</a>
+            <a on:click={reset} href="/" class="ml-5 font-bold text-base md:text-xl">IDOLY MUSICS</a>
 		</div>
 		<div id="change-lang-theme" class="z-[51] flex-none">
 			<LangDrop/>
@@ -129,10 +129,10 @@
 					>
 						{#if $global_theme === 'light'}
 							<span class="text-lg">☀️</span>
-                            <span class="hidden md:inline font-medium">Light Mode</span>
+                            <span class="hidden sm:inline font-medium">Light Mode</span>
 						{:else}
 							<span class="text-lg">🌙</span>
-							<span class="hidden md:inline font-medium">Dark Mode</span>
+							<span class="hidden sm:inline font-medium">Dark Mode</span>
 						{/if}
 					</button>
 				</form>
