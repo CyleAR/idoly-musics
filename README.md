@@ -25,11 +25,10 @@ IDOLY MUSICS
 - Local Image Data: `/src/images/`
 - Database: `/static/music.db`
 
-## Local Setup
+## Dev Setup
 
 ```bash
 git clone https://github.com/CyleAR/idoly-musics.git
-cd idoly-musics
 npm install
 npm run dev
 ```
@@ -41,7 +40,7 @@ npm run dev
 - [jyto7034](https://github.com/jyto7034)
 - [Cyle](https://github.com/CyleAR)
 
-If you have any issues such as data errors, missing or site translation errors, please contact us via Discord DM @Cyle!
+If you have any issues such as data errors, missing or site translation errors, please contact us via Discord DM @Cyle
 
 ## References & Links
 
