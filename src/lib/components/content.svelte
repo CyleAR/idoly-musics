@@ -138,12 +138,12 @@
 	}
 
 	const HEADERS = [
-		{ width: 'w-[9%]', text: '' },
-		{ width: 'w-[13%]', text: 'songName' },
-		{ width: 'w-[20%]', text: 'group' },
-		{ width: 'w-[33%]', text: 'artist' },
-		{ width: 'w-[18.5%]', text: 'album' },
-		{ width: '', text: 'releaseDate' }
+		{ class: 'w-24 flex-shrink-0', text: '' },
+		{ class: 'flex-grow', text: 'songName' },
+		{ class: 'w-[40%] sm:w-[25%] md:w-[20%] lg:w-[15%] flex-shrink-0', text: 'group' },
+		{ class: 'w-[40%] sm:w-[40%] md:w-[35%] lg:w-[31%] flex-shrink-1 hidden sm:flex', text: 'artist' },
+		{ class: 'w-[20%] flex-shrink-0 hidden md:flex', text: 'album' },
+		{ class: 'w-[10%] flex-shrink-0 hidden lg:flex', text: 'releaseDate' }
 	];
 
 	$: sideNav_lang = language_table[$currentLanguage]['sideNav'];
@@ -175,7 +175,7 @@
 <!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="duration-50 flex transition-all">
 	<div
-		id="blocks-wrapper"
+		id="contents-wrapper"
 		style="height: {contentHeight + 5}rem"
 		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
@@ -186,13 +186,14 @@
 		{:else if $view_mode == 'viewByArtist'}
 			<Table {data} cache={artistCache} type={'idol'} />
 		{:else}
-			<!-- TODO 이거 어떻게든 수정, 작은 화면에선 없어지게-->
-			<div id="header-wrapper" class="flex w-full flex-row">
+			<div id="header-wrapper" class="flex w-full flex text-center">
 				{#each HEADERS as header}
-					<div class="header {header.width}">
+					<div class={`flex ${header.class} py-1 items-center justify-center`}>
 						{#if header.text}
 							<div
 								class="header-text flex items-center gap-1"
+                                role="button"
+                                tabindex="0"
 								on:click={() => showModal(header.text)}
 							>
 								<span>{content_lang[header.text]}</span>
@@ -228,7 +229,7 @@
 							groups={block.groups}
 							colorTag={getColorTag(block)}
 							included_albums={block.albums}
-							announce_date={block.announce_date || '#'}
+							announce_date={block.announce_date || '?'}
 						/>
 					</div>
 				{/each}

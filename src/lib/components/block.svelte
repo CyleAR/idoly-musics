@@ -58,7 +58,7 @@
             lg(1024px) 이상 : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 | w-20고정 n% 15% 31% 20% 10%
             -->
 			<!-- 썸네일 -->
-			<div class="relative  flex-shrink-0">
+			<div class="relative flex-shrink-0">
 				<img
 					src={load_image()}
 					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
@@ -68,7 +68,7 @@
 
 			<!-- 노래 제목 -->
 			<div
-				class="sm:w-[20%] md:w-[14%] lg:w-[12%] px-1 flex-grow overflow-hidden whitespace-pre-line text-sm sm:text-base"
+				class="w-[20%] md:w-[14%] lg:w-[12%] flex-grow overflow-hidden whitespace-pre-line text-sm sm:text-base"
                 style="max-height: 5rem;"
 			>
 				{title.replace(/[~(]/, '\n$&')}
@@ -96,7 +96,7 @@
             
 			<!-- 공개일 -->
 			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden lg:flex"/>
-            <div class="w-[10%] lg:w-[10%] flex-shrink-0 px-3 hidden lg:flex items-center justify-center">
+            <div class="w-[10%] flex-shrink-0 px-3 hidden lg:flex items-center justify-center">
                 {announce_date}
             </div>
 		</div>
