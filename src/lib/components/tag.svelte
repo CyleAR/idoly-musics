@@ -32,11 +32,11 @@
     }
 </style>
 
-<div class="tag-container justify-left flex flex-wrap {sort_as_col ? 'flex-col' : ''}">
+<div class="tag-container justify-left flex flex-wrap {sort_as_col ? 'flex-col' : ''} gap-1">
     {#each texts as item}
         <span
             style="background-color: {hexToRgba(item.color)}; color : {getTextColor(item.color)}"
-            class="m-1 inline-block truncate whitespace-nowrap rounded-lg px-2 py-1 text-center text-black"
+            class="inline-block truncate whitespace-nowrap rounded-lg px-2 py-1 text-center text-black"
         >
             {item.name}
         </span>

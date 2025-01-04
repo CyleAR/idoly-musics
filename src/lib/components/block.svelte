@@ -45,20 +45,20 @@
 	tabindex="0"
 >
 	<!-- 컬러 태그 -->
-	<div id="color-tag" class="h-full w-[1%] md:w-2  rounded-l-xl" style="background-color: {colorTag};"></div>
+	<div id="color-tag" class="h-full w-[1%] md:w-1.5 flex-shrink-0 rounded-l-xl" style="background-color: {colorTag};"></div>
 
 	<!-- 메인 콘텐츠 -->
 	<div class="flex flex-1 items-center">
 		<!-- 콘텐츠 그리드 -->
 		<div class="flex flex-1 items-center">
             <!-- 
-            sm(640px) 미만 : 썸네일, 제목, 그룹 20% 40% 40%
-            sm(640px) 이상 : 썸네일, 제목, 그룹, 아티스트, 15% 25% 25% 25%
-            md(768px) 이상 : 썸네일, 제목, 그룹, 아티스트, 수록앨범 10% 20% 20% 48%
-            lg(1024px) 이상 : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 5% 12% 10% 33% 25% 14%
+            sm(640px) 미만 : 썸네일, 제목, 그룹 | w-20고정 n% 40%
+            sm(640px) 이상 : 썸네일, 제목, 그룹, 아티스트 | w-20고정 n% 20% 25% 40%
+            md(768px) 이상 : 썸네일, 제목, 그룹, 아티스트, 수록앨범 | w-20고정 n% 20% 35% 20%
+            lg(1024px) 이상 : 썸네일, 제목, 그룹, 아티스트, 수록앨범, 공개일 | w-20고정 n% 15% 31% 20% 10%
             -->
 			<!-- 썸네일 -->
-			<div class="relative sm:w-[20%] md:w-[10%] lg:w-[5%] flex-shrink-0">
+			<div class="relative  flex-shrink-0">
 				<img
 					src={load_image()}
 					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
@@ -68,7 +68,7 @@
 
 			<!-- 노래 제목 -->
 			<div
-				class="w-[39%] md:w-[20%] lg:w-[12%] px-1 overflow-hidden whitespace-pre-line text-sm sm:text-base"
+				class="sm:w-[20%] md:w-[14%] lg:w-[12%] px-1 flex-grow overflow-hidden whitespace-pre-line text-sm sm:text-base"
                 style="max-height: 5rem;"
 			>
 				{title.replace(/[~(]/, '\n$&')}
@@ -76,27 +76,27 @@
 
 			<!-- 그룹 -->
 			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height}"/>
-			<div class="w-[39%] md:w-[20%] lg:w-[10%] flex-grow px-3">
+			<div class="w-[40%] sm:w-[25%] md:w-[20%] lg:w-[15%] flex-shrink-0 px-3">
 				<ColorTag texts={groups} />
 			</div>
 
 			<!-- 아티스트 -->
-			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden md:flex"/>
-			<div class="w-[48%] lg:w-[33%] flex-shrink-1 px-3 hidden md:flex">
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden sm:flex"/>
+			<div class="w-[40%] sm:w-[40%] md:w-[35%] lg:w-[31%] flex-shrink-1 px-3 hidden sm:flex">
 				<ColorTag texts={artists} />
 			</div>
 
             
 			<!-- 수록 앨범 -->
-			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden lg:flex"/>
-			<div class="w-[25%] flex-shrink-0 px-3 hidden lg:flex">
+			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden md:flex"/>
+			<div class="w-[20%] flex-shrink-0 px-3 hidden md:flex">
 				<ColorTag texts={included_albums} />
 			</div>
 
             
 			<!-- 공개일 -->
 			<div class="seperator {$global_theme == 'dark' ? 'border-base-100' : 'border-base-300'} {seperator_height} hidden lg:flex"/>
-            <div class="w-[14%] flex-shrink-0 px-3 hidden lg:flex items-center justify-center">
+            <div class="w-[10%] lg:w-[10%] flex-shrink-0 px-3 hidden lg:flex items-center justify-center">
                 {announce_date}
             </div>
 		</div>

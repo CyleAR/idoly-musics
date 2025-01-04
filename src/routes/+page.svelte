@@ -168,7 +168,7 @@
 
 			<!-- 가사 섹션 -->
 			<div
-				class="min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-6 font-bold scrollbar-hide text-base sm:text-lg"
+				class="min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-4 font-bold scrollbar-hide text-base sm:text-lg"
 			>
 				{data.musics.results[$selectedBlock - 1].lyrics}
 			</div>
