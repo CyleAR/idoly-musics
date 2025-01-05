@@ -219,7 +219,7 @@
 				{/if}
 			</div>
 			<!-- 앨범 정보 섹션 -->
-			<div class="flex flex-wrap gap-1 mt-2 p-2 rounded-xl bg-base-200">
+			<div class="flex flex-wrap gap-1 mt-4 p-4 rounded-xl bg-base-200">
 				{#each data.musics.results[$selectedBlock - 1].albums as album}
 					<div class="flex flex-col items-center">
 						<img
