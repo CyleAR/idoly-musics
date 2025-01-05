@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { PageData } from '../../routes/$types';
 	import {
-        global_theme,
+		global_theme,
 		currentLanguage,
 		selectedBlock,
 		view_mode,
@@ -18,6 +18,7 @@
 	import { fly } from 'svelte/transition';
 	import { quintOut } from 'svelte/easing';
 	import { onMount } from 'svelte';
+	import { get } from 'svelte/store';
 
 	export let data: PageData;
 
@@ -66,6 +67,12 @@
 	function updateContentHeight(height: number) {
 		contentHeight = height + 13; // 13 은 페이지 여백
 	}
+
+	function getSoloArtist() {
+		return data.musics.results[$selectedBlock - 1].groups[0]?.id === 8
+			? data.musics.results[$selectedBlock - 1].artists[0]?.name
+			: data.musics.results[$selectedBlock - 1].groups[0]?.name;
+	}
 </script>
 
 <svelte:head>
@@ -73,34 +80,76 @@
 </svelte:head>
 
 <div
-	class="relative flex flex-row px-0.5 lg:px-18 2xl:px-36 py-12"
+	class="lg:px-18 relative flex flex-row px-0.5 py-12 2xl:px-36"
 	style="height: {contentHeight + 5}rem"
 >
-	<div
-        id="page-main"
-		class="flex-1"
-	>
+	<div id="page-main" class="flex-1">
 		<Content {data} onHeightChange={updateContentHeight} />
 	</div>
 
 	{#if isDrawerOpen}
-        <div
-            class="fixed right-1.5 z-50 flex h-[90%] w-[75%] sm:w-[60%] md:w-[45%] lg:w-[35%] xl:w-[30%] flex-col overflow-y-auto rounded-xl bg-base-100 p-4 shadow-xl"
-            style="transition: top 0.2s ease-out;"
-            transition:fly={{ x: 600, duration: 300, easing: quintOut }}
-        >
+		<div
+			id="drawer"
+			class="fixed right-1.5 flex h-[90%] w-[75%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide sm:w-[66%] md:w-[55%] lg:w-[44%] xl:w-[30%]"
+			style="transition: top 0.2s ease-out;"
+			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
+		>
+			<!-- 버튼 섹션 -->
+			<div
+				class="flex flex-wrap items-center justify-between m-2 text-sm sm:text-base lg:text-lg"
+			>
+				<div>
+					<button
+						class="btn btn-xs sm:btn-sm {$global_theme == 'dark'
+							? 'bg-blue-700'
+							: 'bg-blue-500'} text-white hover:bg-blue-600"
+						on:click={() => {
+							info_type = 'jacket';
+						}}
+					>
+						{content_lang['drawer']['jacket']}
+					</button>
+					<button
+						class="btn btn-xs sm:btn-sm"
+						disabled={disable_youtube_btn_flag}
+						on:click={() => {
+							info_type = 'youtube';
+						}}
+					>
+						{content_lang['drawer']['youtube']}
+					</button>
+					<button
+						class="btn btn-xs sm:btn-sm"
+						disabled={disable_mv_btn_flag}
+						on:click={() => {
+							info_type = 'mv';
+						}}
+					>
+						MV
+					</button>
+					<!-- 닫기 버튼 -->
+					<button
+						class="btn btn-circle btn-xs sm:btn-sm absolute right-3"
+						on:click={() => {
+							selectedBlock.set(null);
+						}}
+					>
+						X
+					</button>
+				</div>
+			</div>
 			{#if info_type == 'jacket'}
 				<!-- 앨범 이미지 섹션 -->
-				<div class="relative mb-2 flex w-full justify-center rounded-xl bg-base-200 p-4">
+				<div class="relative flex w-full justify-center rounded-xl bg-base-200 p-2">
 					<img
 						src={load_image()}
-						class="aspect-square w-[50%] rounded-lg object-cover"
+						class="aspect-square w-full rounded-lg rounded-xl object-cover"
 						alt="Album cover"
 					/>
 				</div>
 			{:else if info_type == 'youtube'}
 				<!-- 유튜브 섹션 -->
-				<div class="aspect-w-16 aspect-h-9">
+				<div class="aspect-h-9 aspect-w-16">
 					<iframe
 						class="h-full w-full rounded-lg"
 						src={`https://www.youtube.com/embed/${streamId}`}
@@ -112,7 +161,7 @@
 				</div>
 			{:else if info_type == 'mv'}
 				<!-- MV 섹션 -->
-				<div class="aspect-w-16 aspect-h-9">
+				<div class="aspect-h-9 aspect-w-16">
 					<iframe
 						class="h-full w-full rounded-lg"
 						src={`https://www.youtube.com/embed/${mvId}`}
@@ -125,53 +174,31 @@
 			{/if}
 			<!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->
 			<!-- 제목 섹션 -->
-			<div class="font-bold text-base md:text-lg lg:text-xl ">
+			<div class="pl-2 pt-2 text-base font-bold sm:text-lg lg:text-xl">
 				<span> {data.musics.results[$selectedBlock - 1].music_name} </span>
 			</div>
-
-			<!-- 태그 섹션 -->
-			<div class="mb-2 flex flex-wrap items-center justify-between gap-2 text-sm md:text-base lg:text-lg">
-				<div>
-					{data.musics.results[$selectedBlock - 1].groups[0].name}
-				</div>
-				<div>
-					<button
-						class="btn !h-8 !min-h-0 {$global_theme == 'dark'
-							? 'bg-blue-700'
-							: 'bg-blue-500'} text-white hover:bg-blue-600"
-						on:click={() => {
-							info_type = 'jacket';
-						}}
-					>
-						{content_lang['drawer']['jacket']}
-					</button>
-					<button
-						class="btn !h-8 !min-h-0"
-						disabled={disable_youtube_btn_flag}
-						on:click={() => {
-							info_type = 'youtube';
-						}}
-					>
-						{content_lang['drawer']['youtube']}
-					</button>
-					<button
-						class="btn !h-8 !min-h-0"
-						disabled={disable_mv_btn_flag}
-						on:click={() => {
-							info_type = 'mv';
-						}}
-					>
-						MV
-					</button>
-				</div>
+			<!-- 그룹 섹션 -->
+			<div class="mb-2 pl-2 text-sm sm:text-base lg:text-lg">
+				{getSoloArtist()}
 			</div>
-
 			<!-- 가사 섹션 -->
 			<div
-				class="min-h-[40%] w-full overflow-y-scroll whitespace-pre-line rounded-xl bg-base-200 p-4 font-bold scrollbar-hide text-base sm:text-lg"
+				class="w-full whitespace-pre-line rounded-xl bg-base-200 p-4 text-base font-bold sm:text-lg"
 			>
 				{data.musics.results[$selectedBlock - 1].lyrics}
 			</div>
+            <!-- 아티스트 정보 섹션 -->
+            <div class="flex flex-wrap gap-2 p-2">
+                {#each data.musics.results[$selectedBlock - 1].artists as artist}
+                    <div class="flex flex-col items-center gap-2">
+                        <img
+                            src={`/src/images/idol/${artist.id}.webp`}
+                            class="w-16 h-16 rounded-full object-cover"
+                            alt="artist"
+                        />
+                    </div>
+                {/each}
+            </div>
 		</div>
 	{/if}
 </div>
