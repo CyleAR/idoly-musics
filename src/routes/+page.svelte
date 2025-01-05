@@ -47,13 +47,18 @@
 	$artist_images = import.meta.glob('/src/images/idol/*.webp', { eager: true });
 	$music_images = import.meta.glob('/src/images/music/*.webp', { eager: true });
 
-	function load_image() {
-		// console.log(data.musics.results[$selectedBlock - 1]);
+	function loadJacketImage() {
 		const imagePath = `/src/images/music/${$selectedBlock}.webp`;
-		const exists = $music_images[imagePath];
-		return exists ? exists.default : $music_images[`/src/images/music/0.webp`].default;
+        const exists = $music_images[imagePath];
+        return exists ? exists.default : $music_images[`/src/images/music/0.webp`].default;
 	}
 
+    function loadArtistImage(id) {
+		const imagePath = `/src/images/idol/${id}.webp`;
+		const exists = $artist_images[imagePath];
+		return exists ? exists.default : $artist_images[`/src/images/idol/0.webp`].default;
+	}
+    
 	$: isDrawerOpen = $selectedBlock !== null;
 
 	$: if ($currentLanguage && browser) {
@@ -142,7 +147,7 @@
 				<!-- 앨범 이미지 섹션 -->
 				<div class="relative flex w-full justify-center rounded-xl bg-base-200 p-2">
 					<img
-						src={load_image()}
+						src={loadJacketImage()}
 						class="aspect-square w-full rounded-lg rounded-xl object-cover"
 						alt="Album cover"
 					/>
@@ -185,14 +190,18 @@
 			<div
 				class="w-full whitespace-pre-line rounded-xl bg-base-200 p-4 text-base font-bold sm:text-lg"
 			>
-				{data.musics.results[$selectedBlock - 1].lyrics}
+            {#if data.musics.results[$selectedBlock - 1].lyrics}
+            {data.musics.results[$selectedBlock - 1].lyrics}
+          {:else}
+            <span class="text-gray-500">NO LYRICS DATA</span>
+          {/if}
 			</div>
             <!-- 아티스트 정보 섹션 -->
             <div class="flex flex-wrap gap-2 p-2">
                 {#each data.musics.results[$selectedBlock - 1].artists as artist}
                     <div class="flex flex-col items-center gap-2">
                         <img
-                            src={`/src/images/idol/${artist.id}.webp`}
+                            src={loadArtistImage(artist.id)}
                             class="w-16 h-16 rounded-full object-cover"
                             alt="artist"
                         />
