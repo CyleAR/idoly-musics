@@ -30,6 +30,10 @@ export const language_table = {
 				jacket: '자켓',
 				youtube: 'YOUTUBE'
 			}
+		},
+		profile: {
+			uncategorized: '미수록',
+			others: '그 외'
 		}
 	},
 
@@ -64,6 +68,10 @@ export const language_table = {
 				jacket: 'Jacket',
 				youtube: 'YOUTUBE'
 			}
+		},
+		profile: {
+			uncategorized: 'Unreleased',
+			others: 'Others'
 		}
 	},
 
@@ -98,6 +106,10 @@ export const language_table = {
 				jacket: 'ジャケット',
 				youtube: 'YOUTUBE'
 			}
+		},
+		profile: {
+			uncategorized: '未収録',
+			others: 'その他'
 		}
 	},
 
@@ -132,6 +144,10 @@ export const language_table = {
 				jacket: '封面',
 				youtube: 'YOUTUBE'
 			}
+		},
+		profile: {
+			uncategorized: '未收录',
+			others: '其他'
 		}
 	}
 };

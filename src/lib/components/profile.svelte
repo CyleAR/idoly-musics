@@ -1,7 +1,15 @@
 <script lang="ts">
 	export let data;
 	export let type;
-	import { global_theme, filter, group_images, album_images, artist_images } from '$lib/stores';
+	import {
+		global_theme,
+		filter,
+		group_images,
+		album_images,
+		artist_images,
+		currentLanguage
+	} from '$lib/stores';
+	import { language_table } from '$lib/lang.ts';
 	import { onMount } from 'svelte';
 
 	let selectedArtists: boolean[] = [];
@@ -11,7 +19,16 @@
 		type === 'group' ? $group_images : type === 'album' ? $album_images : $artist_images;
 
 	$: cache = ['group', 'album', 'idol'].includes(type)
-		? [{ id: '0', name: type === 'album' ? '미수록' : '그 외' }, ...data]
+		? [
+				{
+					id: '0',
+					name:
+						type === 'album'
+							? language_table[$currentLanguage]['profile'].uncategorized
+							: language_table[$currentLanguage]['profile'].others
+				},
+				...data
+			]
 		: data;
 
 	$: if (cache) {
