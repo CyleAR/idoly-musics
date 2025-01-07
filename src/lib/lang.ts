@@ -146,7 +146,7 @@ export const language_table = {
 			}
 		},
 		profile: {
-			uncategorized: '未收录',
+			uncategorized: '未收錄',
 			others: '其他'
 		}
 	}
