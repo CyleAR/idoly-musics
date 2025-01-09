@@ -45,7 +45,7 @@
 		selectedItems = [...selectedItems];
 
 		const selectedIds = data.filter((_, i) => selectedItems[i]).map((item) => item.id);
-		//filter.set(selectedNames);
+
         switch (type) {
             case 'group':
                 groupFilter.set(selectedIds);

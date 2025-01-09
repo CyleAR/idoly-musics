@@ -33,7 +33,6 @@
 			$global_theme = theme;
 			localStorage.setItem('theme', theme);
 
-			resetFilters(); // 테마 변경시 필터 초기화
 			view_mode.set('');
 			selectedBlock.set(null);
 		}

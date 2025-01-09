@@ -53,7 +53,6 @@
 	async function handleLanguageChange(lang) {
 		currentLanguage.set(lang);
 		view_mode.set('');
-		resetFilters(); // 언어 변경시 필터 초기화
 		localStorage.setItem('language', lang);
 		document.documentElement.setAttribute('data-lang', lang);
 		isOpen = false;
