@@ -107,7 +107,7 @@
 	{#if isDrawerOpen}
 		<div
 			id="drawer"
-			class="fixed right-1.5 flex h-[91.5%] w-[75%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide sm:w-[66%] md:w-[55%] lg:w-[44%] xl:w-[30%]"
+			class="fixed right-1.5 flex h-[91.5%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide  w-[75%] sm:w-[66%] md:w-[55%] lg:w-[44%] xl:w-[33%] 2xl:w-[22%]"
 			style="transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
 		>
