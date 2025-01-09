@@ -1,6 +1,6 @@
 <script lang="ts">
 	export let data;
-	export let type;
+	export let type: 'group' | 'album' | 'artist';
 	import {
 		global_theme,
         artistFilter,
@@ -35,51 +35,79 @@
 		);
 	}
 
-	function handleImageError(id) {
+	function handleImageError(id: number) {
 		img_src[id] = images[`/src/images/${type}/0.webp`].default;
 		img_src = { ...img_src };
 	}
 
-	function toggleSelection(index) {
-		selectedItems[index] = !selectedItems[index];
-		selectedItems = [...selectedItems];
-
-		const selectedIds = data.filter((_, i) => selectedItems[i]).map((item) => item.id);
-
+	function toggleSelection(index: number) {
         switch (type) {
             case 'group':
-                groupFilter.set(selectedIds);
+                const groupId = $groupFilter.indexOf(index);
+                if(groupId > -1) {
+                    groupFilter.update((value) => {
+                        value.splice(groupId, 1);
+                        return value;
+                    });
+                } else {
+                    groupFilter.update((value) => {
+                        value.push(index);
+                        return value;
+                    });
+                }
                 break;
             case 'album':
-                albumFilter.set(selectedIds);
+                const albumId = $albumFilter.indexOf(index);
+                if(albumId > -1) {
+                    albumFilter.update((value) => {
+                        value.splice(albumId, 1);
+                        return value;
+                    });
+                } else {
+                    albumFilter.update((value) => {
+                        value.push(index);
+                        return value;
+                    });
+                }
                 break;
             case 'artist':
-                artistFilter.set(selectedIds);
+                const artistId = $artistFilter.indexOf(index);
+                if(artistId > -1) {
+                    artistFilter.update((value) => {
+                        value.splice(artistId, 1);
+                        return value;
+                    });
+                } else {
+                    artistFilter.update((value) => {
+                        value.push(index);
+                        return value;
+                    });
+                }
                 break;
         }
+        console.log($groupFilter);
 	}
 
 </script>
 
-<div class="flex flex-wrap justify-center gap-4">
+<div class="flex flex-wrap justify-center gap-1 sm:gap-2 md:gap-3 lg:gap-4">
 	{#each data as item}
         <button
             on:click={() => toggleSelection(item.id)}
-            class="btn relative h-32 w-32 border-none bg-transparent p-0 transition-all duration-200 hover:-translate-y-1"
+            class="btn relative h-20 w-20 sm:h-24 sm:w-24 md:h-28 md:w-28 lg:h-32 lg:w-32 border-none {$global_theme === 'dark'
+                            ? 'bg-black/60'
+                            : 'bg-black/10'} p-0 transition-all duration-200 hover:-translate-y-1 rounded-xl"
         >
             <div class="relative h-full w-full">
-                {#if !selectedItems[item.id]}
+                {#if (type === 'group' ? $groupFilter : type === 'album' ? $albumFilter : $artistFilter).includes(item.id)}
                     <div
-                        class="absolute inset-0 z-10 rounded-lg {$global_theme === 'dark'
-                            ? 'bg-black/60'
-                            : 'bg-black/30'} transition-opacity duration-200"
+                        class="absolute inset-0 z-20 border-4 border-blue-600 transition-opacity duration-200 rounded-xl"
                     ></div>
                 {/if}
                 <img
                     src={img_src[item.id]}
                     on:error={() => handleImageError(item.id)}
-                    class="h-full w-full rounded-lg object-cover transition-opacity duration-200
-                    {selectedItems[item.id] && $global_theme === 'dark' ? 'brightness-125' : ''}"
+                    class="h-full w-full object-cover transition-opacity duration-200 rounded-xl"
                     alt={item.name || ''}
                 />
 
@@ -87,7 +115,7 @@
                     class="absolute bottom-0 left-0 right-0 h-12 rounded-b-lg bg-gradient-to-t from-black/70 to-transparent"
                 ></div>
                 <span
-                    class="absolute bottom-2 left-0 right-0 z-20 text-center font-medium text-white drop-shadow-lg"
+                    class="absolute bottom-2 left-0 right-0 z-10 text-center font-medium text-white drop-shadow-lg"
                 >
                     {item.name}
                 </span>

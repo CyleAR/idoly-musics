@@ -3,9 +3,9 @@ import { writable, derived } from 'svelte/store';
 export const currentLanguage = writable('en');
 export const global_theme = writable('light');
 
-export const artistFilter = writable<string[]>([]);
-export const groupFilter = writable<string[]>([]);
-export const albumFilter = writable<string[]>([]);
+export const artistFilter = writable<number[]>([]);
+export const groupFilter = writable<number[]>([]);
+export const albumFilter = writable<number[]>([]);
 export const isFilterEmpty = derived(
     [artistFilter, groupFilter, albumFilter],
     ([$artistFilter, $groupFilter, $albumFilter]) =>

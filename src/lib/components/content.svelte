@@ -257,10 +257,10 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="group" class="modal" on:click|self={() => document.getElementById('group').close()}>
-	<div class="modal-box max-w-5xl">
-		<h3 class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByGroupModal'].title}</h3>
+	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
+		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByGroupModal'].title}</div>
 		<Profile data={groupCache} type={'group'} />
-		<div class="modal-action">
+		<div class="modal-action flex justify-center">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByGroupModal'].close}</button>
 			</form>
@@ -272,10 +272,10 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="artist" class="modal" on:click|self={() => document.getElementById('artist').close()}>
-	<div class="modal-box max-w-5xl">
-		<h3 class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByArtistModal'].title}</h3>
+	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
+		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByArtistModal'].title}</div>
 		<Profile data={artistCache} type={'artist'} />
-		<div class="modal-action text-center">
+		<div class="modal-action flex justify-center">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByArtistModal'].close}</button>
 			</form>
@@ -287,10 +287,10 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="album" class="modal" on:click|self={() => document.getElementById('album').close()}>
-	<div class="modal-box max-w-5xl">
-		<h3 class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByAlbumModal'].title}</h3>
+	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
+		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByAlbumModal'].title}</div>
 		<Profile data={albumCache} type={'album'} />
-		<div class="modal-action">
+		<div class="modal-action flex justify-center">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByAlbumModal'].close}</button>
 			</form>

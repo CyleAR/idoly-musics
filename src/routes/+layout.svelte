@@ -34,7 +34,7 @@
 			localStorage.setItem('theme', theme);
 
 			view_mode.set('');
-			selectedBlock.set(null);
+			//selectedBlock.set(null);
 		}
 	};
 
@@ -51,7 +51,6 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="flex min-h-screen flex-col bg-base-300">
 	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-3 lg:px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
