@@ -2,12 +2,13 @@
 	import {
 		global_theme,
 		currentLanguage,
-		filter,
-		view_mode,
+        artistFilter,
+        groupFilter,
+        albumFilter,
+        isFilterEmpty,
+        resetFilters,
+        view_mode,
 		selectedBlock,
-		current_filter_type,
-		previous_filter_type,
-		filter_type,
 		current_page
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
@@ -43,37 +44,32 @@
 
 	// 너무 무식한 방법이긴 한데..
 	// 시간 너무 먹힌다
-	$: if (filteredBlocks) {
-		const selectedGroups = $filter.filter((name) =>
-			groupCache.some((group) => group.name === name)
-		);
-		// console.log(selectedGroups);
-		// console.log(filteredBlocks);
-	}
+	// $: if (filteredBlocks) {
+	// 	const selectedGroups = $filter.filter((name) =>
+	// 		groupCache.some((group) => group.name === name)
+	// 	);
+	// 	// console.log(selectedGroups);
+	// 	// console.log(filteredBlocks);
+	// }
 
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// filter가 비어있으면 모든 블록 표시
-		if ($filter.length === 0 || $filter == undefined) return true;
+		if ($isFilterEmpty) return true;
 
 		$current_page = 1;
 
-		// filter_type에 따라 해당하는 필터만 적용
-		switch ($filter_type) {
-			case 'artist':
-				return $filter.every((selectedName) =>
-					block.artists.some((artist) => artist.name === selectedName)
-				);
-			case 'group':
-				return $filter.every((selectedName) =>
-					block.groups.some((group) => group.name === selectedName)
-				);
-			case 'album':
-				return $filter.every((selectedName) =>
-					block.albums.some((album) => album.name === selectedName)
-				);
-			default:
-				return true;
-		}
+        // 각 카테고리별 필터 적용
+        const groupMatch = $groupFilter.length === 0 || $groupFilter.every((id) =>
+            block.groups.some((group) => group.id === id)
+        );
+        const artistMatch = $artistFilter.length === 0 || $artistFilter.every((id) => 
+            block.artists.some((artist) => artist.id === id)
+        );
+        const albumMatch = $albumFilter.length === 0 || $albumFilter.every((id) =>
+            block.albums.some((album) => album.id === id)
+        );
+
+        return artistMatch && groupMatch && albumMatch;
 	});
 
 	// 전체 페이지 수 계산
@@ -124,7 +120,7 @@
 
 	$: contentHeight = paginatedBlocks.reduce((height, block) => {
 		const blockHeight = parseFloat(calculateBlockHeight(block).match(/\d+/)[0]);
-		if ($view_mode == 'idol') {
+		if ($view_mode == 'artist') {
 			return height + blockHeight + 15;
 		}
 		return height + blockHeight + 0.7; // 0.5rem 여백
@@ -151,14 +147,9 @@
 	function showModal(id: string) {
 		const modal = document.getElementById(id) as HTMLDialogElement;
 		if (modal) {
-			filter_type.set(id);
+			//filter_type.set(id);
 			modal.showModal();
-			// 이전과 다른 필터를 선택했을 때만 초기화
-			if ($current_filter_type !== id) {
-				filter.set([]);
-			}
-			previous_filter_type.set($current_filter_type);
-			current_filter_type.set(id);
+			
 		}
 
 		// 이거 왜 넣었더라?
@@ -172,7 +163,6 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore element_invalid_self_closing_tag -->
 <div class="duration-50 flex transition-all">
 	<div
 		id="contents-wrapper"
@@ -184,7 +174,7 @@
 		{:else if $view_mode == 'viewByGroup'}
 			<Table {data} cache={groupCache} type={'group'} />
 		{:else if $view_mode == 'viewByArtist'}
-			<Table {data} cache={artistCache} type={'idol'} />
+			<Table {data} cache={artistCache} type={'artist'} />
 		{:else}
 			<div id="header-wrapper" class="flex w-full flex text-center">
 				{#each HEADERS as header}
@@ -261,10 +251,14 @@
 	</div>
 </div>
 
+
+<!-- 필터링 모달 -->
 <!-- 그룹 -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="group" class="modal" on:click|self={() => document.getElementById('group').close()}>
 	<div class="modal-box max-w-5xl">
-		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByGroupModal'].title}</h3>
+		<h3 class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByGroupModal'].title}</h3>
 		<Profile data={groupCache} type={'group'} />
 		<div class="modal-action">
 			<form method="dialog">
@@ -274,12 +268,14 @@
 	</div>
 </dialog>
 
-<!-- 작가( Artist ) -->
+<!-- 아티스트 -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="artist" class="modal" on:click|self={() => document.getElementById('artist').close()}>
 	<div class="modal-box max-w-5xl">
-		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByArtistModal'].title}</h3>
-		<Profile data={artistCache} type={'idol'} />
-		<div class="modal-action">
+		<h3 class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByArtistModal'].title}</h3>
+		<Profile data={artistCache} type={'artist'} />
+		<div class="modal-action text-center">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByArtistModal'].close}</button>
 			</form>
@@ -288,9 +284,11 @@
 </dialog>
 
 <!-- 앨범 -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
+<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="album" class="modal" on:click|self={() => document.getElementById('album').close()}>
 	<div class="modal-box max-w-5xl">
-		<h3 class="mb-4 text-lg font-bold">{sideNav_lang['viewByAlbumModal'].title}</h3>
+		<h3 class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByAlbumModal'].title}</h3>
 		<Profile data={albumCache} type={'album'} />
 		<div class="modal-action">
 			<form method="dialog">
@@ -301,11 +299,6 @@
 </dialog>
 
 <style lang="postcss">
-	.header {
-		@apply card grid h-14 items-center justify-start rounded-box bg-base-100 pt-4;
-		transition: transform 0.2s ease;
-	}
-
 	.header-text:hover {
 		cursor: pointer;
 		transition: transform 0.2s ease;

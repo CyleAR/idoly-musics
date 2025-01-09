@@ -39,11 +39,11 @@ export const language_table = {
 
 	en: {
 		content: {
-			songName: 'Song Name',
+			songName: 'Name',
 			group: 'Group',
 			artist: 'Artist',
 			album: 'Album',
-			releaseDate: 'Release Date'
+			releaseDate: 'Announce Date'
 		},
 		sideNav: {
 			table: 'Table',

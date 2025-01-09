@@ -2,7 +2,7 @@
 	import { view_mode } from '$lib/stores';
 	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
 	import { ChevronDownOutline } from 'flowbite-svelte-icons';
-	import { currentLanguage, filter } from '$lib/stores';
+	import { currentLanguage, resetFilters } from '$lib/stores';
 	import { onMount } from 'svelte';
 
 	const languageLabels = {
@@ -53,7 +53,7 @@
 	async function handleLanguageChange(lang) {
 		currentLanguage.set(lang);
 		view_mode.set('');
-		filter.set([]);
+		resetFilters(); // 언어 변경시 필터 초기화
 		localStorage.setItem('language', lang);
 		document.documentElement.setAttribute('data-lang', lang);
 		isOpen = false;

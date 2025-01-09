@@ -5,9 +5,11 @@
 	import { page } from '$app/stores';
 	import {
 		global_theme,
-		filter,
-		current_filter_type,
-		previous_filter_type,
+		artistFilter,
+        groupFilter,
+        albumFilter,
+        isFilterEmpty,
+        resetFilters,
 		currentLanguage,
 		view_mode,
 		current_page,
@@ -31,9 +33,7 @@
 			$global_theme = theme;
 			localStorage.setItem('theme', theme);
 
-			filter.set([]);
-			previous_filter_type.set('');
-			current_filter_type.set('');
+			resetFilters(); // 테마 변경시 필터 초기화
 			view_mode.set('');
 			selectedBlock.set(null);
 		}
@@ -42,10 +42,8 @@
 	$: content_lang = language_table[$currentLanguage]['sideNav'];
 
 	function reset() {
-		filter.set([]);
-		current_filter_type.set('');
-		previous_filter_type.set('');
-		view_mode.set('');
+        resetFilters();
+        view_mode.set('');
 		current_page.set(1);
 	}
 

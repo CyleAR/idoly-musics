@@ -44,7 +44,7 @@
 
 	$group_images = import.meta.glob('/src/images/group/*.webp', { eager: true });
 	$album_images = import.meta.glob('/src/images/album/*.webp', { eager: true });
-	$artist_images = import.meta.glob('/src/images/idol/*.webp', { eager: true });
+	$artist_images = import.meta.glob('/src/images/artist/*.webp', { eager: true });
 	$music_images = import.meta.glob('/src/images/music/*.webp', { eager: true });
 
 	// 이미지 타입에 따라 적절한 이미지 객체를 반환하는 함수
@@ -54,7 +54,7 @@
 				return $group_images;
 			case 'album':
 				return $album_images;
-			case 'idol':
+			case 'artist':
 				return $artist_images;
 			case 'music':
 				return $music_images;
@@ -201,7 +201,7 @@
 				{#each data.musics.results[$selectedBlock - 1].artists as artist}
 					<div class="flex flex-col items-center">
 						<img
-							src={loadImage('idol', artist.id)}
+							src={loadImage('artist', artist.id)}
 							class="h-8 w-8 rounded-full object-cover sm:h-10 sm:w-10 lg:h-12 lg:w-12"
 							alt="artist"
 						/>

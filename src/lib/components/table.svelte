@@ -41,7 +41,7 @@
 	function getMusics(name) {
 		return musics.filter((music) => {
 			switch (type) {
-				case 'idol':
+				case 'artist':
 					return music.artists.some((artist) => artist.name === name);
 				case 'group':
 					return music.groups.some((group) => group.name === name);
