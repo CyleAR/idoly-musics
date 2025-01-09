@@ -97,17 +97,18 @@
 </svelte:head>
 
 <div
-	class="lg:px-18 relative flex flex-row px-0.5 py-12 2xl:px-36"
+	class="relative flex flex-row py-12 px-0.5 lg:px-18 2xl:px-36"
 	style="height: {contentHeight + 5}rem"
 >
 	<div id="page-main" class="flex-1">
 		<Content {data} onHeightChange={updateContentHeight} />
 	</div>
 
+    <!-- 블록 선택 시 나타나는 Drawer -->
 	{#if isDrawerOpen}
 		<div
 			id="drawer"
-			class="fixed right-1.5 flex h-[91.5%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide  w-[75%] sm:w-[66%] md:w-[55%] lg:w-[44%] xl:w-[33%] 2xl:w-[22%]"
+			class="fixed right-1.5 flex h-[91.5%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide w-[75%] sm:w-[66%] md:w-[55%] lg:w-[41.25%] xl:w-[33%] 2xl:w-[27.5%]"
 			style="transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
 		>

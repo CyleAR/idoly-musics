@@ -44,6 +44,7 @@
         resetFilters();
         view_mode.set('');
 		current_page.set(1);
+        selectedBlock.set(null);
 	}
 
     const commitHash = __COMMIT_HASH__.slice(0, 7);

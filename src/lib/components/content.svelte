@@ -42,16 +42,6 @@
 	$: isDrawerOpen = $selectedBlock !== null;
 	$: content_lang = language_table[$currentLanguage]['content'];
 
-	// 너무 무식한 방법이긴 한데..
-	// 시간 너무 먹힌다
-	// $: if (filteredBlocks) {
-	// 	const selectedGroups = $filter.filter((name) =>
-	// 		groupCache.some((group) => group.name === name)
-	// 	);
-	// 	// console.log(selectedGroups);
-	// 	// console.log(filteredBlocks);
-	// }
-
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// filter가 비어있으면 모든 블록 표시
 		if ($isFilterEmpty) return true;
@@ -147,9 +137,7 @@
 	function showModal(id: string) {
 		const modal = document.getElementById(id) as HTMLDialogElement;
 		if (modal) {
-			//filter_type.set(id);
 			modal.showModal();
-			
 		}
 
 		// 이거 왜 넣었더라?
