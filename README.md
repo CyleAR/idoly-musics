@@ -7,7 +7,7 @@ IDOLY MUSICS
 <a href="https://idolypride.cyle.me">idolypride.cyle.me</a>
 </h3>
 
-**IDOLY MUSICS** is a unoffical web project that organizes and visualizes music data from the project **IDOLY PRIDE**, providing a user-friendly interface for exploring IDOLY PRIDE's music collection.
+**IDOLY MUSICS** is a fan-operated web project that organizes and visualizes music data from the **IDOLY PRIDE** project, offering a user-friendly interface for exploring IDOLY PRIDE's music collection.
 
 ---
 
@@ -15,11 +15,11 @@ IDOLY MUSICS
 
 ### 🎵 Music Database
 - **Complete Music List:** Browse a well-organized list of ~~all~~ most tracks included in the project.
-- **Detailed Track Info:** View specific details for each track, such as title, artist, release date, and participating groups.
+- **Detailed Track Info:** View specific details for each track, such as cover art, title, groups, artists, albums, and announcement date.
 
 ### 🔍 Search & Filter
-- Quickly find tracks, artists, or albums with the search feature.
-- Filter by genres, release dates, and other criteria.
+- Filter by groups, artists, and albums.
+- View by a specified group, artist, or album.
 
 ## Data
 - Local Image Data: `/src/images/`
@@ -40,7 +40,7 @@ npm run dev
 - [jyto7034](https://github.com/jyto7034)
 - [Cyle](https://github.com/CyleAR)
 
-If you have any issues such as data errors, missing or site translation errors, please contact us via Discord DM @Cyle
+If you encounter any issues, such as data errors, missing information, or site translation mistakes, please contact us via Discord DM @Cyle.
 
 ## References & Links
 

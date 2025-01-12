@@ -92,10 +92,6 @@
 	}
 </script>
 
-<svelte:head>
-	<title>IDOLY MUSICS</title>
-</svelte:head>
-
 <div
 	class="relative flex flex-row py-12 px-0.5 lg:px-18 2xl:px-36"
 	style="height: {contentHeight + 5}rem"
