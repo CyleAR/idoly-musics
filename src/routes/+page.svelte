@@ -26,18 +26,23 @@
 	$: content_lang = language_table[$currentLanguage]['page'];
 	$: mvId = '';
 	$: streamId = '';
-	$: disable_youtube_btn_flag = false;
-	$: disable_mv_btn_flag = false;
+    $: livemvId = '';
+	$: disable_youtube_btn_flag = true;
+	$: disable_mv_btn_flag = true;
+    $: disable_3dmv_btn_flag = true;
 	$: if ($selectedBlock >= 1) {
 		// console.log($selectedBlock - 1);
 		// console.log(data.musics.results[$selectedBlock - 1]);
 		let _mvid = data.musics.results[$selectedBlock - 1].mv_url;
 		let _streamid = data.musics.results[$selectedBlock - 1].stream_url;
+        let _3dmvid = data.musics.results[$selectedBlock - 1]?.live_mv_url;
 
 		disable_mv_btn_flag = _mvid == '' ? true : false;
+        // disable_3dmv_btn_flag = _3dmvid == '' ? true : false;
 		disable_youtube_btn_flag = _streamid == '' ? true : false;
 
 		mvId = _mvid.split('/').pop();
+        livemvId = _3dmvid?.split('/').pop();
 		streamId = _streamid.split('/').pop();
 		info_type = 'jacket';
 	}
@@ -97,10 +102,11 @@
 </svelte:head>
 
 <div
-	class="relative flex flex-row py-12 px-0.5 lg:px-18 2xl:px-36"
-	style="height: {contentHeight + 5}rem"
+    id="page-wrapper"
+	class="relative flex flex-row"
+	style="height: {contentHeight}rem"
 >
-	<div id="page-main" class="flex-1">
+	<div id="page-main" class="flex-1 pt-2 px-0 xl:px-32 2xl:px-64">
 		<Content {data} onHeightChange={updateContentHeight} />
 	</div>
 
@@ -108,7 +114,7 @@
 	{#if isDrawerOpen}
 		<div
 			id="drawer"
-			class="fixed right-1.5 flex h-[91.5%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide w-[75%] sm:w-[66%] md:w-[55%] lg:w-[41.25%] xl:w-[33%] 2xl:w-[27.5%]"
+			class="fixed z-[40] top-[4rem] mt-2 right-1 flex h-[93.5%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide w-[75%] sm:w-[66%] md:w-[55%] lg:w-[41.25%] xl:w-[33%] 2xl:w-[27.5%]"
 			style="transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
 		>
@@ -116,9 +122,7 @@
 			<div class="m-2 flex flex-wrap items-center justify-between text-sm sm:text-base lg:text-lg">
 				<div>
 					<button
-						class="btn btn-xs sm:btn-sm {$global_theme == 'dark'
-							? 'bg-blue-700'
-							: 'bg-blue-500'} text-white hover:bg-blue-600"
+                        class="btn btn-xs sm:btn-sm {info_type === 'jacket' ? ($global_theme === 'dark' ? 'bg-blue-700 text-white' : 'bg-blue-500 text-white')  : ''} hover:bg-blue-600"
 						on:click={() => {
 							info_type = 'jacket';
 						}}
@@ -126,7 +130,7 @@
 						{content_lang['drawer']['jacket']}
 					</button>
 					<button
-						class="btn btn-xs sm:btn-sm"
+						class="btn btn-xs sm:btn-sm {info_type === 'youtube' ? ($global_theme === 'dark' ? 'bg-blue-700 text-white' : 'bg-blue-500 text-white') : ''} hover:bg-blue-600"
 						disabled={disable_youtube_btn_flag}
 						on:click={() => {
 							info_type = 'youtube';
@@ -135,7 +139,7 @@
 						{content_lang['drawer']['youtube']}
 					</button>
 					<button
-						class="btn btn-xs sm:btn-sm"
+						class="btn btn-xs sm:btn-sm {info_type === 'mv' ? ($global_theme === 'dark' ? 'bg-blue-700 text-white' : 'bg-blue-500 text-white') : ''} hover:bg-blue-600"
 						disabled={disable_mv_btn_flag}
 						on:click={() => {
 							info_type = 'mv';
@@ -143,6 +147,15 @@
 					>
 						MV
 					</button>
+                    <!-- <button
+						class="btn btn-xs sm:btn-sm {info_type === '3dmv' ? ($global_theme === 'dark' ? 'bg-blue-700 text-white' : 'bg-blue-500 text-white') : ''} hover:bg-blue-600"
+						disabled={disable_3dmv_btn_flag}
+						on:click={() => {
+							info_type = '3dmv';
+						}}
+					>
+						3DMV
+					</button> -->
 					<!-- 닫기 버튼 -->
 					<button
 						class="btn btn-circle btn-xs absolute right-3 sm:btn-sm"

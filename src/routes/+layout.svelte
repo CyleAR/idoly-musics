@@ -51,9 +51,11 @@
     const commitLink = `https://github.com/CyleAR/idoly-musics/tree/${__COMMIT_HASH__}`;
 </script>
 
+
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <div class="flex min-h-screen flex-col bg-base-300">
-	<div class="navbar fixed top-0 z-[100] w-full bg-base-100 px-3 lg:px-6 shadow-md">
+    <!-- 상단바 -->
+	<div  id="navibar" class="navbar fixed top-0 z-[100] h-16 w-full bg-base-100 px-3 lg:px-6 shadow-md">
 		<div id="logo-text" class="flex-1">
 			<div class="z-[52]">
 				<label for="my-drawer" class="drawer-button">
@@ -136,14 +138,14 @@
 			</ul>
 		</div>
 	</div>
-	<div class="flex-1 pt-[4.5vh]">
-		<slot />
+	<div id="page" class="flex-1 pt-[4rem]">
+		<slot /> <!-- 페이지 내용(+page.svelte) -->
 	</div>
-	<footer class="mt-auto bg-base-100 py-4 text-center shadow-inner">
-		<p class="text-sm text-gray-400">This site is a fan project of IDOLYPRIDE</p>
+	<footer id="footer" class="mt-auto bg-base-100 py-4 text-center shadow-inner">
+		<p class="text-sm text-gray-400">[<a href="https://github.com/CyleAR/idoly-musics" target="_blank" rel="noopener noreferrer">Source</a> @ <a href={commitLink} target="_blank" rel="noopener noreferrer">{commitHash}</a>]</p>
+		<p class="text-sm text-gray-400">This site is a fan site of<a href="https://idolypride.jp" target="_blank" rel="noopener noreferrer">「IDOLY PRIDE」</a></p>
 		<p class="text-sm text-gray-400">Some data may be inaccurate</p>
-		<p class="text-sm text-gray-400">Contents © QualiArts and associates</p>
-		<p class="text-sm text-gray-400"><a href="https://github.com/CyleAR/idoly-musics" target="_blank" rel="noopener noreferrer">Source</a> @ <a href={commitLink} target="_blank rel="noopener noreferrer>{commitHash}</p>
+		<p class="text-sm text-gray-400">Contents © QualiArts and it's associates</p>
 	</footer>
 </div>
 
@@ -153,7 +155,7 @@
 		transition: transform 0.2s ease;
 	}
     .drawer-side {
-        top: 5rem; /* 네비게이션 바의 높이만큼 설정 */
+        top: 4rem; /* 상단바의 높이만큼 설정 h-16=4rem */
     }
 	.drawer-menu:active {
 		transform: scale(0.95);

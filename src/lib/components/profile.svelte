@@ -101,7 +101,11 @@
             <div class="relative h-full w-full">
                 {#if (type === 'group' ? $groupFilter : type === 'album' ? $albumFilter : $artistFilter).includes(item.id)}
                     <div
-                        class="absolute inset-0 z-20 border-4 border-blue-600 transition-opacity duration-200 rounded-xl"
+                        class="absolute inset-0 z-20 border-2 md:border-4 border-blue-600 transition-opacity duration-200 rounded-xl"
+                    ></div>
+                    {:else}
+                    <div
+                        class="absolute inset-0 z-20 bg-black bg-opacity-30 transparent-80 transition-opacity duration-200 rounded-xl"
                     ></div>
                 {/if}
                 <img

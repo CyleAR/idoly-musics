@@ -110,11 +110,11 @@
 
 	$: contentHeight = paginatedBlocks.reduce((height, block) => {
 		const blockHeight = parseFloat(calculateBlockHeight(block).match(/\d+/)[0]);
-		if ($view_mode == 'artist') {
-			return height + blockHeight + 15;
-		}
-		return height + blockHeight + 0.7; // 0.5rem 여백
-	}, 0);
+            if ($view_mode.startsWith('viewBy')) {
+                return height + blockHeight + 2;
+            }
+            return height + blockHeight + 0.4; // 0.5rem 여백
+        }, 0);
 
 	// 계산된 Height 를 상위 컴포넌트로 전파 ( +page.svelte )
 	$: onHeightChange(contentHeight);
@@ -139,9 +139,6 @@
 		if (modal) {
 			modal.showModal();
 		}
-
-		// 이거 왜 넣었더라?
-		$view_mode = id;
 	}
 
 	const FILTER_ICON = {
@@ -151,9 +148,9 @@
 </script>
 
 <!-- svelte-ignore a11y_click_events_have_key_events -->
-<div class="duration-50 flex transition-all">
+<div id="contents-wrapper" class="duration-50 flex transition-all">
 	<div
-		id="contents-wrapper"
+		id="content-main"
 		style="height: {contentHeight + 5}rem"
 		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
@@ -164,9 +161,9 @@
 		{:else if $view_mode == 'viewByArtist'}
 			<Table {data} cache={artistCache} type={'artist'} />
 		{:else}
-			<div id="header-wrapper" class="flex w-full flex text-center">
+			<div id="header" class="flex w-full flex text-center">
 				{#each HEADERS as header}
-					<div class={`flex ${header.class} py-1 items-center justify-center`}>
+					<div id="header-wrapper" class={`flex ${header.class} py-1 items-center justify-center`}>
 						{#if header.text}
 							<div
 								class="header-text flex items-center gap-1"
@@ -213,7 +210,7 @@
 				{/each}
 			</div>
 
-			<div class="flex flex-wrap justify-center gap-2 p-4">
+			<div id="pagination" class="flex flex-wrap justify-center gap-2 p-4">
 				{#if $current_page > 1}
 					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page - 1)}>
 						«

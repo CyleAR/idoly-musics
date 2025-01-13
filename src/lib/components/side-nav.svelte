@@ -1,12 +1,8 @@
 <script lang="ts">
-	import { currentLanguage, view_mode } from '$lib/stores';
+	import { currentLanguage } from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 
 	$: sideNav_lang = language_table[$currentLanguage]['sideNav'];
-
-	function changeViewMode(id: string) {
-		$view_mode = id;
-	}
 </script>
 
 <div
