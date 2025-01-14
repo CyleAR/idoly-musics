@@ -85,7 +85,6 @@
                 }
                 break;
         }
-        console.log($groupFilter);
 	}
 
 </script>

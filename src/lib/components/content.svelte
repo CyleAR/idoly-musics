@@ -6,6 +6,7 @@
         groupFilter,
         albumFilter,
         isFilterEmpty,
+        searchInputValue,
         resetFilters,
         view_mode,
 		selectedBlock,
@@ -41,13 +42,15 @@
 
 	$: isDrawerOpen = $selectedBlock !== null;
 	$: content_lang = language_table[$currentLanguage]['content'];
-
+    
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// filter가 비어있으면 모든 블록 표시
-		if ($isFilterEmpty) return true;
+		if ($isFilterEmpty && $searchInputValue === '') return true;
 
 		$current_page = 1;
 
+        // 검색어 필터 적용
+        const nameMatch = block.music_name.toLowerCase().includes($searchInputValue.toLowerCase());
         // 각 카테고리별 필터 적용
         const groupMatch = $groupFilter.length === 0 || $groupFilter.every((id) =>
             block.groups.some((group) => group.id === id)
@@ -59,7 +62,7 @@
             block.albums.some((album) => album.id === id)
         );
 
-        return artistMatch && groupMatch && albumMatch;
+        return artistMatch && groupMatch && albumMatch && nameMatch;
 	});
 
 	// 전체 페이지 수 계산
@@ -238,10 +241,20 @@
 
 
 <!-- 필터링 모달 -->
-<!-- 그룹 -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<dialog id="group" class="modal" on:click|self={() => document.getElementById('group').close()}>
+<dialog id="songName" class="modal">
+	<div class="modal-box flex items-center justify-center max-w-lg p-2 sm:p-4 md:p-6 lg:p-8">
+        <input type="text" placeholder={content_lang.songName} class="input input-bordered w-full" bind:value={$searchInputValue} />
+        <button class="absolute right-10 btn btn-circle btn-sm" on:click={() => $searchInputValue = ''}>X</button>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
+</dialog>
+
+<!-- 그룹 -->
+<dialog id="group" class="modal">
 	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
 		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByGroupModal'].title}</div>
 		<Profile data={groupCache} type={'group'} />
@@ -250,13 +263,14 @@
 				<button class="btn">{sideNav_lang['viewByGroupModal'].close}</button>
 			</form>
 		</div>
-	</div>
+    </div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
 </dialog>
 
 <!-- 아티스트 -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<dialog id="artist" class="modal" on:click|self={() => document.getElementById('artist').close()}>
+<dialog id="artist" class="modal">
 	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
 		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByArtistModal'].title}</div>
 		<Profile data={artistCache} type={'artist'} />
@@ -266,12 +280,13 @@
 			</form>
 		</div>
 	</div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
 </dialog>
 
 <!-- 앨범 -->
-<!-- svelte-ignore a11y_click_events_have_key_events -->
-<!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
-<dialog id="album" class="modal" on:click|self={() => document.getElementById('album').close()}>
+<dialog id="album" class="modal">
 	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
 		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByAlbumModal'].title}</div>
 		<Profile data={albumCache} type={'album'} />
@@ -281,6 +296,9 @@
 			</form>
 		</div>
 	</div>
+    <form method="dialog" class="modal-backdrop">
+        <button>close</button>
+    </form>
 </dialog>
 
 <style lang="postcss">
