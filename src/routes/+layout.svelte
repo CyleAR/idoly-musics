@@ -160,14 +160,7 @@
 </div>
 
 <style>
-	.drawer-menu:hover {
-		cursor: pointer;
-		transition: transform 0.2s ease;
-	}
     .drawer-side {
         top: 4rem; /* 상단바의 높이만큼 설정 h-16=4rem */
     }
-	.drawer-menu:active {
-		transform: scale(0.95);
-	}
 </style>
