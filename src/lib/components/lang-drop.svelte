@@ -1,7 +1,5 @@
 <script>
 	import { view_mode } from '$lib/stores';
-	import { Button, Dropdown, DropdownItem } from 'flowbite-svelte';
-	import { ChevronDownOutline } from 'flowbite-svelte-icons';
 	import { currentLanguage, resetFilters } from '$lib/stores';
 	import { onMount } from 'svelte';
 
