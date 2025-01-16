@@ -9,7 +9,7 @@
 		ko: '한국어',
 		ja: '日本語',
 		en: 'English',
-		zh: '中文'
+		zh: '中文(繁體)'
 	};
 
 	let isOpen = false;
@@ -61,8 +61,7 @@
 
 <details class="dropdown" bind:open={isOpen}>
 	<summary class="btn w-30">
-		{languageLabels[$currentLanguage]}
-		<ChevronDownOutline class="h-6 w-6" />
+		{languageLabels[$currentLanguage]} 
 	</summary>
 	<ul class="menu dropdown-content z-[1] w-32 rounded-box bg-base-100 p-2 shadow">
 		{#each Object.entries(languageLabels) as [lang, label]}

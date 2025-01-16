@@ -2,13 +2,13 @@
 	import {
 		global_theme,
 		currentLanguage,
-        artistFilter,
-        groupFilter,
-        albumFilter,
-        isFilterEmpty,
-        searchInputValue,
-        resetFilters,
-        view_mode,
+		artistFilter,
+		groupFilter,
+		albumFilter,
+		isFilterEmpty,
+		searchInputValue,
+		resetFilters,
+		view_mode,
 		selectedBlock,
 		current_page
 	} from '$lib/stores';
@@ -42,27 +42,27 @@
 
 	$: isDrawerOpen = $selectedBlock !== null;
 	$: content_lang = language_table[$currentLanguage]['content'];
-    
+
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// filter가 비어있으면 모든 블록 표시
 		if ($isFilterEmpty && $searchInputValue === '') return true;
 
 		$current_page = 1;
 
-        // 검색어 필터 적용
-        const nameMatch = block.music_name.toLowerCase().includes($searchInputValue.toLowerCase());
-        // 각 카테고리별 필터 적용
-        const groupMatch = $groupFilter.length === 0 || $groupFilter.every((id) =>
-            block.groups.some((group) => group.id === id)
-        );
-        const artistMatch = $artistFilter.length === 0 || $artistFilter.every((id) => 
-            block.artists.some((artist) => artist.id === id)
-        );
-        const albumMatch = $albumFilter.length === 0 || $albumFilter.every((id) =>
-            block.albums.some((album) => album.id === id)
-        );
+		// 검색어 필터 적용
+		const nameMatch = block.music_name.toLowerCase().includes($searchInputValue.toLowerCase());
+		// 각 카테고리별 필터 적용
+		const groupMatch =
+			$groupFilter.length === 0 ||
+			$groupFilter.every((id) => block.groups.some((group) => group.id === id));
+		const artistMatch =
+			$artistFilter.length === 0 ||
+			$artistFilter.every((id) => block.artists.some((artist) => artist.id === id));
+		const albumMatch =
+			$albumFilter.length === 0 ||
+			$albumFilter.every((id) => block.albums.some((album) => album.id === id));
 
-        return artistMatch && groupMatch && albumMatch && nameMatch;
+		return artistMatch && groupMatch && albumMatch && nameMatch;
 	});
 
 	// 전체 페이지 수 계산
@@ -113,11 +113,11 @@
 
 	$: contentHeight = paginatedBlocks.reduce((height, block) => {
 		const blockHeight = parseFloat(calculateBlockHeight(block).match(/\d+/)[0]);
-            if ($view_mode.startsWith('viewBy')) {
-                return height + blockHeight + 2;
-            }
-            return height + blockHeight + 0.4; // 0.5rem 여백
-        }, 0);
+		if ($view_mode.startsWith('viewBy')) {
+			return height + blockHeight + 2;
+		}
+		return height + blockHeight + 0.4; // 0.5rem 여백
+	}, 0);
 
 	// 계산된 Height 를 상위 컴포넌트로 전파 ( +page.svelte )
 	$: onHeightChange(contentHeight);
@@ -130,7 +130,10 @@
 		{ class: 'w-24 flex-shrink-0', text: '' },
 		{ class: 'flex-grow', text: 'songName' },
 		{ class: 'w-[40%] sm:w-[25%] md:w-[20%] lg:w-[15%] flex-shrink-0', text: 'group' },
-		{ class: 'w-[40%] sm:w-[40%] md:w-[35%] lg:w-[31%] flex-shrink-1 hidden sm:flex', text: 'artist' },
+		{
+			class: 'w-[40%] sm:w-[40%] md:w-[35%] lg:w-[31%] flex-shrink-1 hidden sm:flex',
+			text: 'artist'
+		},
 		{ class: 'w-[20%] flex-shrink-0 hidden md:flex', text: 'album' },
 		{ class: 'w-[10%] flex-shrink-0 hidden lg:flex', text: 'releaseDate' }
 	];
@@ -164,14 +167,14 @@
 		{:else if $view_mode == 'viewByArtist'}
 			<Table {data} cache={artistCache} type={'artist'} />
 		{:else}
-			<div id="header" class="flex w-full flex text-center">
+			<div id="header" class="flex flex w-full text-center">
 				{#each HEADERS as header}
-					<div id="header-wrapper" class={`flex ${header.class} py-1 items-center justify-center`}>
+					<div id="header-wrapper" class={`flex ${header.class} items-center justify-center py-1`}>
 						{#if header.text}
 							<div
 								class="header-text flex items-center gap-1"
-                                role="button"
-                                tabindex="0"
+								role="button"
+								tabindex="0"
 								on:click={() => showModal(header.text)}
 							>
 								<span>{content_lang[header.text]}</span>
@@ -190,6 +193,20 @@
 												stroke-linecap="round"
 											/>
 										{/each}
+									</svg>
+								{/if}
+								{#if header.text === 'songName'}
+									<svg
+										xmlns="http://www.w3.org/2000/svg"
+										viewBox="0 0 16 16"
+										fill="currentColor"
+										class="h-4 w-4 opacity-70"
+									>
+										<path
+											fill-rule="evenodd"
+											d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+											clip-rule="evenodd"
+										/>
 									</svg>
 								{/if}
 							</div>
@@ -239,40 +256,47 @@
 	</div>
 </div>
 
-
 <!-- 필터링 모달 -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="songName" class="modal">
-	<div class="modal-box flex items-center justify-center max-w-lg p-2 sm:p-4 md:p-6 lg:p-8">
-        <input type="text" placeholder={content_lang.songName} class="input input-bordered w-full" bind:value={$searchInputValue} />
-        <button class="absolute right-10 btn btn-circle btn-sm" on:click={() => $searchInputValue = ''}>X</button>
-    </div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
+	<div class="modal-box flex max-w-lg items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8">
+		<input
+			type="search"
+			placeholder="ex) song for you"
+			class="input input-bordered w-full"
+			bind:value={$searchInputValue}
+		/>
+		<!-- <button
+			class="btn btn-circle btn-outline btn-xs absolute right-[1rem]"
+			on:click={() => ($searchInputValue = '')}>X</button
+		> -->
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
 </dialog>
 
 <!-- 그룹 -->
 <dialog id="group" class="modal">
 	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
-		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByGroupModal'].title}</div>
+		<div class="mb-4 text-center text-lg font-bold">{sideNav_lang['viewByGroupModal'].title}</div>
 		<Profile data={groupCache} type={'group'} />
 		<div class="modal-action flex justify-center">
 			<form method="dialog">
 				<button class="btn">{sideNav_lang['viewByGroupModal'].close}</button>
 			</form>
 		</div>
-    </div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
 </dialog>
 
 <!-- 아티스트 -->
 <dialog id="artist" class="modal">
 	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
-		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByArtistModal'].title}</div>
+		<div class="mb-4 text-center text-lg font-bold">{sideNav_lang['viewByArtistModal'].title}</div>
 		<Profile data={artistCache} type={'artist'} />
 		<div class="modal-action flex justify-center">
 			<form method="dialog">
@@ -280,15 +304,15 @@
 			</form>
 		</div>
 	</div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
 </dialog>
 
 <!-- 앨범 -->
 <dialog id="album" class="modal">
 	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
-		<div class="mb-4 text-lg font-bold text-center">{sideNav_lang['viewByAlbumModal'].title}</div>
+		<div class="mb-4 text-center text-lg font-bold">{sideNav_lang['viewByAlbumModal'].title}</div>
 		<Profile data={albumCache} type={'album'} />
 		<div class="modal-action flex justify-center">
 			<form method="dialog">
@@ -296,9 +320,9 @@
 			</form>
 		</div>
 	</div>
-    <form method="dialog" class="modal-backdrop">
-        <button>close</button>
-    </form>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
 </dialog>
 
 <style lang="postcss">

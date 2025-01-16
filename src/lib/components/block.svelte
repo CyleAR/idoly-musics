@@ -5,10 +5,10 @@
 
 	export let id: number;
 	export let title: string;
-	export let artists: string;
-	export let groups: string;
+	export let artists: string[];
+	export let groups: string[];
 	export let colorTag: string;
-	export let included_albums: string;
+	export let included_albums: string[];
 	export let announce_date: string;
 
 	function load_image() {

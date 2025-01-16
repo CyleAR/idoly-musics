@@ -113,7 +113,7 @@
     <!-- 블록 선택 시 나타나는 Drawer -->
 	{#if isDrawerOpen}
 		<div
-			id="drawer"
+			id="detailDrawer"
 			class="fixed z-[40] top-[4rem] mt-2 right-1 flex h-[93.5%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide w-[75%] sm:w-[66%] md:w-[55%] lg:w-[41.25%] xl:w-[33%] 2xl:w-[27.5%]"
 			style="transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
@@ -158,7 +158,7 @@
 					</button> -->
 					<!-- 닫기 버튼 -->
 					<button
-						class="btn btn-circle btn-xs absolute right-3 sm:btn-sm"
+						class="btn btn-circle btn-xs btn-outline absolute right-3 sm:btn-sm"
 						on:click={() => {
 							selectedBlock.set(null);
 						}}

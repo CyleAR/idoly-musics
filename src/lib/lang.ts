@@ -114,40 +114,40 @@ export const language_table = {
 	},
 
 	zh: {
-		content: {
-			songName: '歌名',
-			group: '组合',
-			artist: '艺人',
-			album: '专辑',
-			releaseDate: '发行日期'
-		},
-		sideNav: {
-			table: '表格',
-			viewByGroup: '按组合\n查看',
-			viewByAlbum: '按专辑\n查看',
-			viewByArtist: '按艺人\n查看',
-			viewByArtistModal: {
-				title: '选择艺人筛选',
-				close: '完成'
-			},
-			viewByAlbumModal: {
-				title: '选择专辑筛选',
-				close: '完成'
-			},
-			viewByGroupModal: {
-				title: '选择组合筛选',
-				close: '完成'
-			}
-		},
-		page: {
-			drawer: {
-				jacket: '封面',
-				youtube: 'YOUTUBE'
-			}
-		},
-		profile: {
-			uncategorized: '未收錄',
-			others: '其他'
-		}
-	}
+        content: {
+            songName: '歌名',
+            group: '組合',
+            artist: '藝人',
+            album: '專輯',
+            releaseDate: '發行日期'
+        },
+        sideNav: {
+            table: '表格',
+            viewByGroup: '按組合\n查看',
+            viewByAlbum: '按專輯\n查看',
+            viewByArtist: '按藝人\n查看',
+            viewByArtistModal: {
+                title: '選擇藝人篩選',
+                close: '完成'
+            },
+            viewByAlbumModal: {
+                title: '選擇專輯篩選',
+                close: '完成'
+            },
+            viewByGroupModal: {
+                title: '選擇組合篩選',
+                close: '完成'
+            }
+        },
+        page: {
+            drawer: {
+                jacket: '封面',
+                youtube: 'YOUTUBE'
+            }
+        },
+        profile: {
+            uncategorized: '未收錄',
+            others: '其他'
+        }
+    }
 };

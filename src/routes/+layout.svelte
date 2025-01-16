@@ -142,8 +142,8 @@
 		<slot /> <!-- 페이지 내용(+page.svelte) -->
 	</div>
 	<footer id="footer" class="mt-auto bg-base-100 py-4 text-center shadow-inner">
-		<p class="text-sm text-gray-400">[<a href="https://github.com/CyleAR/idoly-musics" target="_blank" rel="noopener noreferrer">Source</a> @ <a href={commitLink} target="_blank" rel="noopener noreferrer">{commitHash}</a>]</p>
-		<p class="text-sm text-gray-400">This site is a fan site of<a href="https://idolypride.jp" target="_blank" rel="noopener noreferrer">「IDOLY PRIDE」</a></p>
+		<p class="text-sm text-gray-400">[<a class="link link-hover link-primary" href="https://github.com/CyleAR/idoly-musics" target="_blank" rel="noopener noreferrer">Source</a> @ <a class="link link-hover link-primary" href={commitLink} target="_blank" rel="noopener noreferrer">{commitHash}</a>]</p>
+		<p class="text-sm text-gray-400">This site is a fan site of <a class="link link-hover link-primary" href="https://idolypride.jp" target="_blank" rel="noopener noreferrer">IDOLY PRIDE</a></p>
 		<p class="text-sm text-gray-400">Some data may be inaccurate</p>
 		<p class="text-sm text-gray-400">Contents © QualiArts and it's associates</p>
 	</footer>
