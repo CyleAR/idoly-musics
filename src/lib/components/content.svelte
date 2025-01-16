@@ -40,7 +40,6 @@
 	$: artistCache = data.musics.artistCache;
 	$: albumCache = data.musics.albumCache;
 
-	$: isDrawerOpen = $selectedBlock !== null;
 	$: content_lang = language_table[$currentLanguage]['content'];
 
 	$: filteredBlocks = blocks_info.filter((block) => {
