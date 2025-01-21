@@ -4,6 +4,7 @@
 	export let type;
 
 	import { group_images, album_images, artist_images, selectedBlock } from '$lib/stores';
+	import { get } from 'svelte/store';
 
 	let imageSources = {};
 	let firstColumn = [];
@@ -14,6 +15,7 @@
 	$: imageStore =
 		type === 'group' ? $group_images : type === 'album' ? $album_images : $artist_images;
 
+    $: albums = data.musics.albumCache;
 	$: musics = data.musics.results;
 	$: columns = [firstColumn, secondColumn, thirdColumn];
 
@@ -52,10 +54,19 @@
 			}
 		});
 	}
+    
+    function getAlbumDate(id) {
+        console.log(albums);
+        albums.forEach((album) => {
+            if (album.id === id) {
+                return album.release_date;
+            }
+        });
+    }
 </script>
 
-<div class="p-6">
-	<div class="mx-auto grid max-w-[1600px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
+<div id="table-wrapper" class="p-6">
+	<div id="table-main" class="mx-auto grid max-w-[1600px] grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
 		{#each columns as column}
 			<div class="flex flex-col gap-4">
 				{#each column as item}
@@ -64,23 +75,24 @@
 					>
 						<input
 							type="checkbox"
-							checked={activeIndices[item.name]}
+							checked={activeIndices[item.id]}
 							on:change={() => {
-								activeIndices[item.name] = !activeIndices[item.name];
+								activeIndices[item.id] = !activeIndices[item.id];
 								activeIndices = activeIndices;
 							}}
 						/>
 						<div
 							class="collapse-title flex flex-row items-center p-2 text-xl font-medium"
-							style="color: {item.color}"
+							
 						>
 							<img
 								src={load_image(item.id)}
 								class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
 								alt={item.name || 'thumbnail'}
 							/>
-							<span class="p-2">
-								{item.name}
+							<span class="p-2 flex flex-col">
+                                <span class="font-bold">{item.name}</span>
+                                <span class="text-sm">{(item.release_date == '0000-00-00') ? null : item.release_date || null}</span>
 							</span>
 						</div>
 						<div class="collapse-content">

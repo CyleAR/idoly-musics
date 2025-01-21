@@ -9,13 +9,13 @@ import * as type from '$lib/types';
 const dbPath = './static/music.db';
 
 type ArtistCache = {
-	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string }[];
+	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string, color: string }[];
 };
 type GroupCache = {
-	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string }[];
+	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string, color: string}[];
 };
 type AlbumCache = {
-	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string }[];
+	[key in 'ja' | 'ko' | 'en' | 'zh']: { id: number; name: string, color:string, release_date:string }[];
 };
 type CacheType = {
 	[key in 'ja' | 'ko' | 'en' | 'zh']: type.MusicData[];
@@ -160,16 +160,17 @@ function loadArtistCache(db: any) {
             name_ja,
             COALESCE(name_ko, name_ja) as name_ko,
             COALESCE(name_en, name_ja) as name_en,
-            COALESCE(name_zh, name_ja) as name_zh 
+            COALESCE(name_zh, name_ja) as name_zh,
+            color
         FROM artists
     `);
 	const artists = query.all();
 
 	artists.forEach((artist: type.ArtistData) => {
-		artistCache.ja.push({ id: artist.id, name: artist.name_ja });
-		artistCache.ko.push({ id: artist.id, name: artist.name_ko });
-		artistCache.en.push({ id: artist.id, name: artist.name_en });
-		artistCache.zh.push({ id: artist.id, name: artist.name_zh });
+		artistCache.ja.push({ id: artist.id, name: artist.name_ja, color: artist.color });
+		artistCache.ko.push({ id: artist.id, name: artist.name_ko, color: artist.color });
+		artistCache.en.push({ id: artist.id, name: artist.name_en, color: artist.color });
+		artistCache.zh.push({ id: artist.id, name: artist.name_zh, color: artist.color });
 	});
 }
 
@@ -181,17 +182,18 @@ function loadGroupCache(db: any) {
             name_ja,
             COALESCE(name_ko, name_ja) as name_ko,
             COALESCE(name_en, name_ja) as name_en,
-            COALESCE(name_zh, name_ja) as name_zh 
+            COALESCE(name_zh, name_ja) as name_zh,
+            color
         FROM groups
     `);
 
 	const groups = query.all();
 
 	groups.forEach((group: type.GroupData) => {
-        groupCache.ja.push({ id: group.id, name: group.name_ja });
-		groupCache.ko.push({ id: group.id, name: group.name_ko });
-		groupCache.en.push({ id: group.id, name: group.name_en });
-		groupCache.zh.push({ id: group.id, name: group.name_zh });
+        groupCache.ja.push({ id: group.id, name: group.name_ja, color: group.color });
+		groupCache.ko.push({ id: group.id, name: group.name_ko, color: group.color });
+		groupCache.en.push({ id: group.id, name: group.name_en, color: group.color });
+		groupCache.zh.push({ id: group.id, name: group.name_zh, color: group.color });
 	});
 }
 
@@ -203,17 +205,19 @@ function loadAlbumCache(db: any) {
             name_ja,
             COALESCE(name_ko, name_ja) as name_ko,
             COALESCE(name_en, name_ja) as name_en,
-            COALESCE(name_zh, name_ja) as name_zh 
+            COALESCE(name_zh, name_ja) as name_zh,
+            color,
+            release_date 
         FROM albums
     `);
 
 	const albums = query.all();
 
 	albums.forEach((album: type.AlbumData) => {
-        albumCache.ja.push({ id: album.id, name: album.name_ja });
-		albumCache.ko.push({ id: album.id, name: album.name_ko });
-		albumCache.en.push({ id: album.id, name: album.name_en });
-		albumCache.zh.push({ id: album.id, name: album.name_zh });
+		albumCache.ja.push({ id: album.id, name: album.name_ja, color: album.color, release_date: album.release_date });
+		albumCache.ko.push({ id: album.id, name: album.name_ko, color: album.color, release_date: album.release_date });
+		albumCache.en.push({ id: album.id, name: album.name_en, color: album.color, release_date: album.release_date });
+		albumCache.zh.push({ id: album.id, name: album.name_zh, color: album.color, release_date: album.release_date });
 	});
 }
 

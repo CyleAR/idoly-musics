@@ -166,7 +166,7 @@
 		{:else if $view_mode == 'viewByArtist'}
 			<Table {data} cache={artistCache} type={'artist'} />
 		{:else}
-			<div id="header" class="flex flex w-full text-center">
+			<div id="content-header" class="flex flex w-full text-center">
 				{#each HEADERS as header}
 					<div id="header-wrapper" class={`flex ${header.class} items-center justify-center py-1`}>
 						{#if header.text}
@@ -213,7 +213,7 @@
 					</div>
 				{/each}
 			</div>
-			<div id="blocks" class="gap flex h-full w-full flex-col">
+			<div id="content-blocks" class="gap flex h-full w-full flex-col">
 				{#each paginatedBlocks as block}
 					<div class="flex w-[100%] p-1">
 						<Block
@@ -229,7 +229,7 @@
 				{/each}
 			</div>
 
-			<div id="pagination" class="flex flex-wrap justify-center gap-2 p-4">
+			<div id="content-pagination" class="flex flex-wrap justify-center gap-2 p-4">
 				{#if $current_page > 1}
 					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page - 1)}>
 						«
@@ -259,7 +259,7 @@
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
 <dialog id="songName" class="modal">
-	<div class="modal-box flex max-w-lg items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8">
+	<div id="modal-title" class="modal-box flex max-w-lg items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8">
 		<input
 			type="search"
 			placeholder="ex) song for you"
@@ -278,7 +278,7 @@
 
 <!-- 그룹 -->
 <dialog id="group" class="modal">
-	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
+	<div id="modal-group"class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
 		<div class="mb-4 text-center text-lg font-bold">{sideNav_lang['viewByGroupModal'].title}</div>
 		<Profile data={groupCache} type={'group'} />
 		<div class="modal-action flex justify-center">
@@ -294,7 +294,7 @@
 
 <!-- 아티스트 -->
 <dialog id="artist" class="modal">
-	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
+	<div id="modal-artist" class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
 		<div class="mb-4 text-center text-lg font-bold">{sideNav_lang['viewByArtistModal'].title}</div>
 		<Profile data={artistCache} type={'artist'} />
 		<div class="modal-action flex justify-center">
@@ -310,7 +310,7 @@
 
 <!-- 앨범 -->
 <dialog id="album" class="modal">
-	<div class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
+	<div id="modal-album" class="modal-box max-w-6xl p-2 sm:p-4 md:p-6 lg:p-8">
 		<div class="mb-4 text-center text-lg font-bold">{sideNav_lang['viewByAlbumModal'].title}</div>
 		<Profile data={albumCache} type={'album'} />
 		<div class="modal-action flex justify-center">

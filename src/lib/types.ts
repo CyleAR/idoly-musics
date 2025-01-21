@@ -4,6 +4,7 @@ export interface ArtistData {
 	name_ja: string;
 	name_en: string;
 	name_zh: string;
+    color: string;
 }
 export interface GroupData {
 	id: number;
@@ -11,6 +12,7 @@ export interface GroupData {
 	name_ja: string;
 	name_en: string;
 	name_zh: string;
+    color: string;
 }
 export interface AlbumData {
 	id: number;
@@ -18,6 +20,8 @@ export interface AlbumData {
 	name_ja: string;
 	name_en: string;
 	name_zh: string;
+    release_date: string;
+    color: string;
 }
 
 export interface MusicData {

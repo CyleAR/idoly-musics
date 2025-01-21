@@ -33,7 +33,7 @@
 			$global_theme = theme;
 			localStorage.setItem('theme', theme);
 
-			view_mode.set('');
+			// view_mode.set('');
 			//selectedBlock.set(null);
 		}
 	};

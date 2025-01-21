@@ -50,7 +50,7 @@
 
 	async function handleLanguageChange(lang) {
 		currentLanguage.set(lang);
-		view_mode.set('');
+		// view_mode.set('');
 		localStorage.setItem('language', lang);
 		document.documentElement.setAttribute('data-lang', lang);
 		isOpen = false;

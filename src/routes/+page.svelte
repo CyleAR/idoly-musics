@@ -113,7 +113,7 @@
     <!-- 블록 선택 시 나타나는 Drawer -->
 	{#if isDrawerOpen}
 		<div
-			id="detailDrawer"
+			id="music-drawer"
 			class="fixed z-[40] top-[4rem] mt-2 right-1 flex h-[93.5%] flex-col overflow-y-auto rounded-xl bg-base-100 p-3 shadow-xl scrollbar-hide w-[75%] sm:w-[66%] md:w-[55%] lg:w-[41.25%] xl:w-[33%] 2xl:w-[27.5%]"
 			style="transition: top 0.2s ease-out;"
 			transition:fly={{ x: 600, duration: 300, easing: quintOut }}
@@ -169,7 +169,7 @@
 			</div>
 			{#if info_type == 'jacket'}
 				<!-- 앨범 이미지 섹션 -->
-				<div class="relative flex w-full justify-center rounded-xl bg-base-200 p-2">
+				<div id="music-drawer-jacket"class="relative flex w-full justify-center rounded-xl bg-base-200 p-2">
 					<img
 						src={loadImage('music', $selectedBlock)}
 						class="aspect-square w-full rounded-lg rounded-xl object-cover"
@@ -178,7 +178,7 @@
 				</div>
 			{:else if info_type == 'youtube'}
 				<!-- 유튜브 섹션 -->
-				<div class="aspect-h-9 aspect-w-16">
+				<div id="music-drawer-youtue" class="aspect-h-9 aspect-w-16">
 					<iframe
 						class="h-full w-full rounded-lg"
 						src={`https://www.youtube.com/embed/${streamId}`}
@@ -190,7 +190,7 @@
 				</div>
 			{:else if info_type == 'mv'}
 				<!-- MV 섹션 -->
-				<div class="aspect-h-9 aspect-w-16">
+				<div id="music-drawer-mv" class="aspect-h-9 aspect-w-16">
 					<iframe
 						class="h-full w-full rounded-lg"
 						src={`https://www.youtube.com/embed/${mvId}`}
@@ -203,15 +203,15 @@
 			{/if}
 			<!-- 제목 섹션 -->
 			<!-- selectedBlock은 1부터 시작하는 id이고 results는 0부터 세는 배열이라서 -1 해줌  -->
-			<div class="pl-2 mt-1 text-lg font-bold sm:text-xl lg:text-2xl">
+			<div id="music-drawer-title" class="pl-2 mt-1 text-lg font-bold sm:text-xl lg:text-2xl">
 				<span> {data.musics.results[$selectedBlock - 1].music_name} </span>
 			</div>
 			<!-- 그룹 섹션 -->
-			<div class="pl-2 text-base sm:text-lg lg:text-xl">
+			<div id="music-drawer-group" class="pl-2 text-base sm:text-lg lg:text-xl">
 				{getSoloArtist()}
 			</div>
 			<!-- 아티스트 정보 섹션 -->
-			<div class="flex flex-wrap gap-1 mt-1 mb-1 pl-2">
+			<div id="music-drawer-artists" class="flex flex-wrap gap-1 mt-1 mb-1 pl-2">
 				{#each data.musics.results[$selectedBlock - 1].artists as artist}
 					<div class="flex flex-col items-center">
 						<img
@@ -224,6 +224,7 @@
 			</div>
 			<!-- 가사 섹션 -->
 			<div
+                id="music-drawer-lyrics"
 				class="w-full whitespace-pre-line rounded-xl bg-base-200 p-4 text-base font-bold sm:text-lg"
 			>
 				{#if data.musics.results[$selectedBlock - 1].lyrics}
@@ -233,7 +234,7 @@
 				{/if}
 			</div>
 			<!-- 앨범 정보 섹션 -->
-			<div class="flex flex-wrap gap-1 mt-4 p-4 rounded-xl bg-base-200">
+			<div id="music-drawer-albums" class="flex flex-wrap gap-1 mt-4 p-4 rounded-xl bg-base-200">
 				{#each data.musics.results[$selectedBlock - 1].albums as album}
 					<div class="flex flex-col items-center">
 						<img
