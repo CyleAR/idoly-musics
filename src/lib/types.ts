@@ -30,10 +30,12 @@ export interface MusicData {
 	groups: GroupRow[];
 	artists: ArtistRow[];
 	albums: AlbumRow[];
+    length: number;
 	announce_date: string;
 	lyrics: string;
 	stream_url: string;
 	mv_url: string;
+    live_url: string;
 }
 
 export interface MusicRow {
@@ -43,6 +45,8 @@ export interface MusicRow {
 	lyrics: string;
 	stream_url: string;
 	mv_url: string;
+    live_url: string;
+    length: number;
 }
 
 export interface ArtistRow {

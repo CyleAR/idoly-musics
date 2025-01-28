@@ -26,23 +26,23 @@
 	$: content_lang = language_table[$currentLanguage]['page'];
 	$: mvId = '';
 	$: streamId = '';
-    $: livemvId = '';
+    $: liveId = '';
 	$: disable_youtube_btn_flag = true;
 	$: disable_mv_btn_flag = true;
-    $: disable_3dmv_btn_flag = true;
+    $: disable_live_btn_flag = true;
 	$: if ($selectedBlock >= 1) {
 		// console.log($selectedBlock - 1);
 		// console.log(data.musics.results[$selectedBlock - 1]);
 		let _mvid = data.musics.results[$selectedBlock - 1].mv_url;
 		let _streamid = data.musics.results[$selectedBlock - 1].stream_url;
-        let _3dmvid = data.musics.results[$selectedBlock - 1]?.live_mv_url;
+        let _liveid = data.musics.results[$selectedBlock - 1]?.live_url;
 
 		disable_mv_btn_flag = _mvid == '' ? true : false;
-        // disable_3dmv_btn_flag = _3dmvid == '' ? true : false;
+        disable_live_btn_flag = _liveid == '' ? true : false;
 		disable_youtube_btn_flag = _streamid == '' ? true : false;
 
 		mvId = _mvid.split('/').pop();
-        livemvId = _3dmvid?.split('/').pop();
+        liveId = _liveid.split('/').pop();
 		streamId = _streamid.split('/').pop();
 		info_type = 'jacket';
 	}
@@ -147,15 +147,15 @@
 					>
 						MV
 					</button>
-                    <!-- <button
-						class="btn btn-xs sm:btn-sm {info_type === '3dmv' ? ($global_theme === 'dark' ? 'bg-blue-700 text-white' : 'bg-blue-500 text-white') : ''} hover:bg-blue-600"
-						disabled={disable_3dmv_btn_flag}
+                    <button
+						class="btn btn-xs sm:btn-sm {info_type === 'live' ? ($global_theme === 'dark' ? 'bg-blue-700 text-white' : 'bg-blue-500 text-white') : ''} hover:bg-blue-600"
+						disabled={disable_live_btn_flag}
 						on:click={() => {
-							info_type = '3dmv';
+							info_type = 'live';
 						}}
 					>
 						3DMV
-					</button> -->
+					</button>
 					<!-- 닫기 버튼 -->
 					<button
 						class="btn btn-circle btn-xs btn-outline absolute right-3 sm:btn-sm"
@@ -194,6 +194,18 @@
 					<iframe
 						class="h-full w-full rounded-lg"
 						src={`https://www.youtube.com/embed/${mvId}`}
+						title="YouTube video player"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+            {:else if info_type == 'live'}
+				<!-- 3D라이브 섹션 -->
+				<div id="music-drawer-3dlive" class="aspect-h-9 aspect-w-16">
+					<iframe
+						class="h-full w-full rounded-lg"
+						src={`https://www.youtube.com/embed/${liveId}`}
 						title="YouTube video player"
 						frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
