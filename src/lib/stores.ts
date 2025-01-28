@@ -6,6 +6,9 @@ export const global_theme = writable('light');
 export const artistFilter = writable<number[]>([]);
 export const groupFilter = writable<number[]>([]);
 export const albumFilter = writable<number[]>([]);
+export const youtubeFilter = writable(false);
+export const mvFilter = writable(false);
+export const liveFilter = writable(false);
 export const searchInputValue = writable('');
 export const isFilterEmpty = derived(
     [artistFilter, groupFilter, albumFilter],
@@ -29,4 +32,7 @@ export function resetFilters() {
     artistFilter.set([]);
     groupFilter.set([]);
     albumFilter.set([]);
+    youtubeFilter.set(false);
+    mvFilter.set(false);
+    liveFilter.set(false);
 }

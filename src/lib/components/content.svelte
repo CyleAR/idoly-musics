@@ -5,6 +5,9 @@
 		artistFilter,
 		groupFilter,
 		albumFilter,
+        youtubeFilter,
+        mvFilter,
+        liveFilter,
 		isFilterEmpty,
 		searchInputValue,
 		resetFilters,
@@ -44,9 +47,18 @@
 
 	$: filteredBlocks = blocks_info.filter((block) => {
 		// filter가 비어있으면 모든 블록 표시
-		if ($isFilterEmpty && $searchInputValue === '') return true;
+		if ($isFilterEmpty && $searchInputValue === '' && (!$youtubeFilter && !$mvFilter && !$liveFilter)) return true;
 
 		$current_page = 1;
+
+        const videoFilterMatch = () => {
+            if ($youtubeFilter && !block.stream_url) return false;
+            if ($mvFilter && !block.mv_url) return false;
+            if ($liveFilter && !block.live_url) return false;
+            
+            return true;
+        }
+
 
 		// 검색어 필터 적용
 		const nameMatch = block.music_name.toLowerCase().includes($searchInputValue.toLowerCase());
@@ -60,7 +72,10 @@
 		const albumMatch =
 			$albumFilter.length === 0 ||
 			$albumFilter.every((id) => block.albums.some((album) => album.id === id));
-
+        
+        if ($youtubeFilter || $mvFilter || $liveFilter) {
+            return artistMatch && groupMatch && albumMatch && nameMatch && videoFilterMatch();
+        }
 		return artistMatch && groupMatch && albumMatch && nameMatch;
 	});
 
@@ -126,7 +141,7 @@
 	}
 
 	const HEADERS = [
-		{ class: 'w-24 flex-shrink-0', text: '' },
+		{ class: 'w-24 flex-shrink-0', text: ' ' },
 		{ class: 'flex-grow', text: 'songName' },
 		{ class: 'w-[40%] sm:w-[25%] md:w-[20%] lg:w-[15%] flex-shrink-0', text: 'group' },
 		{
@@ -145,6 +160,10 @@
 			modal.showModal();
 		}
 	}
+
+	function toggleFilter(filter) {
+        filter.update(value => !value);
+    }
 
 	const FILTER_ICON = {
 		viewBox: '0 0 24 24',
@@ -177,12 +196,38 @@
 								on:click={() => showModal(header.text)}
 							>
 								<span>{content_lang[header.text]}</span>
-								{#if header.text !== 'songName' && header.text !== 'releaseDate'}
+                                {#if header.text === 'songName'}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 16 16"
+                                        fill="currentColor"
+                                        class="h-4 w-4"
+                                    >
+                                        <path
+                                            fill-rule="evenodd"
+                                            d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
+                                            clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                {/if}
+                                {#if header.text === ' '}
+                                    <svg
+                                        xmlns="http://www.w3.org/2000/svg"
+                                        viewBox="0 0 24 24"
+                                        fill="currentColor"
+                                        class="h-4 w-4">
+                                        <path fill-rule="evenodd"
+                                        d="M3.792 2.938A49.069 49.069 0 0 1 12 2.25c2.797 0 5.54.236 8.209.688a1.857 1.857 0 0 1 1.541 1.836v1.044a3 3 0 0 1-.879 2.121l-6.182 6.182a1.5 1.5 0 0 0-.439 1.061v2.927a3 3 0 0 1-1.658 2.684l-1.757.878A.75.75 0 0 1 9.75 21v-5.818a1.5 1.5 0 0 0-.44-1.06L3.13 7.938a3 3 0 0 1-.879-2.121V4.774c0-.897.64-1.683 1.542-1.836Z"
+                                        clip-rule="evenodd"
+                                        />
+                                    </svg>
+                                {/if}
+								{#if header.text !== 'songName' && header.text !== 'releaseDate' && header.text !== ' '}
 									<svg
 										class="h-4 w-4"
 										xmlns="http://www.w3.org/2000/svg"
 										viewBox={FILTER_ICON.viewBox}
-										fill="none"
+										fill="currentColor"
 									>
 										{#each FILTER_ICON.paths as path}
 											<path
@@ -192,20 +237,6 @@
 												stroke-linecap="round"
 											/>
 										{/each}
-									</svg>
-								{/if}
-								{#if header.text === 'songName'}
-									<svg
-										xmlns="http://www.w3.org/2000/svg"
-										viewBox="0 0 16 16"
-										fill="currentColor"
-										class="h-4 w-4 opacity-70"
-									>
-										<path
-											fill-rule="evenodd"
-											d="M9.965 11.026a5 5 0 1 1 1.06-1.06l2.755 2.754a.75.75 0 1 1-1.06 1.06l-2.755-2.754ZM10.5 7a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Z"
-											clip-rule="evenodd"
-										/>
 									</svg>
 								{/if}
 							</div>
@@ -258,6 +289,34 @@
 <!-- 필터링 모달 -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
 <!-- svelte-ignore a11y_no_noninteractive_element_interactions -->
+<!-- 요소 필터링창 -->
+<dialog id=" " class="modal">
+	<div id="modal-filter" class="modal-box flex flex-col max-w-lg items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8">
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">Youtube</span>
+                <input type="checkbox" class="checkbox checkbox" bind:checked={$youtubeFilter}/>
+            </label>
+        </div>
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">MV </span>
+                <input type="checkbox" class="checkbox" bind:checked={$mvFilter}/>
+            </label>
+        </div>
+        <div class="form-control">
+            <label class="label cursor-pointer">
+                <span class="label-text">3DMV</span>
+                <input type="checkbox" class="checkbox" bind:checked={$liveFilter}/>
+            </label>
+        </div>
+	</div>
+	<form method="dialog" class="modal-backdrop">
+		<button>close</button>
+	</form>
+</dialog>
+
+<!-- 이름 검색창 -->
 <dialog id="songName" class="modal">
 	<div id="modal-title" class="modal-box flex max-w-lg items-center justify-center p-2 sm:p-4 md:p-6 lg:p-8">
 		<input
