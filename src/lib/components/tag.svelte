@@ -23,6 +23,8 @@
     function getTextColor(hex: string) {
         return getBrightness(hex) > 95 ? 'black' : 'white';
     }
+
+    $: sortedTexts = texts.sort((a, b) => a.id - b.id)
 </script>
 
 <style>
@@ -33,7 +35,7 @@
 </style>
 
 <div class="tag-container justify-left flex flex-wrap {sort_as_col ? 'flex-col' : ''} gap-1">
-    {#each texts as item}
+    {#each sortedTexts as item}
         <span
             style="background-color: {hexToRgba(item.color)}; color : {getTextColor(item.color)}"
             class="inline-block truncate whitespace-nowrap rounded-lg px-2 py-1 text-center text-black"
