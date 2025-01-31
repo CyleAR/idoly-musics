@@ -124,7 +124,7 @@
 						</ul>
 					</div>
 			</div>
-            <a id="logo-text" on:click={() => {reset(); isDrawerOpen = false;}} href="/" class="ml-5 font-bold text-base md:text-xl">IDOLY MUSICS</a>
+            <a id="logo-text" on:click={() => {reset(); isDrawerOpen = false;}} href="/" class="border-none ml-5 font-bold text-base md:text-xl">IDOLY MUSICS</a>
 		</div>
 		<div id="change-lang-theme" class="z-[51] flex-none">
 			<LangDrop/>

@@ -55,14 +55,14 @@
 		});
 	}
     
-    function getAlbumDate(id) {
-        console.log(albums);
-        albums.forEach((album) => {
-            if (album.id === id) {
-                return album.release_date;
-            }
-        });
-    }
+    // function getAlbumDate(id) {
+    //     console.log(albums);
+    //     albums.forEach((album) => {
+    //         if (album.id === id) {
+    //             return album.release_date;
+    //         }
+    //     });
+    // }
 </script>
 
 <div id="table-wrapper" class="p-6">

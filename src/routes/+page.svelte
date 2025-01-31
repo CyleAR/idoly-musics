@@ -8,7 +8,8 @@
 		group_images,
 		album_images,
 		artist_images,
-		music_images
+		music_images,
+        artistFilter,
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import SideNavigation from '$lib/components/side-nav.svelte';
@@ -266,15 +267,18 @@
 			</div>
 			<!-- 아티스트 정보 섹션 -->
 			<div id="music-drawer-artists" class="mb-1 mt-1 flex flex-wrap gap-1 pl-2">
-				{#each data.musics.results[$selectedBlock - 1].artists as artist}
-					<div class="flex flex-col items-center">
-						<img
-							src={loadImage('artist', artist.id)}
-							class="h-8 w-8 rounded-full object-cover sm:h-10 sm:w-10 lg:h-12 lg:w-12"
-							alt="artist"
-						/>
-					</div>
-				{/each}
+                {#each data.musics.results[$selectedBlock - 1].artists as artist}
+                    <button
+                        on:click={() => {
+                            view_mode.set('');
+							artistFilter.set([artist.id]);
+                        }}
+                        class="btn btn-circle border-none hover:-translate-y-1"
+                        style="background-image: url({loadImage('artist', artist.id)}); background-size: cover; background-position: center;"
+						aria-label="artist"
+                    >
+                    </button>
+                {/each}
 			</div>
 			<!-- 가사 섹션 -->
 			<div
