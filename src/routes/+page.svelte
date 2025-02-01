@@ -273,7 +273,7 @@
                             view_mode.set('');
 							artistFilter.set([artist.id]);
                         }}
-                        class="btn btn-circle border-none hover:-translate-y-1"
+                        class="btn btn-circle border-none hover:-translate-y-1 btn-xs sm:btn-sm md:btn-md"
                         style="background-image: url({loadImage('artist', artist.id)}); background-size: cover; background-position: center;"
 						aria-label="artist"
                     >
