@@ -33,6 +33,7 @@ export interface MusicData {
     length: number;
 	announce_date: string;
 	lyrics: string;
+    furigana_ko: string;
 	stream_url: string;
 	mv_url: string;
     live_url: string;

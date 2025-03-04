@@ -9,7 +9,7 @@
 		album_images,
 		artist_images,
 		music_images,
-        artistFilter,
+		artistFilter
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	import SideNavigation from '$lib/components/side-nav.svelte';
@@ -95,6 +95,10 @@
 		return data.musics.results[$selectedBlock - 1].groups[0]?.id === 8
 			? data.musics.results[$selectedBlock - 1].artists[0]?.name
 			: data.musics.results[$selectedBlock - 1].groups[0]?.name;
+	}
+
+	function lyricsFurigana(lyrics: string) {
+		return lyrics.replace(/《(.*?)》/g, '<ruby>$1<rt></rt></ruby>');
 	}
 </script>
 
@@ -267,26 +271,41 @@
 			</div>
 			<!-- 아티스트 정보 섹션 -->
 			<div id="music-drawer-artists" class="mb-1 mt-1 flex flex-wrap gap-1 pl-2">
-                {#each data.musics.results[$selectedBlock - 1].artists as artist}
-                    <button
-                        on:click={() => {
-                            view_mode.set('');
+				{#each data.musics.results[$selectedBlock - 1].artists as artist}
+					<button
+						on:click={() => {
+							view_mode.set('');
 							artistFilter.set([artist.id]);
-                        }}
-                        class="btn btn-circle border-none hover:-translate-y-1 btn-xs sm:btn-sm md:btn-md"
-                        style="background-image: url({loadImage('artist', artist.id)}); background-size: cover; background-position: center;"
+						}}
+						class="btn btn-circle btn-xs border-none sm:btn-sm md:btn-md hover:-translate-y-1"
+						style="background-image: url({loadImage(
+							'artist',
+							artist.id
+						)}); background-size: cover; background-position: center;"
 						aria-label="artist"
-                    >
-                    </button>
-                {/each}
+					>
+					</button>
+				{/each}
 			</div>
 			<!-- 가사 섹션 -->
+            <!-- TODO -->
 			<div
 				id="music-drawer-lyrics"
 				class="w-full whitespace-pre-line rounded-xl bg-base-200 p-4 text-base font-bold sm:text-lg"
 			>
 				{#if data.musics.results[$selectedBlock - 1].lyrics}
-					{data.musics.results[$selectedBlock - 1].lyrics}
+					{#each data.musics.results[$selectedBlock - 1].lyrics.split('\n') as line, i}
+						{#if line.trim() === ''}
+							<p>&nbsp;</p>
+						{:else}
+							<p>{line}</p>
+							{#if data.musics.results[$selectedBlock - 1].furigana_ko && $currentLanguage === 'ko'}
+								<p class="text-md text-gray-500">
+									{data.musics.results[$selectedBlock - 1].furigana_ko?.split('\n')[i]}
+								</p>
+							{/if}
+						{/if}
+					{/each}
 				{:else}
 					<span class="text-gray-500">NO LYRICS DATA</span>
 				{/if}
