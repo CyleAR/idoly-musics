@@ -1,5 +1,6 @@
 node_modules
 ecosystem.config.cjs
+package-lock.json
 
 # Output
 .output
