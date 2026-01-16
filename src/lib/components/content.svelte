@@ -258,6 +258,9 @@
 						/>
 					</div>
 				{/each}
+                <div id="content-bottom" class="flex flex-wrap justify-end px-2 text-sm">
+                    Total: {filteredBlocks.length ?? NaN}
+                </div>
 			</div>
 
 			<div id="content-pagination" class="flex flex-wrap justify-center gap-2 p-4">
