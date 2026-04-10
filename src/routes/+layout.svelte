@@ -56,7 +56,7 @@
 
     // 마나의 일기 관련 //
     let isDiaryOpen = false;
-    const totalDiaryPages = 446;
+    const totalDiaryPages = 445;
     $: diaryDocImages = Array.from(
         { length: totalDiaryPages },
         (_, i) => `/diary/diary_${$currentLanguage}/${i + 1}.webp`
