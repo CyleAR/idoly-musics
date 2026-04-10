@@ -15,6 +15,7 @@
 		current_page,
 		selectedBlock
 	} from '$lib/stores';
+    import DiaryViewer from '$lib/components/diaryViewer.svelte';
 	import { language_table } from '$lib/lang.ts';
 	import '../app.css';
 
@@ -45,12 +46,21 @@
         view_mode.set('');
 		current_page.set(1);
         selectedBlock.set(null);
+        isDiaryOpen = false;
 	}
 
     let isDrawerOpen = false;
 
     const commitHash = __COMMIT_HASH__.slice(0, 7);
     const commitLink = `https://github.com/CyleAR/idoly-musics/tree/${__COMMIT_HASH__}`;
+
+    // 마나의 일기 관련 //
+    let isDiaryOpen = false;
+    const totalDiaryPages = 446;
+    $: diaryDocImages = Array.from(
+        { length: totalDiaryPages },
+        (_, i) => `/diary/diary_${$currentLanguage}/${i + 1}.webp`
+    );
 </script>
 
 
@@ -121,6 +131,17 @@
 									{content_lang.viewByArtist}
 								</button>
 							</li>
+                            <li>
+                                <button
+                                    on:click={() => {
+                                        isDiaryOpen = true;
+                                        isDrawerOpen = false;
+                                    }}
+                                    class="text-left"
+                                >
+                                    {content_lang.viewDiary ?? '마나의 일기'}
+                                </button>
+                            </li>
 						</ul>
 					</div>
 			</div>
@@ -158,6 +179,8 @@
 		<p class="text-sm text-gray-400">Contents © QualiArts and it's associates</p>
 	</footer>
 </div>
+
+<DiaryViewer bind:isOpen={isDiaryOpen} images={diaryDocImages} />
 
 <style>
     .drawer-side {

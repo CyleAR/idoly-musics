@@ -12,6 +12,7 @@ export const language_table = {
 			viewByGroup: '그룹별\n보기',
 			viewByAlbum: '앨범별\n보기',
 			viewByArtist: '캐릭터별\n보기',
+            viewDiary: '마나의\n일기\n보기',
 			viewByArtistModal: {
 				title: '아티스트 필터 선택',
 				close: '완료'

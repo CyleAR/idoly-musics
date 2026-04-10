@@ -1,6 +1,7 @@
 node_modules
 ecosystem.config.cjs
 package-lock.json
+/static/diary
 
 # Output
 .output

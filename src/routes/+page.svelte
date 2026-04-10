@@ -12,7 +12,7 @@
 		artistFilter
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
-	import SideNavigation from '$lib/components/side-nav.svelte';
+	//import SideNavigation from '$lib/components/..side-nav.svelte';
 	import Content from '$lib/components/content.svelte';
 	import { browser } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
