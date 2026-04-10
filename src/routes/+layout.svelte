@@ -59,7 +59,8 @@
     const totalDiaryPages = 445;
     $: diaryDocImages = Array.from(
         { length: totalDiaryPages },
-        (_, i) => `/diary/diary_${$currentLanguage}/${i + 1}.webp`
+        //(_, i) => `/diary/diary_${$currentLanguage}/${i + 1}.webp`
+        (_, i) => `/diary/diary_ko/${i + 1}.webp`
     );
 </script>
 
