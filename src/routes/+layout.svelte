@@ -65,7 +65,6 @@
 </script>
 
 
-<!-- svelte-ignore a11y_click_events_have_key_events -->
 <div class="flex min-h-screen flex-col bg-base-300">
     <!-- 상단바 -->
 	<div  id="navibar" class="navbar fixed top-0 z-[100] h-16 w-full bg-base-100 px-3 lg:px-6 shadow-md">
