@@ -62,6 +62,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
             lyrics_ja as lyrics,
             furigana_ko,
             stream_url,
+            stream_url_ja,
             mv_url,
             live_url,
             length
@@ -134,6 +135,7 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
         lyrics: music.lyrics || '',
         furigana_ko: music.furigana_ko || '',
         stream_url: music.stream_url || '',
+        stream_url_ja: music.stream_url_ja || '',
         mv_url: music.mv_url || '',
         live_url: music.live_url || '',
         length: music.length || 0

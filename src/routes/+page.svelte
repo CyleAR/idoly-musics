@@ -27,6 +27,7 @@
 	$: content_lang = language_table[$currentLanguage]['page'];
 	$: mvId = '';
 	$: streamId = '';
+    $: streamId_ja = '';
 	$: liveId = '';
 	$: disable_youtube_btn_flag = true;
 	$: disable_mv_btn_flag = true;
@@ -36,6 +37,7 @@
 		// console.log(data.musics.results[$selectedBlock - 1]);
 		let _mvid = data.musics.results[$selectedBlock - 1].mv_url;
 		let _streamid = data.musics.results[$selectedBlock - 1].stream_url;
+        let _streamid_ja = data.musics.results[$selectedBlock - 1].stream_url_ja;
 		let _liveid = data.musics.results[$selectedBlock - 1]?.live_url;
 
 		disable_mv_btn_flag = _mvid == '' ? true : false;
@@ -45,6 +47,7 @@
 		mvId = _mvid.split('/').pop();
 		liveId = _liveid.split('/').pop();
 		streamId = _streamid.split('/').pop();
+        streamId_ja = _streamid_ja.split('/').pop();
 		info_type = 'jacket';
 	}
 
@@ -172,7 +175,20 @@
 							info_type = 'youtube';
 						}}
 					>
-						{content_lang['drawer']['youtube']}
+						{'YOUTUBE🌐'}
+					</button>
+                    <button
+						class="btn btn-xs sm:btn-sm {info_type === 'youtube_ja'
+							? $global_theme === 'dark'
+								? 'bg-blue-700 text-white'
+								: 'bg-blue-500 text-white'
+							: ''} hover:bg-blue-600"
+						disabled={disable_youtube_btn_flag}
+						on:click={() => {
+							info_type = 'youtube_ja';
+						}}
+					>
+						{'YOUTUBE🗾'}
 					</button>
 					<button
 						class="btn btn-xs sm:btn-sm {info_type === 'mv'
@@ -225,10 +241,22 @@
 				</div>
 			{:else if info_type == 'youtube'}
 				<!-- 유튜브 섹션 -->
-				<div id="music-drawer-youtue" class="aspect-h-9 aspect-w-16">
+				<div id="music-drawer-youtube" class="aspect-h-9 aspect-w-16">
 					<iframe
 						class="h-full w-full rounded-lg"
 						src={`https://www.youtube.com/embed/${streamId}`}
+						title="YouTube video player"
+						frameborder="0"
+						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+						allowfullscreen
+					></iframe>
+				</div>
+            {:else if info_type == 'youtube_ja'}
+                <!-- 유튜브 일본 섹션 -->
+				<div id="music-drawer-youtube" class="aspect-h-9 aspect-w-16">
+					<iframe
+						class="h-full w-full rounded-lg"
+						src={`https://www.youtube.com/embed/${streamId_ja}`}
 						title="YouTube video player"
 						frameborder="0"
 						allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"

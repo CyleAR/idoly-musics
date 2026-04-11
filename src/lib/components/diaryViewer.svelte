@@ -70,6 +70,8 @@
 
 <svelte:window on:keydown={handleKeydown} />
 
+<!-- svelte-ignore a11y_no_static_element_interactions -->
+<!-- svelte-ignore a11y_click_events_have_key_events -->
 {#if isOpen}
     <div 
         class="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/90 p-4 backdrop-blur-sm"
