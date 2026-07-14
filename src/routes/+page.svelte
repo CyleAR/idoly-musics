@@ -9,7 +9,8 @@
 		album_images,
 		artist_images,
 		music_images,
-		artistFilter
+		artistFilter,
+		albumFilter
 	} from '$lib/stores';
 	import { language_table } from '$lib/lang.ts';
 	//import SideNavigation from '$lib/components/..side-nav.svelte';
@@ -343,14 +344,22 @@
 			<!-- 앨범 정보 섹션 -->
 			<div id="music-drawer-albums" class="mt-4 flex flex-wrap gap-1 rounded-xl bg-base-200 p-4">
 				{#each data.musics.results[$selectedBlock - 1].albums as album}
-					<div class="flex flex-col items-center">
+					<button
+						type="button"
+						class="flex flex-col items-center rounded-lg transition-transform hover:-translate-y-1"
+						on:click={() => {
+							view_mode.set('');
+							albumFilter.set([album.id]);
+						}}
+						aria-label={`${album.name} 앨범으로 필터링`}
+					>
 						<img
 							src={loadImage('album', album.id)}
 							class="h-20 w-20 rounded-lg object-cover sm:h-24 sm:w-24 lg:h-28 lg:w-28"
 							alt="album"
 						/>
 						<span class="text-xs sm:text-sm lg:text-base">{album.name}</span>
-					</div>
+					</button>
 				{/each}
 			</div>
 		</div>
