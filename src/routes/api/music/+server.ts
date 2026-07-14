@@ -142,8 +142,15 @@ function loadLanguageData(db: any, lang: keyof CacheType): type.MusicData[] {
     }));
 }
 
-function initializeCache() {
+export function _initializeCache() {
     const db = new Database(dbPath);
+
+	(['ja', 'ko', 'en', 'zh'] as const).forEach((lang) => {
+		cache[lang] = [];
+		artistCache[lang] = [];
+		groupCache[lang] = [];
+		albumCache[lang] = [];
+	});
 
     loadArtistCache(db);
     loadGroupCache(db);
@@ -229,7 +236,7 @@ function loadAlbumCache(db: any) {
     });
 }
 
-initializeCache();
+_initializeCache();
 
 export async function GET({ url }: RequestEvent) {
     const lang = String(url.searchParams.get('lang')) as keyof CacheType;

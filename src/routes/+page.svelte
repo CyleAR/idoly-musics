@@ -30,6 +30,7 @@
     $: streamId_ja = '';
 	$: liveId = '';
 	$: disable_youtube_btn_flag = true;
+	$: disable_youtube_ja_btn_flag = true;
 	$: disable_mv_btn_flag = true;
 	$: disable_live_btn_flag = true;
 	$: if ($selectedBlock >= 1) {
@@ -43,6 +44,7 @@
 		disable_mv_btn_flag = _mvid == '' ? true : false;
 		disable_live_btn_flag = _liveid == '' ? true : false;
 		disable_youtube_btn_flag = _streamid == '' ? true : false;
+		disable_youtube_ja_btn_flag = _streamid_ja == '' ? true : false;
 
 		mvId = _mvid.split('/').pop();
 		liveId = _liveid.split('/').pop();
@@ -183,7 +185,7 @@
 								? 'bg-blue-700 text-white'
 								: 'bg-blue-500 text-white'
 							: ''} hover:bg-blue-600"
-						disabled={disable_youtube_btn_flag}
+						disabled={disable_youtube_ja_btn_flag}
 						on:click={() => {
 							info_type = 'youtube_ja';
 						}}
