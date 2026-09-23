@@ -3,6 +3,24 @@ import type { Config } from 'tailwindcss';
 export default {
 	content: ['./src/**/*.{html,js,svelte,ts}'],
 	darkMode: 'selector',
+	daisyui: {
+		themes: [
+			{
+				light: {
+					...require('daisyui/src/theming/themes').light,
+					'base-100': '#FCFDFE',
+					'base-200': '#F2F5FA',
+					'base-300': '#E7EDF5',
+					'base-content': '#293449',
+					primary: '#5267B8',
+					'primary-content': '#FFFFFF',
+					neutral: '#344158',
+					'neutral-content': '#F5F7FC'
+				}
+			},
+			'dark'
+		]
+	},
 	theme: {
 		extend: {
 			fontFamily: {

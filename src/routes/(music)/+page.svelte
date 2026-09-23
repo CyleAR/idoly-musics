@@ -1,5 +1,5 @@
 <script lang="ts">
-	import type { PageData } from '../../routes/$types';
+	import type { PageData } from './$types';
 	import {
 		global_theme,
 		currentLanguage,
