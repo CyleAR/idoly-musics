@@ -5,7 +5,14 @@ export const language_table = {
 			group: '그룹',
 			artist: '아티스트',
 			album: '수록 앨범',
-			releaseDate: '공개일'
+			releaseDate: '공개일',
+			viewMode: {
+				label: '보기 방식',
+				songs: '곡',
+				groups: '그룹',
+				artists: '아티스트',
+				albums: '앨범'
+			}
 		},
 		sideNav: {
 			table: '표',
@@ -44,7 +51,14 @@ export const language_table = {
 			group: 'Group',
 			artist: 'Artist',
 			album: 'Album',
-			releaseDate: 'Announce Date'
+			releaseDate: 'Announce Date',
+			viewMode: {
+				label: 'View',
+				songs: 'Songs',
+				groups: 'Groups',
+				artists: 'Artists',
+				albums: 'Albums'
+			}
 		},
 		sideNav: {
 			table: 'Table',
@@ -82,7 +96,14 @@ export const language_table = {
 			group: 'グループ',
 			artist: 'アーティスト',
 			album: 'アルバム',
-			releaseDate: '公開日'
+			releaseDate: '公開日',
+			viewMode: {
+				label: '表示',
+				songs: '楽曲',
+				groups: 'グループ',
+				artists: 'アーティスト',
+				albums: 'アルバム'
+			}
 		},
 		sideNav: {
 			table: '表',
@@ -120,7 +141,14 @@ export const language_table = {
             group: '組合',
             artist: '藝人',
             album: '專輯',
-            releaseDate: '發行日期'
+            releaseDate: '發行日期',
+            viewMode: {
+                label: '顯示',
+                songs: '歌曲',
+                groups: '組合',
+                artists: '藝人',
+                albums: '專輯'
+            }
         },
         sideNav: {
             table: '表格',

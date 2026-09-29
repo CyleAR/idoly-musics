@@ -115,6 +115,19 @@
 		}
 	}
 
+	const VIEW_MODES = [
+		{ value: '', label: 'songs' },
+		{ value: 'viewByGroup', label: 'groups' },
+		{ value: 'viewByArtist', label: 'artists' },
+		{ value: 'viewByAlbums', label: 'albums' }
+	] as const;
+
+	function changeViewMode(mode: (typeof VIEW_MODES)[number]['value']) {
+		$view_mode = mode;
+		$current_page = 1;
+		$selectedBlock = null;
+	}
+
 	function calculateBlockHeight(block: { artists: string[]; groups: string[] }): string {
 		const artistCount = block.artists.length;
 		const groupCount = block.groups.length;
@@ -134,7 +147,7 @@
 	}, 0);
 
 	// 계산된 Height 를 상위 컴포넌트로 전파 ( +page.svelte )
-	$: onHeightChange(contentHeight);
+	$: onHeightChange(contentHeight + 3.5);
 
 	function getColorTag(block: typeof data) {
 		return block.groups[0].id === 8 ? block.artists[0]?.color : block.groups[0]?.color;
@@ -175,9 +188,32 @@
 <div id="contents-wrapper" class="duration-50 flex transition-all">
 	<div
 		id="content-main"
-		style="height: {contentHeight + 5}rem"
+		style="height: {contentHeight + 8.5}rem"
 		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
+		<nav
+			class="flex min-h-14 items-center gap-2 overflow-x-auto border-b border-base-300 px-2 py-2 sm:px-4"
+			aria-label={content_lang.viewMode.label}
+		>
+			<span class="hidden shrink-0 text-sm font-semibold text-base-content/60 sm:inline">
+				{content_lang.viewMode.label}
+			</span>
+			<div class="join min-w-max rounded-lg bg-base-200 p-1">
+				{#each VIEW_MODES as mode}
+					<button
+						type="button"
+						class="btn btn-sm join-item border-0"
+						class:btn-primary={$view_mode === mode.value}
+						class:btn-ghost={$view_mode !== mode.value}
+						aria-pressed={$view_mode === mode.value}
+						on:click={() => changeViewMode(mode.value)}
+					>
+						{content_lang.viewMode[mode.label]}
+					</button>
+				{/each}
+			</div>
+		</nav>
+
 		{#if $view_mode == 'viewByAlbums'}
 			<Table {data} cache={albumCache} type={'album'} />
 		{:else if $view_mode == 'viewByGroup'}
