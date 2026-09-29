@@ -112,7 +112,7 @@
 	<title>IDOLY MUSICS</title>
 </svelte:head>
 
-<div id="page-wrapper" class="relative flex flex-row" style="height: {contentHeight}rem">
+<div id="page-wrapper" class="relative flex flex-row" style="min-height: {contentHeight}rem">
 	<div id="page-main" class="flex-1 pt-2">
 		<Content {data} onHeightChange={updateContentHeight} />
 	</div>
@@ -221,7 +221,7 @@
 					</button>
 					<!-- 닫기 버튼 -->
 					<button
-						class="btn btn-circle btn-outline btn-xs absolute right-3 sm:btn-sm"
+						class="btn btn-circle btn-xs absolute right-3 border-base-300 bg-base-200 text-base-content hover:border-base-300 hover:bg-base-300 sm:btn-sm"
 						on:click={() => {
 							selectedBlock.set(null);
 						}}

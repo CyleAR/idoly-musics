@@ -143,11 +143,11 @@
 		if ($view_mode.startsWith('viewBy')) {
 			return height + blockHeight + 2;
 		}
-		return height + blockHeight + 0.4; // 0.5rem 여백
+		return height + blockHeight + 0.5; // 0.5rem 여백
 	}, 0);
 
 	// 계산된 Height 를 상위 컴포넌트로 전파 ( +page.svelte )
-	$: onHeightChange(contentHeight + 3.5);
+	$: onHeightChange(contentHeight);
 
 	function getColorTag(block: typeof data) {
 		return block.groups[0].id === 8 ? block.artists[0]?.color : block.groups[0]?.color;
@@ -188,16 +188,13 @@
 <div id="contents-wrapper" class="duration-50 flex transition-all">
 	<div
 		id="content-main"
-		style="height: {contentHeight + 8.5}rem"
+		style="min-height: {contentHeight + 5}rem"
 		class="w-full rounded-lg bg-base-100 shadow-lg"
 	>
 		<nav
 			class="flex min-h-14 items-center gap-2 overflow-x-auto border-b border-base-300 px-2 py-2 sm:px-4"
 			aria-label={content_lang.viewMode.label}
 		>
-			<span class="hidden shrink-0 text-sm font-semibold text-base-content/60 sm:inline">
-				{content_lang.viewMode.label}
-			</span>
 			<div class="join min-w-max rounded-lg bg-base-200 p-1">
 				{#each VIEW_MODES as mode}
 					<button
@@ -280,7 +277,7 @@
 					</div>
 				{/each}
 			</div>
-			<div id="content-blocks" class="gap flex h-full w-full flex-col">
+			<div id="content-blocks" class="gap flex w-full flex-col">
 				{#each paginatedBlocks as block}
 					<div class="flex w-[100%] p-1">
 						<Block
@@ -298,32 +295,43 @@
                     Total: {filteredBlocks.length ?? NaN}
                 </div>
 			</div>
-
-			<div id="content-pagination" class="flex flex-wrap justify-center gap-2 p-4">
-				{#if $current_page > 1}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page - 1)}>
-						«
-					</button>
-				{/if}
-
-				{#each Array(totalPages) as _, i}
-					<button
-						class="btn btn-circle btn-sm {$current_page === i + 1 ? 'btn-primary' : ''}"
-						on:click={() => goToPage(i + 1)}
-					>
-						{i + 1}
-					</button>
-				{/each}
-
-				{#if $current_page < totalPages}
-					<button class="btn btn-circle btn-sm" on:click={() => goToPage($current_page + 1)}>
-						»
-					</button>
-				{/if}
-			</div>
 		{/if}
 	</div>
 </div>
+
+{#if !$view_mode.startsWith('viewBy')}
+	<div
+		id="content-pagination"
+		class="mt-2 flex flex-nowrap justify-center gap-1 overflow-x-auto px-1 py-2 sm:gap-2 sm:px-4"
+	>
+		{#if $current_page > 1}
+			<button
+				class="btn btn-circle btn-xs sm:btn-sm"
+				on:click={() => goToPage($current_page - 1)}
+			>
+				«
+			</button>
+		{/if}
+
+		{#each Array(totalPages) as _, i}
+			<button
+				class="btn btn-circle btn-xs sm:btn-sm {$current_page === i + 1 ? 'btn-primary' : ''}"
+				on:click={() => goToPage(i + 1)}
+			>
+				{i + 1}
+			</button>
+		{/each}
+
+		{#if $current_page < totalPages}
+			<button
+				class="btn btn-circle btn-xs sm:btn-sm"
+				on:click={() => goToPage($current_page + 1)}
+			>
+				»
+			</button>
+		{/if}
+	</div>
+{/if}
 
 <!-- 필터링 모달 -->
 <!-- svelte-ignore a11y_click_events_have_key_events -->
