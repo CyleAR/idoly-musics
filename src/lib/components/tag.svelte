@@ -21,7 +21,7 @@
 		return 0.2126 * r + 0.7152 * g + 0.0722 * b;
     }
     function getTextColor(hex: string) {
-        return getBrightness(hex) > 95 ? 'black' : 'white';
+        return getBrightness(hex) > 140 ? 'black' : 'white';
     }
 
     $: sortedTexts = texts.sort((a, b) => a.id - b.id)
