@@ -19,7 +19,7 @@ export const patchGuides = [
 	{
 		id: 'ios', name: 'iOS / iPadOS', device: 'iPhone · iPad',
 		summary: '한글패치가 포함된 IPA를 사이드로딩으로 설치해요.', badge: 'IPA 설치',
-		downloads: [{ label: '패치 IPA 다운로드', detail: '게임 6.0.2 · HoshimiLocalify v1.0.0', url: 'https://cloud.cyle.me/IdolyPride-6.0.2-HoshimiLocalify-v1.0.0.ipa' }],
+		downloads: [{ label: '패치 IPA 다운로드', detail: '게임 6.0.3 · HoshimiLocalify v1.0.1', url: 'https://cloud.cyle.me/IdolyPride-6.0.3-HoshimiLocalify-v1.0.1.ipa' }],
 		files: [],
 		preparation: { label: '사이드로딩 준비 안내', url: 'https://gall.dcinside.com/mgallery/board/view/?id=vanced&no=28269' },
 		alternativePreparation: { label: 'SideStore 공식 설치 안내', url: 'https://docs.sidestore.io/docs/installation/install' },
@@ -27,8 +27,8 @@ export const patchGuides = [
 			{ title: '사이드로딩 환경을 준비해 주세요', text: '아래 준비 안내에 따라 iLoader와 개발자 인증을 설정하세요. SideStore를 쓸 경우에는 공식 안내에 따라 SideStore 설치·로그인과 LocalDevVPN 설정도 마쳐 주세요.' },
 			{ title: '패치된 IPA를 받아 주세요', text: '아래 버튼에서 IPA 파일을 다운로드하세요. 번역 기능이 통합되어 있어 별도 번역 관리 앱은 필요하지 않습니다.' },
 			{ title: 'iLoader 또는 SideStore로 설치해 주세요', text: 'iLoader: Windows PC에 iPhone 또는 iPad를 연결하고 Import IPA에서 받은 파일을 선택해 설치하세요.\nSideStore: 기기의 파일 앱에 IPA를 저장한 뒤 LocalDevVPN을 연결하고, SideStore의 My Apps에서 + 버튼을 눌러 IPA를 선택해 설치하세요.' },
-			{ title: '실행과 갱신을 확인해 주세요', text: '게임을 실행해 한글 적용을 확인하세요. 자동 갱신을 설정하지 않았다면 원문 안내 기준으로 7일마다 갱신 또는 재설치가 필요합니다.' }
+			{ title: '실행과 갱신을 확인해 주세요', text: '게임을 실행해 한글 적용을 확인하세요. 자동 갱신을 설정하지 않았다면 7일마다 갱신 또는 재설치가 필요합니다.' }
 		],
-		notes: ['기존 게임과 별도로 설치할 수 있어 원래 앱을 지울 필요는 없습니다.', '원문 테스트 환경은 iPadOS 27의 iPad Air 4입니다. 다른 환경에서의 실행은 보장되지 않으며 종료나 지연이 발생할 수 있습니다.']
+		notes: ['기존 게임과 별도로 설치할 수 있어 원래 앱을 지울 필요는 없습니다.', '테스트된 환경은 iPadOS 27의 iPad Air 4입니다. 다른 환경에서의 실행은 보장되지 않으며 강제 종료나 오류가 발생할 수 있습니다.']
 	}
 ];
