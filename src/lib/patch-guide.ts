@@ -19,7 +19,7 @@ export const patchGuides = [
 	{
 		id: 'ios', name: 'iOS / iPadOS', device: 'iPhone · iPad',
 		summary: '한글패치가 포함된 IPA를 사이드로딩으로 설치해요.', badge: 'IPA 설치',
-		downloads: [{ label: '패치 IPA 다운로드', detail: '게임 6.0.3 · HoshimiLocalify v1.0.1', url: 'https://cloud.cyle.me/IdolyPride-6.0.3-HoshimiLocalify-v1.0.1.ipa' }],
+		downloads: [{ label: '패치 IPA 다운로드', detail: '게임 6.1.0 · HoshimiLocalify v1.1.0', url: 'https://cloud.cyle.me/IdolyPride-6.1.0-HoshimiLocalify-v1.1.0.ipa' }],
 		files: [],
 		preparation: { label: '사이드로딩 준비 안내', url: 'https://gall.dcinside.com/mgallery/board/view/?id=vanced&no=28269' },
 		alternativePreparation: { label: 'SideStore 공식 설치 안내', url: 'https://docs.sidestore.io/docs/installation/install' },
