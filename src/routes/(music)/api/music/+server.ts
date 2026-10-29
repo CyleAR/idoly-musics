@@ -238,12 +238,18 @@ function loadAlbumCache(db: any) {
 
 _initializeCache();
 
+export function _getMusicLyrics(id: number) {
+    const music = cache.ja.find((music) => music.id === id);
+    if (!music) return undefined;
+    return { id: music.id, lyrics: music.lyrics, furigana_ko: music.furigana_ko };
+}
+
 export async function GET({ url }: RequestEvent) {
     const lang = String(url.searchParams.get('lang')) as keyof CacheType;
     const start = Number(url.searchParams.get('start')) || 1;
     const end = Number(url.searchParams.get('end')) || 16;
 
-    const results = cache[lang].slice(start - 1, end);
+    const results = cache[lang].slice(start - 1, end).map(({ lyrics, furigana_ko, ...music }) => music);
     return json({
         results,
         artistCache: artistCache[lang],

@@ -15,6 +15,7 @@
 	import { language_table } from '$lib/lang.ts';
 	//import SideNavigation from '$lib/components/..side-nav.svelte';
 	import Content from '$lib/components/content.svelte';
+	import MusicLyrics from '$lib/components/music-lyrics.svelte';
 	import { browser } from '$app/environment';
 	import { invalidateAll } from '$app/navigation';
 	import { fly } from 'svelte/transition';
@@ -319,28 +320,11 @@
 				{/each}
 			</div>
 			<!-- 가사 섹션 -->
-            <!-- TODO -->
-			<div
-				id="music-drawer-lyrics"
-				class="w-full whitespace-pre-line rounded-xl bg-base-200 p-4 text-base font-bold sm:text-lg"
-			>
-				{#if data.musics.results[$selectedBlock - 1].lyrics}
-					{#each data.musics.results[$selectedBlock - 1].lyrics.split('\n') as line, i}
-						{#if line.trim() === ''}
-							<p>&nbsp;</p>
-						{:else}
-							<p>{line}</p>
-							{#if data.musics.results[$selectedBlock - 1].furigana_ko && $currentLanguage === 'ko'}
-								<p class="text-md text-gray-500">
-									{data.musics.results[$selectedBlock - 1].furigana_ko?.split('\n')[i]}
-								</p>
-							{/if}
-						{/if}
-					{/each}
-				{:else}
-					<span class="text-gray-500">NO LYRICS DATA</span>
+			{#key $selectedBlock}
+				{#if $selectedBlock !== null}
+					<MusicLyrics musicId={$selectedBlock} />
 				{/if}
-			</div>
+			{/key}
 			<!-- 앨범 정보 섹션 -->
 			<div id="music-drawer-albums" class="mt-4 flex flex-wrap gap-1 rounded-xl bg-base-200 p-4">
 				{#each data.musics.results[$selectedBlock - 1].albums as album}
