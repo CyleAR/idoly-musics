@@ -11,11 +11,9 @@
 	export let included_albums: string[];
 	export let announce_date: string;
 
-	function load_image() {
-		const imagePath = `/src/images/music/${id}.webp`;
-		const exists = $music_images[imagePath];
-		return exists ? exists.default : $music_images[`/src/images/music/0.webp`].default;
-	}
+	$: imageSrc =
+		$music_images[`/src/images/music/${id}.webp`]?.default ??
+		$music_images['/src/images/music/0.webp'].default;
 
 	function handleClick() {
 		if ($selectedBlock === id) {
@@ -60,7 +58,7 @@
 			<!-- 썸네일 -->
 			<div class="relative flex-shrink-0">
 				<img
-					src={load_image()}
+					src={imageSrc}
 					class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
 					alt="thumbnail"
 				/>

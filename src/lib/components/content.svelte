@@ -278,7 +278,7 @@
 				{/each}
 			</div>
 			<div id="content-blocks" class="gap flex w-full flex-col">
-				{#each paginatedBlocks as block}
+				{#each paginatedBlocks as block (block.id)}
 					<div class="flex w-[100%] p-1">
 						<Block
 							id={block.id}
