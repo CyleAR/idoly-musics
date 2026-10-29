@@ -34,13 +34,13 @@
 		}
 	}
 
-	function load_image(id) {
+	function load_image(id, type, imageStore) {
 		const imagePath = `/src/images/${type}/${id}.webp`;
 		const exists = imageStore[imagePath];
 		return exists ? exists.default : imageStore[`/src/images/${type}/0.webp`].default;
 	}
 
-	function getMusics(name) {
+	function getMusics(name, musics, type) {
 		return musics.filter((music) => {
 			switch (type) {
 				case 'artist':
@@ -86,7 +86,7 @@
 							
 						>
 							<img
-								src={load_image(item.id)}
+								src={load_image(item.id, type, imageStore)}
 								class="h-20 w-20 rounded-lg object-contain transition-opacity duration-200"
 								alt={item.name || 'thumbnail'}
 							/>
@@ -102,7 +102,7 @@
 								>
 									<table class="table-hover table table-sm bg-base-100">
 										<tbody>
-											{#each getMusics(item.name) as music, i}
+											{#each getMusics(item.name, musics, type) as music, i}
 												<tr
 													class="item hover:bg-base-200"
 													on:click={() => {

@@ -13,8 +13,8 @@
 		{ key: 'groups' as const, label: '그룹', items: data.groups },
 		{ key: 'albums' as const, label: '앨범', items: data.albums }
 	];
-	const value = (key: string) => String(selected?.[key] ?? '');
-	const albumValue = (key: string) => String(selectedAlbum?.[key] ?? '');
+	$: value = (key: string) => String(selected?.[key] ?? '');
+	$: albumValue = (key: string) => String(selectedAlbum?.[key] ?? '');
 </script>
 
 <svelte:head><title>음악 데이터 관리 | IDOLY MUSICS</title></svelte:head>

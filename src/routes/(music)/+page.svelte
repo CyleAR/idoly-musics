@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { PageData } from './$types';
+	import type { MusicData } from '$lib/types';
 	import {
 		global_theme,
 		currentLanguage,
@@ -60,25 +61,8 @@
 	$artist_images = import.meta.glob('/src/images/artist/*.webp', { eager: true });
 	$music_images = import.meta.glob('/src/images/music/*.webp', { eager: true });
 
-	// 이미지 타입에 따라 적절한 이미지 객체를 반환하는 함수
-	function getImageCollection(type) {
-		switch (type) {
-			case 'group':
-				return $group_images;
-			case 'album':
-				return $album_images;
-			case 'artist':
-				return $artist_images;
-			case 'music':
-				return $music_images;
-			default:
-				return {};
-		}
-	}
-
 	// 이미지 로드 함수
-	function loadImage(type, id) {
-		const images = getImageCollection(type);
+	function loadImage(type: string, id: number | null, images: any) {
 		const imagePath = `/src/images/${type}/${id}.webp`;
 		const exists = images[imagePath];
 		return exists ? exists.default : images[`/src/images/${type}/0.webp`].default;
@@ -98,10 +82,10 @@
 		contentHeight = height + 13; // 13 은 페이지 여백
 	}
 
-	function getSoloArtist() {
-		return data.musics.results[$selectedBlock - 1].groups[0]?.id === 8
-			? data.musics.results[$selectedBlock - 1].artists[0]?.name
-			: data.musics.results[$selectedBlock - 1].groups[0]?.name;
+	function getSoloArtist(music: Pick<MusicData, 'groups' | 'artists'>) {
+		return music.groups[0]?.id === 8
+			? music.artists[0]?.name
+			: music.groups[0]?.name;
 	}
 
 	function lyricsFurigana(lyrics: string) {
@@ -238,7 +222,7 @@
 					class="relative flex w-full justify-center rounded-xl bg-base-200 p-2"
 				>
 					<img
-						src={loadImage('music', $selectedBlock)}
+						src={loadImage('music', $selectedBlock, $music_images)}
 						class="aspect-square w-full rounded-lg rounded-xl object-cover"
 						alt="Album cover"
 					/>
@@ -299,7 +283,7 @@
 			</div>
 			<!-- 그룹 섹션 -->
 			<div id="music-drawer-group" class="pl-2 text-base sm:text-lg lg:text-xl">
-				{getSoloArtist()}
+				{getSoloArtist(data.musics.results[$selectedBlock - 1])}
 			</div>
 			<!-- 아티스트 정보 섹션 -->
 			<div id="music-drawer-artists" class="mb-1 mt-1 flex flex-wrap gap-1 pl-2">
@@ -312,7 +296,8 @@
 						class="btn btn-circle btn-xs border-none sm:btn-sm md:btn-md hover:-translate-y-1"
 						style="background-image: url({loadImage(
 							'artist',
-							artist.id
+							artist.id,
+							$artist_images
 						)}); background-size: cover; background-position: center;"
 						aria-label="artist"
 					>
@@ -338,7 +323,7 @@
 						aria-label={`${album.name} 앨범으로 필터링`}
 					>
 						<img
-							src={loadImage('album', album.id)}
+								src={loadImage('album', album.id, $album_images)}
 							class="h-20 w-20 rounded-lg object-cover sm:h-24 sm:w-24 lg:h-28 lg:w-28"
 							alt="album"
 						/>
